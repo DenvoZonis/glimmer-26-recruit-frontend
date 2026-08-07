@@ -1,0 +1,1117 @@
+<!DOCTYPE html><html lang="zh-CN" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>机器学习方向-02：梯度下降理论和实践 | 微光工作室</title><link rel="canonical" href="https://www.glimmer.org.cn/archives/23/ml/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%90%91-02%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E5%AE%9E%E8%B7%B5/"/><link rel="sitemap" href="/sitemap-index.xml"/><link rel="icon" href="/recruit/favicon.png" sizes="32x32"/><link rel="apple-touch-icon" href="/recruit/apple-touch-icon.png" sizes="180x180"/><style data-starlight-theme-md3="options">:root,
+	::backdrop {
+		--md-sys-color-primary: #b7c4ff;
+		--md-sys-color-on-primary: #002682;
+		--md-sys-color-primary-container: #0038b6;
+		--md-sys-color-on-primary-container: #dce1ff;
+		--md-sys-color-secondary: #c2c5dd;
+		--md-sys-color-on-secondary: #2b3042;
+		--md-sys-color-secondary-container: #424659;
+		--md-sys-color-on-secondary-container: #dee1f9;
+		--md-sys-color-tertiary: #e4bada;
+		--md-sys-color-on-tertiary: #43273f;
+		--md-sys-color-tertiary-container: #5c3d56;
+		--md-sys-color-on-tertiary-container: #ffd7f4;
+		--md-sys-color-error: #ffb4ab;
+		--md-sys-color-on-error: #690005;
+		--md-sys-color-error-container: #93000a;
+		--md-sys-color-on-error-container: #ffb4ab;
+		--md-sys-color-background: #131316;
+		--md-sys-color-on-background: #e4e1e6;
+		--md-sys-color-surface: #131316;
+		--md-sys-color-surface-dim: #131316;
+		--md-sys-color-surface-container-lowest: #0e0e11;
+		--md-sys-color-surface-container-low: #1b1b1f;
+		--md-sys-color-surface-container: #1f1f23;
+		--md-sys-color-surface-container-high: #2a2a2d;
+		--md-sys-color-surface-container-highest: #343438;
+		--md-sys-color-on-surface: #e4e1e6;
+		--md-sys-color-surface-variant: #45464f;
+		--md-sys-color-on-surface-variant: #c6c5d0;
+		--md-sys-color-outline: #90909a;
+		--md-sys-color-outline-variant: #45464f;
+		--md-sys-color-inverse-surface: #e4e1e6;
+		--md-sys-color-inverse-on-surface: #303034;
+		--md-sys-color-inverse-primary: #004ced;
+		--md-sys-color-scrim: #000000;
+	}
+
+	:root[data-theme='light'],
+	[data-theme='light'] ::backdrop {
+		--md-sys-color-primary: #004ced;
+		--md-sys-color-on-primary: #ffffff;
+		--md-sys-color-primary-container: #dce1ff;
+		--md-sys-color-on-primary-container: #001552;
+		--md-sys-color-secondary: #5a5d72;
+		--md-sys-color-on-secondary: #ffffff;
+		--md-sys-color-secondary-container: #dee1f9;
+		--md-sys-color-on-secondary-container: #171b2c;
+		--md-sys-color-tertiary: #75546f;
+		--md-sys-color-on-tertiary: #ffffff;
+		--md-sys-color-tertiary-container: #ffd7f4;
+		--md-sys-color-on-tertiary-container: #2c1229;
+		--md-sys-color-error: #ba1a1a;
+		--md-sys-color-on-error: #ffffff;
+		--md-sys-color-error-container: #ffdad6;
+		--md-sys-color-on-error-container: #410002;
+		--md-sys-color-background: #fefbff;
+		--md-sys-color-on-background: #1b1b1f;
+		--md-sys-color-surface: #fefbff;
+		--md-sys-color-surface-dim: #dbd9de;
+		--md-sys-color-surface-container-lowest: #ffffff;
+		--md-sys-color-surface-container-low: #f5f3f7;
+		--md-sys-color-surface-container: #efedf1;
+		--md-sys-color-surface-container-high: #eae7ec;
+		--md-sys-color-surface-container-highest: #e4e1e6;
+		--md-sys-color-on-surface: #1b1b1f;
+		--md-sys-color-surface-variant: #e2e1ec;
+		--md-sys-color-on-surface-variant: #45464f;
+		--md-sys-color-outline: #767680;
+		--md-sys-color-outline-variant: #c6c5d0;
+		--md-sys-color-inverse-surface: #303034;
+		--md-sys-color-inverse-on-surface: #f2f0f4;
+		--md-sys-color-inverse-primary: #b7c4ff;
+		--md-sys-color-scrim: #000000;
+	}</style><script data-starlight-theme-md3="route-bootstrap">
+(() => {
+	const storageKey = 'md3-route-transition';
+	const sidebarStorageKey = 'md3-sidebar-route-transition';
+	let shouldEnter = false;
+	let shouldEnterSidebar = false;
+
+	try {
+		shouldEnter = sessionStorage.getItem(storageKey) === 'true';
+		shouldEnterSidebar = sessionStorage.getItem(sidebarStorageKey) === 'true';
+		sessionStorage.removeItem(storageKey);
+		sessionStorage.removeItem(sidebarStorageKey);
+	} catch {
+		return;
+	}
+
+	if (!shouldEnter || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+	document.documentElement.setAttribute('data-md3-route-state', 'entering');
+	if (shouldEnterSidebar) {
+		document.documentElement.setAttribute('data-md3-sidebar-route-state', 'entering');
+	}
+
+	const clearRouteState = () => {
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				if (document.documentElement.getAttribute('data-md3-route-state') === 'entering') {
+					document.documentElement.removeAttribute('data-md3-route-state');
+				}
+				if (document.documentElement.getAttribute('data-md3-sidebar-route-state') === 'entering') {
+					document.documentElement.removeAttribute('data-md3-sidebar-route-state');
+				}
+			});
+		});
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', clearRouteState, { once: true });
+	} else {
+		clearRouteState();
+	}
+})();
+</script><script data-starlight-theme-md3="motion">
+(() => {
+	const routeTransitionStorageKey = 'md3-route-transition';
+	const sidebarRouteTransitionStorageKey = 'md3-sidebar-route-transition';
+		const rippleSelector = [
+			'button:not([disabled])',
+			'.sl-link-button:not([aria-disabled="true"])',
+			'.sidebar-content a[href]',
+			'.sidebar-content summary',
+			'starlight-toc a[href]',
+			'mobile-starlight-toc summary .toggle',
+			'mobile-starlight-toc .dropdown a[href]',
+			'.pagination-links a[href]',
+			'starlight-tabs [role="tab"]:not([aria-disabled="true"])',
+			'.sl-link-card[href]',
+			'starlight-menu-button button',
+			'.social-icons a[href]',
+			'.right-group label'
+	].join(',');
+	const navigationSelector = [
+		'.sidebar-content a[href]',
+		'starlight-toc a[href]',
+		'.pagination-links a[href]',
+		'.sl-link-button[href]',
+		'.sl-link-card[href]'
+	].join(',');
+
+	const reducedMotion = () =>
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+		getComputedStyle(document.documentElement).getPropertyValue('--md3-motion-duration-state').trim() === '0ms';
+
+	const durationToMs = (value) => {
+		const token = value.trim();
+		if (!token) return 0;
+		if (token.endsWith('ms')) return Number.parseFloat(token);
+		if (token.endsWith('s')) return Number.parseFloat(token) * 1000;
+		return Number.parseFloat(token) || 0;
+	};
+
+			const activeRipples = new Map();
+			const sidebarDisclosureAnimations = new WeakMap();
+			const mobileTocAnimations = new WeakMap();
+			const tocNavigationLocks = new WeakMap();
+			const tocIndicatorControllers = new WeakMap();
+
+	const getMotionDuration = (tokenName, fallback) => {
+		const styles = getComputedStyle(document.documentElement);
+		return durationToMs(styles.getPropertyValue(tokenName)) || fallback;
+	};
+
+	const getMotionEasing = (tokenName, fallback) => {
+		const value = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+		return value || fallback;
+	};
+
+	const getDisclosureContent = (details) => {
+		const content = details.querySelector(':scope > ul');
+		return content instanceof HTMLElement ? content : null;
+	};
+
+	const getMobileTocContent = (details) => {
+		const content = details.querySelector(':scope > .dropdown');
+		return content instanceof HTMLElement ? content : null;
+	};
+
+	const animateSidebarDisclosure = (summary) => {
+		const details = summary.parentElement;
+		if (!(details instanceof HTMLDetailsElement)) return false;
+		const content = getDisclosureContent(details);
+		if (!content) return false;
+
+		const active = sidebarDisclosureAnimations.get(details);
+		const currentHeight = active ? content.getBoundingClientRect().height : null;
+		const isClosing = active ? !active.closing : details.open;
+		if (active) {
+			active.animation.cancel();
+			sidebarDisclosureAnimations.delete(details);
+		}
+
+		const duration = getMotionDuration(
+			isClosing ? '--md3-motion-duration-sidebar-collapse' : '--md3-motion-duration-sidebar-expand',
+			isClosing ? 200 : 400
+		);
+		if (duration <= 0) return false;
+
+		const easing = isClosing
+			? getMotionEasing('--md-sys-motion-easing-emphasized-accelerate', 'cubic-bezier(0.3, 0, 0.8, 0.15)')
+			: getMotionEasing('--md-sys-motion-easing-emphasized-decelerate', 'cubic-bezier(0.05, 0.7, 0.1, 1)');
+		details.dataset.md3DisclosureState = isClosing ? 'closing' : 'opening';
+
+		if (!isClosing) {
+			details.open = true;
+		}
+
+		const startHeight = currentHeight ?? (isClosing ? content.offsetHeight : 0);
+		const endHeight = isClosing ? 0 : content.scrollHeight;
+		content.style.overflow = 'clip';
+		const animation = content.animate(
+			isClosing
+				? [
+						{ blockSize: startHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 0 },
+						{ blockSize: Math.round(startHeight * 0.28) + 'px', opacity: 1, transform: 'translateY(-0.125rem)', offset: 0.75 },
+						{ blockSize: endHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 1 },
+					]
+				: [
+						{ blockSize: startHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 0 },
+						{ blockSize: Math.round(endHeight * 0.72) + 'px', opacity: 1, transform: 'translateY(0)', offset: 0.34 },
+						{ blockSize: endHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 1 },
+					],
+			{ duration, easing }
+		);
+		sidebarDisclosureAnimations.set(details, { animation, closing: isClosing });
+
+		animation.finished
+			.catch(() => {})
+			.finally(() => {
+				const active = sidebarDisclosureAnimations.get(details);
+				if (!active || active.animation !== animation) return;
+				if (isClosing) {
+					details.open = false;
+				} else {
+					details.open = true;
+				}
+				content.style.removeProperty('overflow');
+				delete details.dataset.md3DisclosureState;
+				sidebarDisclosureAnimations.delete(details);
+		});
+		return true;
+	};
+
+	const animateMobileTocDisclosure = (summary, desiredOpen) => {
+		const details = summary.closest('mobile-starlight-toc details');
+		if (!(details instanceof HTMLDetailsElement)) return null;
+		const content = getMobileTocContent(details);
+		if (!content) return null;
+
+		const active = mobileTocAnimations.get(details);
+		const currentHeight = active ? content.getBoundingClientRect().height : null;
+		const isClosing =
+			typeof desiredOpen === 'boolean' ? !desiredOpen : active ? !active.closing : details.open;
+		if (active && active.closing === isClosing) return { handled: true, finished: active.finished };
+		if (active) {
+			active.animation.cancel();
+			mobileTocAnimations.delete(details);
+		}
+
+		const duration = getMotionDuration(
+			isClosing ? '--md3-motion-duration-toc-menu-collapse' : '--md3-motion-duration-toc-menu-expand',
+			isClosing ? 160 : 220
+		);
+		if (duration <= 0) return null;
+
+		const easing = isClosing
+			? getMotionEasing('--md-sys-motion-easing-emphasized-accelerate', 'cubic-bezier(0.3, 0, 0.8, 0.15)')
+			: getMotionEasing('--md-sys-motion-easing-emphasized-decelerate', 'cubic-bezier(0.05, 0.7, 0.1, 1)');
+		details.dataset.md3TocState = isClosing ? 'closing' : 'opening';
+
+		if (!isClosing) {
+			details.open = true;
+		}
+
+		const startHeight = currentHeight ?? (isClosing ? content.offsetHeight : 0);
+		const endHeight = isClosing ? 0 : content.scrollHeight;
+		content.style.overflow = 'clip';
+
+		const animation = content.animate(
+			isClosing
+				? [
+						{ blockSize: startHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 0 },
+						{ blockSize: Math.round(startHeight * 0.38) + 'px', opacity: 0.78, transform: 'translateY(-0.125rem)', offset: 0.72 },
+						{ blockSize: endHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 1 },
+					]
+				: [
+						{ blockSize: startHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 0 },
+						{ blockSize: Math.round(endHeight * 0.72) + 'px', opacity: 1, transform: 'translateY(0)', offset: 0.38 },
+						{ blockSize: endHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 1 },
+					],
+			{ duration, easing }
+		);
+
+		const finished = animation.finished
+			.catch(() => {})
+			.finally(() => {
+				const active = mobileTocAnimations.get(details);
+				if (!active || active.animation !== animation) return;
+				if (isClosing) {
+					details.open = false;
+				} else {
+					details.open = true;
+				}
+				content.style.removeProperty('overflow');
+				delete details.dataset.md3TocState;
+				mobileTocAnimations.delete(details);
+			});
+		mobileTocAnimations.set(details, { animation, closing: isClosing, finished });
+		return { handled: true, finished };
+	};
+
+	const getHashTarget = (hash) => {
+		if (!hash || hash === '#') return null;
+		const id = decodeURIComponent(hash.slice(1));
+		return document.getElementById(id);
+	};
+
+	const scrollToHashTarget = (url, target) => {
+		const path = url.pathname + url.search + url.hash;
+		if (window.location.pathname + window.location.search + window.location.hash !== path) {
+			history.pushState(null, '', path);
+		}
+		if (target instanceof HTMLElement) {
+			const hadTabIndex = target.hasAttribute('tabindex');
+			target.setAttribute('tabindex', '-1');
+			target.focus({ preventScroll: true });
+			if (!hadTabIndex) {
+				window.setTimeout(() => target.removeAttribute('tabindex'), 1000);
+			}
+		}
+		target.scrollIntoView({
+			behavior: reducedMotion() ? 'auto' : 'smooth',
+			block: 'start',
+		});
+	};
+
+	const closeMobileTocWithAnimation = (details) => {
+		const summary = details.querySelector(':scope > summary');
+		if (!(summary instanceof HTMLElement) || !details.open) return Promise.resolve();
+		if (reducedMotion()) {
+			details.open = false;
+			return Promise.resolve();
+		}
+		const result = animateMobileTocDisclosure(summary, false);
+		return result?.finished ?? Promise.resolve();
+	};
+
+	const createRipple = (surface, positionEvent) => {
+		if (!(surface instanceof HTMLElement) || surface.matches('[aria-disabled="true"], [disabled]')) return;
+
+		const rect = surface.getBoundingClientRect();
+		if (!rect.width || !rect.height) return;
+
+		const maxDim = Math.max(rect.width, rect.height);
+		const initialSize = Math.max(1, Math.floor(maxDim * 0.2));
+		const softEdgeSize = Math.max(maxDim * 0.35, 75);
+		const rippleScale = (Math.hypot(rect.width, rect.height) + 10 + softEdgeSize) / initialSize;
+		const originX = positionEvent ? positionEvent.clientX - rect.left : rect.width / 2;
+		const originY = positionEvent ? positionEvent.clientY - rect.top : rect.height / 2;
+		const startX = originX - initialSize / 2;
+		const startY = originY - initialSize / 2;
+		const endX = rect.width / 2 - initialSize / 2;
+		const endY = rect.height / 2 - initialSize / 2;
+		const ripple = document.createElement('span');
+		ripple.className = 'md3-ripple';
+		ripple.style.setProperty('--md3-ripple-size', initialSize + 'px');
+		ripple.style.setProperty('--md3-ripple-start-x', startX + 'px');
+		ripple.style.setProperty('--md3-ripple-start-y', startY + 'px');
+		ripple.style.setProperty('--md3-ripple-end-x', endX + 'px');
+		ripple.style.setProperty('--md3-ripple-end-y', endY + 'px');
+		ripple.style.setProperty('--md3-ripple-scale', rippleScale.toString());
+		surface.append(ripple);
+
+		return {
+			ripple,
+			surface,
+			startedAt: performance.now(),
+			minimumPressMs: getMotionDuration('--md3-motion-ripple-minimum-press', 225),
+			fadeMs: getMotionDuration('--md3-motion-duration-ripple-fade', 150),
+			released: false,
+		};
+	};
+
+	const releaseRipple = (record) => {
+		if (!record || record.released) return;
+		record.released = true;
+
+		const elapsedMs = performance.now() - record.startedAt;
+		const delayMs = Math.max(0, record.minimumPressMs - elapsedMs);
+		window.setTimeout(() => {
+			if (!record.ripple.isConnected) return;
+			record.ripple.classList.add('md3-ripple--releasing');
+			window.setTimeout(() => record.ripple.remove(), record.fadeMs + 50);
+		}, delayMs);
+	};
+
+			const getLockedTocLink = (nav) => {
+				const record = tocNavigationLocks.get(nav);
+				if (!record || !record.link.isConnected || !nav.contains(record.link)) {
+					return null;
+				}
+				return record.link;
+			};
+
+			const getTocHost = (surface) => {
+				if (!(surface instanceof Element)) return null;
+				const host = surface.matches('starlight-toc, mobile-starlight-toc')
+					? surface
+					: surface.closest('starlight-toc, mobile-starlight-toc');
+				return host instanceof HTMLElement ? host : null;
+			};
+
+			const setTocCurrentThroughHost = (surface, link) => {
+				const host = getTocHost(surface);
+				if (!(host instanceof HTMLElement) || !(link instanceof HTMLAnchorElement) || !host.contains(link)) {
+					return false;
+				}
+
+				// Starlight keeps a private current-link reference; its setter must update both states.
+				let prototype = Object.getPrototypeOf(host);
+				while (prototype && prototype !== HTMLElement.prototype) {
+					const descriptor = Object.getOwnPropertyDescriptor(prototype, 'current');
+					if (typeof descriptor?.set === 'function') {
+						try {
+							descriptor.set.call(host, link);
+							host.querySelectorAll('a[aria-current="true"]').forEach((currentLink) => {
+								if (currentLink !== link) currentLink.removeAttribute('aria-current');
+							});
+							return link.getAttribute('aria-current') === 'true';
+						} catch {
+							return false;
+						}
+					}
+					prototype = Object.getPrototypeOf(prototype);
+				}
+				return false;
+			};
+
+			const transformForTocPosition = (x, y) =>
+				'translate3d(' + x.toFixed(3) + 'px, ' + y.toFixed(3) + 'px, 0)';
+
+			const readTocIndicatorPosition = (controller) => {
+				try {
+					const matrix = new DOMMatrixReadOnly(getComputedStyle(controller.indicator).transform);
+					return { x: matrix.m41, y: matrix.m42 };
+				} catch {
+					return { x: controller.x, y: controller.y };
+				}
+			};
+
+			const getTocIndicatorController = (nav) => {
+				const existing = tocIndicatorControllers.get(nav);
+				if (existing?.indicator?.isConnected) return existing;
+
+				const indicator = document.createElement('span');
+				indicator.className = 'md3-toc-indicator';
+				indicator.setAttribute('aria-hidden', 'true');
+				nav.prepend(indicator);
+				const controller = {
+					nav,
+					indicator,
+					initialized: false,
+					x: 0,
+					y: 0,
+					targetX: 0,
+					targetY: 0,
+					velocityX: 0,
+					velocityY: 0,
+					frame: 0,
+					lastTime: 0,
+					animation: null,
+					stiffness: 1400,
+					dampingRatio: 0.9,
+				};
+				tocIndicatorControllers.set(nav, controller);
+				return controller;
+			};
+
+			const stopTocIndicatorMotion = (controller, capturePosition = true) => {
+				const position = capturePosition ? readTocIndicatorPosition(controller) : null;
+				if (controller.frame) {
+					cancelAnimationFrame(controller.frame);
+					controller.frame = 0;
+				}
+				if (controller.animation) {
+					controller.animation.cancel();
+					controller.animation = null;
+				}
+				if (position) {
+					controller.x = position.x;
+					controller.y = position.y;
+					controller.indicator.style.transform = transformForTocPosition(position.x, position.y);
+				}
+				controller.velocityX = 0;
+				controller.velocityY = 0;
+				controller.lastTime = 0;
+			};
+
+			const snapTocIndicator = (controller, targetX, targetY) => {
+				stopTocIndicatorMotion(controller, false);
+				controller.x = targetX;
+				controller.y = targetY;
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				controller.indicator.style.transform = transformForTocPosition(targetX, targetY);
+				controller.nav.dataset.md3TocMotion = 'settled';
+			};
+
+			const stepTocIndicatorSpring = (controller, now) => {
+				if (!controller.indicator.isConnected) {
+					controller.frame = 0;
+					return;
+				}
+				const elapsed = controller.lastTime ? Math.min((now - controller.lastTime) / 1000, 0.032) : 0;
+				controller.lastTime = now;
+				const steps = Math.max(1, Math.ceil(elapsed / 0.008));
+				const dt = steps ? elapsed / steps : 0;
+				const damping = 2 * controller.dampingRatio * Math.sqrt(controller.stiffness);
+
+				for (let index = 0; index < steps; index += 1) {
+					const accelerationX =
+						-controller.stiffness * (controller.x - controller.targetX) - damping * controller.velocityX;
+					const accelerationY =
+						-controller.stiffness * (controller.y - controller.targetY) - damping * controller.velocityY;
+					controller.velocityX += accelerationX * dt;
+					controller.velocityY += accelerationY * dt;
+					controller.x += controller.velocityX * dt;
+					controller.y += controller.velocityY * dt;
+				}
+
+				controller.indicator.style.transform = transformForTocPosition(controller.x, controller.y);
+				const settled =
+					Math.abs(controller.x - controller.targetX) < 0.1 &&
+					Math.abs(controller.y - controller.targetY) < 0.1 &&
+					Math.abs(controller.velocityX) < 2 &&
+					Math.abs(controller.velocityY) < 2;
+				if (settled) {
+					controller.frame = 0;
+					controller.x = controller.targetX;
+					controller.y = controller.targetY;
+					controller.velocityX = 0;
+					controller.velocityY = 0;
+					controller.indicator.style.transform = transformForTocPosition(controller.x, controller.y);
+					controller.nav.dataset.md3TocMotion = 'settled';
+					return;
+				}
+				controller.frame = requestAnimationFrame((frameNow) => stepTocIndicatorSpring(controller, frameNow));
+			};
+
+			const retargetTocIndicatorSpring = (controller, targetX, targetY) => {
+				if (controller.animation) {
+					stopTocIndicatorMotion(controller, true);
+				}
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				const styles = getComputedStyle(document.documentElement);
+				controller.stiffness =
+					Number.parseFloat(styles.getPropertyValue('--md3-motion-toc-spring-stiffness')) || 1400;
+				controller.dampingRatio =
+					Number.parseFloat(styles.getPropertyValue('--md3-motion-toc-spring-damping-ratio')) || 0.9;
+				controller.nav.dataset.md3TocMotion = 'spring';
+				if (!controller.frame) {
+					controller.lastTime = performance.now();
+					controller.frame = requestAnimationFrame((frameNow) => stepTocIndicatorSpring(controller, frameNow));
+				}
+			};
+
+			const animateTocIndicatorFlip = (controller, targetX, targetY) => {
+				const duration = getMotionDuration('--md3-motion-duration-toc-marker', 250);
+				if (duration <= 0 || reducedMotion()) {
+					snapTocIndicator(controller, targetX, targetY);
+					return;
+				}
+				const current = readTocIndicatorPosition(controller);
+				stopTocIndicatorMotion(controller, false);
+				controller.x = current.x;
+				controller.y = current.y;
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				controller.indicator.style.transform = transformForTocPosition(targetX, targetY);
+				controller.nav.dataset.md3TocMotion = 'flip';
+				const animation = controller.indicator.animate(
+					[
+						{ transform: transformForTocPosition(current.x, current.y) },
+						{ transform: transformForTocPosition(targetX, targetY) },
+					],
+					{
+						duration,
+						easing: getMotionEasing('--md-sys-motion-easing-emphasized', 'cubic-bezier(0.2, 0, 0, 1)'),
+					}
+				);
+				controller.animation = animation;
+				animation.finished
+					.catch(() => {})
+					.finally(() => {
+						if (controller.animation !== animation) return;
+						controller.animation = null;
+						controller.x = targetX;
+						controller.y = targetY;
+						controller.nav.dataset.md3TocMotion = 'settled';
+					});
+			};
+
+			const syncTocIndicator = (nav, source = 'scroll') => {
+				if (!(nav instanceof HTMLElement)) return;
+				const lockedLink = getLockedTocLink(nav);
+				const activeLink = lockedLink || nav.querySelector('a[aria-current="true"]');
+				const controller = getTocIndicatorController(nav);
+				nav.dataset.md3TocTracker = 'true';
+
+				if (!(activeLink instanceof HTMLElement)) {
+					controller.indicator.style.opacity = '0';
+					return;
+				}
+
+				const indicatorBlockSize = 16;
+				const navRect = nav.getBoundingClientRect();
+				const activeRect = activeLink.getBoundingClientRect();
+				const activeStyles = getComputedStyle(activeLink);
+				const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+				const indicatorDepth = Math.max(0, Number.parseFloat(activeStyles.getPropertyValue('--depth')) || 0);
+				const indicatorDirection = activeStyles.direction === 'rtl' ? -1 : 1;
+				const targetX = indicatorDepth * indicatorDirection * rootFontSize;
+				const targetY =
+					activeRect.top - navRect.top + Math.max(0, (activeRect.height - indicatorBlockSize) / 2);
+				nav.style.setProperty('--md3-toc-indicator-x', targetX + 'px');
+				nav.style.setProperty('--md3-toc-indicator-y', targetY + 'px');
+				controller.indicator.style.opacity = '1';
+
+				if (!controller.initialized || source === 'layout' || reducedMotion()) {
+					controller.initialized = true;
+					snapTocIndicator(controller, targetX, targetY);
+					return;
+				}
+
+				const targetChanged =
+					Math.abs(controller.targetX - targetX) > 0.1 || Math.abs(controller.targetY - targetY) > 0.1;
+				if (!targetChanged) return;
+				if (lockedLink || source === 'click') {
+					animateTocIndicatorFlip(controller, targetX, targetY);
+				} else {
+					retargetTocIndicatorSpring(controller, targetX, targetY);
+				}
+			};
+
+			const setTocActiveLink = (link, source = 'click') => {
+				const nav = link.closest('starlight-toc nav');
+				if (!(nav instanceof HTMLElement)) return false;
+				const updated = setTocCurrentThroughHost(nav, link);
+				syncTocIndicator(nav, source);
+				return updated;
+			};
+
+		const lockTocActiveLink = (link, lockMs = 1200) => {
+			const nav = link.closest('starlight-toc nav');
+			if (!(nav instanceof HTMLElement)) return false;
+
+			const previous = tocNavigationLocks.get(nav);
+			if (previous) {
+				window.clearTimeout(previous.timeout);
+				previous.link.classList.remove('md3-toc-navigation-target');
+			}
+
+			nav.dataset.md3TocNavigationLock = 'true';
+			link.classList.add('md3-toc-navigation-target');
+			setTocActiveLink(link);
+
+			const timeout = window.setTimeout(() => {
+				const active = tocNavigationLocks.get(nav);
+				if (!active || active.link !== link) return;
+				setTocActiveLink(link);
+				link.classList.remove('md3-toc-navigation-target');
+				delete nav.dataset.md3TocNavigationLock;
+				tocNavigationLocks.delete(nav);
+				syncTocIndicator(nav);
+			}, lockMs);
+
+			tocNavigationLocks.set(nav, { link, timeout });
+			return true;
+		};
+
+		const setMobileTocActiveLink = (details, link) => {
+			if (!(details instanceof HTMLDetailsElement) || !(link instanceof HTMLAnchorElement)) return false;
+			return setTocCurrentThroughHost(details, link);
+		};
+
+	const setupTocIndicators = () => {
+		const navs = document.querySelectorAll('starlight-toc nav');
+		navs.forEach((nav) => {
+			if (!(nav instanceof HTMLElement) || nav.dataset.md3TocTrackerReady === 'true') return;
+			nav.dataset.md3TocTrackerReady = 'true';
+			let frame = 0;
+				let pendingSource = 'scroll';
+				const scheduleSync = (source = 'scroll') => {
+					if (source === 'layout') pendingSource = 'layout';
+					if (frame) return;
+					frame = requestAnimationFrame(() => {
+						frame = 0;
+						const source = pendingSource;
+						pendingSource = 'scroll';
+						syncTocIndicator(nav, source);
+					});
+				};
+
+				syncTocIndicator(nav, 'initial');
+				requestAnimationFrame(() => {
+					if (nav.isConnected) {
+						nav.dataset.md3TocMotionReady = 'true';
+					}
+				});
+				new MutationObserver(() => {
+					const lockedLink = getLockedTocLink(nav);
+					const currentLinks = nav.querySelectorAll('a[aria-current="true"]');
+					if (
+						lockedLink &&
+						(lockedLink.getAttribute('aria-current') !== 'true' || currentLinks.length !== 1)
+					) {
+						setTocCurrentThroughHost(nav, lockedLink);
+					}
+					scheduleSync('scroll');
+				}).observe(nav, {
+					attributes: true,
+					attributeFilter: ['aria-current'],
+					childList: true,
+					subtree: true,
+				});
+				if ('ResizeObserver' in window) {
+					new ResizeObserver(() => scheduleSync('layout')).observe(nav);
+				}
+				window.addEventListener('scroll', () => scheduleSync('scroll'), { passive: true });
+				window.addEventListener('resize', () => scheduleSync('layout'), { passive: true });
+		});
+	};
+
+	const setupTocEndState = () => {
+		let frame = 0;
+		const syncEndState = () => {
+			const scrollingElement = document.scrollingElement || document.documentElement;
+			const remainingScroll =
+				scrollingElement.scrollHeight - scrollingElement.clientHeight - scrollingElement.scrollTop;
+			if (remainingScroll > 2) return false;
+
+			document.querySelectorAll('starlight-toc nav').forEach((nav) => {
+				if (!(nav instanceof HTMLElement)) return;
+				if (getLockedTocLink(nav)) {
+					syncTocIndicator(nav);
+					return;
+				}
+				const links = Array.from(nav.querySelectorAll('a[href]')).filter(
+					(link) => link instanceof HTMLElement
+				);
+				const lastLink = links.at(-1);
+				if (!(lastLink instanceof HTMLElement)) return;
+				const currentLinks = links.filter((link) => link.getAttribute('aria-current') === 'true');
+				if (currentLinks.length === 1 && currentLinks[0] === lastLink) {
+					syncTocIndicator(nav);
+					return;
+				}
+
+					setTocActiveLink(lastLink, 'scroll');
+			});
+			document.querySelectorAll('mobile-starlight-toc details').forEach((details) => {
+				if (!(details instanceof HTMLDetailsElement)) return;
+				const links = Array.from(details.querySelectorAll('.dropdown a[href]')).filter(
+					(link) => link instanceof HTMLElement
+				);
+				const lastLink = links.at(-1);
+				if (!(lastLink instanceof HTMLElement)) return;
+				const currentLinks = links.filter((link) => link.getAttribute('aria-current') === 'true');
+				if (currentLinks.length === 1 && currentLinks[0] === lastLink) {
+					setMobileTocActiveLink(details, lastLink);
+					return;
+				}
+
+				setMobileTocActiveLink(details, lastLink);
+			});
+			return true;
+		};
+		const scheduleEndState = () => {
+			if (frame) return;
+			frame = requestAnimationFrame(() => {
+				frame = 0;
+					syncEndState();
+			});
+		};
+
+		window.addEventListener('scroll', scheduleEndState, { passive: true });
+		window.addEventListener('resize', scheduleEndState, { passive: true });
+			document.querySelectorAll('starlight-toc nav, mobile-starlight-toc details').forEach((tocSurface) => {
+				new MutationObserver(() => syncEndState()).observe(tocSurface, {
+					attributes: true,
+					attributeFilter: ['aria-current'],
+					subtree: true,
+			});
+		});
+		scheduleEndState();
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener(
+			'DOMContentLoaded',
+			() => {
+				setupTocIndicators();
+				setupTocEndState();
+			},
+			{ once: true }
+		);
+	} else {
+		setupTocIndicators();
+		setupTocEndState();
+	}
+
+	document.addEventListener('pointerdown', (event) => {
+		const targetElement = event.target instanceof Element ? event.target : null;
+		const openMobileMenu = document.querySelector('starlight-menu-button[aria-expanded="true"]');
+		if (
+			openMobileMenu &&
+			targetElement &&
+			!targetElement.closest('#starlight__sidebar') &&
+			!targetElement.closest('starlight-menu-button')
+		) {
+			if (typeof openMobileMenu.setExpanded === 'function') {
+				openMobileMenu.setExpanded(false);
+			} else {
+				openMobileMenu.setAttribute('aria-expanded', 'false');
+				document.body.removeAttribute('data-mobile-menu-expanded');
+			}
+		}
+
+		if (event.button !== 0 || !event.isPrimary || reducedMotion()) return;
+		const surface = targetElement ? targetElement.closest(rippleSelector) : null;
+		const record = createRipple(surface, event);
+		if (record) {
+			activeRipples.set(event.pointerId, record);
+		}
+	}, { passive: true });
+
+	document.addEventListener('pointerup', (event) => {
+		const record = activeRipples.get(event.pointerId);
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('pointercancel', (event) => {
+		const record = activeRipples.get(event.pointerId);
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('pointerout', (event) => {
+		if (event.pointerType === 'touch') return;
+		const record = activeRipples.get(event.pointerId);
+		if (!record) return;
+		if (event.relatedTarget instanceof Node && record.surface.contains(event.relatedTarget)) return;
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('contextmenu', () => {
+		activeRipples.forEach(releaseRipple);
+		activeRipples.clear();
+	});
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || event.button !== 0) return;
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+		const link = event.target instanceof Element
+			? event.target.closest('starlight-toc a[href], mobile-starlight-toc .dropdown a[href]')
+			: null;
+		if (!(link instanceof HTMLAnchorElement)) return;
+		if (link.target || link.hasAttribute('download') || link.getAttribute('aria-disabled') === 'true') return;
+
+		const url = new URL(link.href, window.location.href);
+		const current = new URL(window.location.href);
+		if (url.origin !== current.origin || url.pathname !== current.pathname || url.search !== current.search || !url.hash) {
+			return;
+		}
+
+		const target = getHashTarget(url.hash);
+		if (!target) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+			link.classList.add('md3-navigation-pending');
+			const hasLockedTocTarget = lockTocActiveLink(link);
+			if (!hasLockedTocTarget) {
+				setTocActiveLink(link);
+			}
+
+		const mobileToc = link.closest('mobile-starlight-toc details');
+		if (mobileToc instanceof HTMLDetailsElement) {
+				closeMobileTocWithAnimation(mobileToc).finally(() => {
+					link.classList.remove('md3-navigation-pending');
+					scrollToHashTarget(url, target);
+				});
+				return;
+			}
+
+			link.classList.remove('md3-navigation-pending');
+			scrollToHashTarget(url, target);
+		}, { capture: true });
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || reducedMotion()) return;
+			const mobileTocSummary = event.target instanceof Element
+				? event.target.closest('mobile-starlight-toc details > summary')
+				: null;
+			if (
+				mobileTocSummary instanceof HTMLElement &&
+				event.detail > 0 &&
+				!(event.target instanceof Element && event.target.closest('mobile-starlight-toc summary .toggle'))
+			) {
+				event.preventDefault();
+				return;
+			}
+			const mobileTocAnimation =
+				mobileTocSummary instanceof HTMLElement ? animateMobileTocDisclosure(mobileTocSummary) : null;
+		if (mobileTocAnimation?.handled) {
+			event.preventDefault();
+			return;
+		}
+
+		const summary = event.target instanceof Element
+			? event.target.closest('.sidebar-content details > summary')
+			: null;
+		if (!(summary instanceof HTMLElement)) return;
+		if (animateSidebarDisclosure(summary)) {
+			event.preventDefault();
+		}
+	});
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || event.button !== 0 || reducedMotion()) return;
+		if (event.detail === 0) {
+			const surface = event.target instanceof Element ? event.target.closest(rippleSelector) : null;
+			const record = createRipple(surface);
+			releaseRipple(record);
+		}
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+		const link = event.target instanceof Element ? event.target.closest(navigationSelector) : null;
+		if (!(link instanceof HTMLAnchorElement)) return;
+		if (link.target || link.hasAttribute('download') || link.getAttribute('aria-disabled') === 'true') return;
+
+		const url = new URL(link.href, window.location.href);
+		const current = new URL(window.location.href);
+		if (url.origin !== current.origin) return;
+		if (url.pathname === current.pathname && url.search === current.search && url.hash) return;
+		if (url.href === current.href) return;
+		const shouldAnimateSidebarRoute =
+			document.documentElement.hasAttribute('data-has-hero') &&
+			!document.documentElement.hasAttribute('data-has-sidebar');
+
+		const delay = durationToMs(
+			getComputedStyle(document.documentElement).getPropertyValue('--md3-motion-route-delay')
+		) || 100;
+		if (delay <= 0) return;
+
+		event.preventDefault();
+		link.classList.add('md3-navigation-pending');
+		document.documentElement.setAttribute('data-md3-route-state', 'leaving');
+		try {
+			sessionStorage.setItem(routeTransitionStorageKey, 'true');
+			if (shouldAnimateSidebarRoute) {
+				sessionStorage.setItem(sidebarRouteTransitionStorageKey, 'true');
+			} else {
+				sessionStorage.removeItem(sidebarRouteTransitionStorageKey);
+			}
+		} catch {}
+		window.setTimeout(() => {
+			window.location.href = url.href;
+		}, delay);
+	});
+})();
+</script><link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.1.1"/><meta name="generator" content="Starlight v0.41.3"/><meta property="og:title" content="机器学习方向-02：梯度下降理论和实践"/><meta property="og:type" content="article"/><meta property="og:url" content="https://www.glimmer.org.cn/archives/23/ml/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%90%91-02%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E5%AE%9E%E8%B7%B5/"/><meta property="og:locale" content="zh-CN"/><meta property="og:description" content="归档文件"/><meta property="og:site_name" content="微光工作室"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="归档文件"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/_astro/middleware.BrkBZGNQ.css"><style>@layer starlight.components{:root{--sl-badge-default-border:var(--sl-color-accent);--sl-badge-default-bg:var(--sl-color-accent-low);--sl-badge-default-text:#fff;--sl-badge-note-border:var(--sl-color-blue);--sl-badge-note-bg:var(--sl-color-blue-low);--sl-badge-note-text:#fff;--sl-badge-danger-border:var(--sl-color-red);--sl-badge-danger-bg:var(--sl-color-red-low);--sl-badge-danger-text:#fff;--sl-badge-success-border:var(--sl-color-green);--sl-badge-success-bg:var(--sl-color-green-low);--sl-badge-success-text:#fff;--sl-badge-caution-border:var(--sl-color-orange);--sl-badge-caution-bg:var(--sl-color-orange-low);--sl-badge-caution-text:#fff;--sl-badge-tip-border:var(--sl-color-purple);--sl-badge-tip-bg:var(--sl-color-purple-low);--sl-badge-tip-text:#fff}[data-theme=light]:root{--sl-badge-default-bg:var(--sl-color-accent-high);--sl-badge-note-bg:var(--sl-color-blue-high);--sl-badge-danger-bg:var(--sl-color-red-high);--sl-badge-success-bg:var(--sl-color-green-high);--sl-badge-caution-bg:var(--sl-color-orange-high);--sl-badge-tip-bg:var(--sl-color-purple-high)}.sl-badge:where(.astro-7hkzaclv){border:1px solid var(--sl-color-border-badge);font-family:var(--sl-font-system-mono);color:var(--sl-color-text-badge);background-color:var(--sl-color-bg-badge);overflow-wrap:anywhere;border-radius:.25rem;line-height:normal;display:inline-block}.sidebar-content .sl-badge:where(.astro-7hkzaclv){line-height:1;font-size:var(--sl-text-xs);padding:.125rem .375rem}.sidebar-content a[aria-current=page]>.sl-badge:where(.astro-7hkzaclv){--sl-color-bg-badge:transparent;--sl-color-border-badge:currentColor;color:inherit}.default:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-default-bg);--sl-color-border-badge:var(--sl-badge-default-border);--sl-color-text-badge:var(--sl-badge-default-text)}.note:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-note-bg);--sl-color-border-badge:var(--sl-badge-note-border);--sl-color-text-badge:var(--sl-badge-note-text)}.danger:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-danger-bg);--sl-color-border-badge:var(--sl-badge-danger-border);--sl-color-text-badge:var(--sl-badge-danger-text)}.success:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-success-bg);--sl-color-border-badge:var(--sl-badge-success-border);--sl-color-text-badge:var(--sl-badge-success-text)}.tip:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-tip-bg);--sl-color-border-badge:var(--sl-badge-tip-border);--sl-color-text-badge:var(--sl-badge-tip-text)}.caution:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-caution-bg);--sl-color-border-badge:var(--sl-badge-caution-border);--sl-color-text-badge:var(--sl-badge-caution-text)}.small:where(.astro-7hkzaclv){font-size:var(--sl-text-xs);padding:.125rem .25rem}.medium:where(.astro-7hkzaclv){font-size:var(--sl-text-sm);padding:.175rem .35rem}.large:where(.astro-7hkzaclv){font-size:var(--sl-text-base);padding:.225rem .45rem}.sl-markdown-content :is(h1,h2,h3,h4,h5,h6) .sl-badge:where(.astro-7hkzaclv){vertical-align:middle}}
+</style><link rel="stylesheet" href="/_astro/index.mkX1B-Zw.css"><style>@layer starlight.components{.sl-steps{--bullet-size:calc(var(--sl-line-height) * 1rem);--bullet-margin:.375rem;counter-reset:steps-counter var(--sl-steps-start,0);padding-inline-start:0;list-style:none}.sl-steps>li{counter-increment:steps-counter;padding-inline-start:calc(var(--bullet-size) + 1rem);min-height:calc(var(--bullet-size) + var(--bullet-margin));padding-bottom:1px;position:relative}.sl-steps>li+li{margin-top:0}.sl-steps>li:before{content:counter(steps-counter);top:0;width:var(--bullet-size);height:var(--bullet-size);line-height:var(--bullet-size);font-size:var(--sl-text-xs);text-align:center;color:var(--sl-color-white);background-color:var(--sl-color-gray-6);box-shadow:inset 0 0 0 1px var(--sl-color-gray-5);border-radius:99rem;font-weight:600;position:absolute;inset-inline-start:0}.sl-steps>li:after{--guide-width:1px;content:"";top:calc(var(--bullet-size) + var(--bullet-margin));bottom:var(--bullet-margin);width:var(--guide-width);background-color:var(--sl-color-hairline-light);position:absolute;inset-inline-start:calc((var(--bullet-size) - var(--guide-width)) / 2)}}@layer starlight.content{.sl-steps>li>:first-child{--lh:calc(1em * var(--sl-line-height));--shift-y:calc(.5 * (var(--bullet-size) - var(--lh)));transform:translateY(var(--shift-y));margin-bottom:var(--shift-y)}.sl-steps>li>:first-child:where(h1,h2,h3,h4,h5,h6){--lh:calc(1em * var(--sl-line-height-headings))}@supports (--prop:1lh){.sl-steps>li>:first-child{--lh:1lh}}}
+</style><script type="module" src="/_astro/page.B2uBVZjk.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">跳转到内容</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="/" class="site-title sl-flex astro-clw6ags5"><img class="astro-clw6ags5" alt src="/_astro/glimmer_logo.D4347_gt.png" width="640" height="640"><span class="astro-clw6ags5" translate="no">微光工作室</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;搜索&quot;}"><button data-open-modal disabled aria-label="搜索" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">搜索</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="搜索" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">取消</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.vTFUHulS.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><a href="mailto:glimmer401@outlook.com" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">邮箱</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M19 4H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-.41 2-5.88 5.88a1 1 0 0 1-1.42 0L5.41 6ZM20 17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7.41l5.88 5.88a3 3 0 0 0 4.24 0L20 7.41Z"/></svg></a></div><starlight-theme-select class="md3-theme-select astro-v7alfmhz" data-accessible-label="选择主题" data-label-auto="自动" data-label-dark="深色" data-label-light="浅色"><button type="button" class="md3-theme-select__button astro-v7alfmhz" aria-haspopup="menu" aria-expanded="false" aria-label="选择主题: 自动" title="选择主题: 自动" data-theme-value="auto"><span class="md3-theme-select__button-icon-stack astro-v7alfmhz" aria-hidden="true"><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--dark astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--light astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--auto astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><span class="md3-theme-select__current astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__caret astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></button><div class="md3-theme-select__menu astro-v7alfmhz" role="menu" hidden><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="dark"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><span class="astro-v7alfmhz">深色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="light"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><span class="astro-v7alfmhz">浅色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="true" data-theme-value="auto"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><span class="astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button></div></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e,t){return e.dataset[`label${t[0].toUpperCase()}${t.slice(1)}`]??t}function o(e,t){return`${e.dataset.accessibleLabel??`Theme`}: ${a(e,t)}`}var s=new WeakMap,c=new WeakMap;function l(e){let t=s.get(e);t&&window.clearTimeout(t),s.delete(e),c.get(e)?.(),c.delete(e)}function u(e){let t=e.querySelector(`.md3-theme-select__button`),n=e.querySelector(`.md3-theme-select__menu`);if(!t||!n)return;if(t.setAttribute(`aria-expanded`,`false`),l(e),n.hidden||matchMedia(`(prefers-reduced-motion: reduce)`).matches){n.hidden=!0,n.removeAttribute(`data-md3-menu-state`);return}n.dataset.md3MenuState=`closing`;let r=()=>{n.hidden=!0,n.removeAttribute(`data-md3-menu-state`),l(e)},i=e=>{e.target===n&&e.propertyName===`transform`&&r()};n.addEventListener(`transitionend`,i),c.set(e,()=>n.removeEventListener(`transitionend`,i)),s.set(e,window.setTimeout(r,260))}function d(e){let t=e.querySelector(`.md3-theme-select__button`),n=e.querySelector(`.md3-theme-select__menu`),r=e.querySelector(`.md3-theme-select__option[aria-checked="true"]`);!t||!n||(l(e),t.setAttribute(`aria-expanded`,`true`),n.hidden=!1,n.removeAttribute(`data-md3-menu-state`),r?.focus())}function f(e,t){let n=e.querySelector(`.md3-theme-select__button`),r=e.querySelector(`.md3-theme-select__current`);!n||!r||(n.dataset.themeValue=t,r.textContent=a(e,t),n.title=o(e,t),n.setAttribute(`aria-label`,o(e,t)),e.querySelectorAll(`.md3-theme-select__option`).forEach(e=>{let n=e.dataset.themeValue===t;e.setAttribute(`aria-checked`,String(n))}))}function p(e){StarlightThemeProvider.updatePickers(e),document.querySelectorAll(`starlight-theme-select`).forEach(t=>{f(t,e)})}function m(e){p(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&m(`auto`)});var h=class extends HTMLElement{connectedCallback(){this.dataset.md3ThemeSelectReady!==`true`&&(this.dataset.md3ThemeSelectReady=`true`,m(n()),this.querySelector(`.md3-theme-select__button`)?.addEventListener(`click`,()=>{this.querySelector(`.md3-theme-select__button`)?.getAttribute(`aria-expanded`)===`true`?u(this):d(this)}),this.querySelectorAll(`.md3-theme-select__option`).forEach(e=>{e.addEventListener(`click`,()=>{m(t(e.dataset.themeValue)),u(this),this.querySelector(`.md3-theme-select__button`)?.focus()})}),this.addEventListener(`keydown`,e=>{if(!(e instanceof KeyboardEvent))return;let t=this.querySelector(`.md3-theme-select__button`)?.getAttribute(`aria-expanded`)===`true`;if(e.key===`Escape`){e.preventDefault(),u(this),this.querySelector(`.md3-theme-select__button`)?.focus();return}if(!t&&[`ArrowDown`,`Enter`,` `].includes(e.key)){e.preventDefault(),d(this);return}if(!t||![`ArrowDown`,`ArrowUp`,`Home`,`End`].includes(e.key))return;e.preventDefault();let n=[...this.querySelectorAll(`.md3-theme-select__option`)],r=Math.max(0,n.indexOf(document.activeElement));n[e.key===`Home`?0:e.key===`End`?n.length-1:e.key===`ArrowDown`?(r+1)%n.length:(r-1+n.length)%n.length]?.focus()}),document.addEventListener(`pointerdown`,e=>{e.target instanceof Node&&!this.contains(e.target)&&u(this)}))}};customElements.get(`starlight-theme-select`)||customElements.define(`starlight-theme-select`,h);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="主要"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="菜单" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="1blgmie" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">招新相关</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/information/" class="astro-ojxuodky"><span class="astro-ojxuodky">招新说明</span></a></li><li class="astro-ojxuodky"><a href="/special_recruit/" class="astro-ojxuodky"><span class="astro-ojxuodky">其他渠道招新说明</span></a></li><li class="astro-ojxuodky"><a href="/QA/" class="astro-ojxuodky"><span class="astro-ojxuodky">Q&amp;A 常见问题解答</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">日常基础</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/daily/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">日常简介</span></a></li><li class="astro-ojxuodky"><a href="/daily/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">1: 什么是计算机？</span></a></li><li class="astro-ojxuodky"><a href="/daily/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">2: markdown</span></a></li><li class="astro-ojxuodky"><a href="/daily/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">3: 数据的表示</span></a></li><li class="astro-ojxuodky"><a href="/daily/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: 代码管理</span></a></li><li class="astro-ojxuodky"><a href="/daily/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: 如何用好AI</span></a></li><li class="astro-ojxuodky"><a href="/daily/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">6: loafer想打派(网络)</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">计算机系统</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/cs/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">计算机系统简介</span></a></li><li class="astro-ojxuodky"><a href="/cs/c-easy-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">C-EASY-1: C语言入门</span></a></li><li class="astro-ojxuodky"><a href="/cs/c-easy-2/" class="astro-ojxuodky"><span class="astro-ojxuodky">C-EASY-2: 指针</span></a></li><li class="astro-ojxuodky"><a href="/cs/c-easy-3/" class="astro-ojxuodky"><span class="astro-ojxuodky">C-EASY-3: 二叉树与递归</span></a></li><li class="astro-ojxuodky"><a href="/cs/medium-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">MEDIUM-1: 位级操作</span></a></li><li class="astro-ojxuodky"><a href="/cs/medium-2/" class="astro-ojxuodky"><span class="astro-ojxuodky">MEDIUM-2: 计算机中的整数与浮点数</span></a></li><li class="astro-ojxuodky"><a href="/cs/medium-3/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇MEDIUM-3: Read From Memory</span></a></li><li class="astro-ojxuodky"><a href="/cs/medium-4/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇MEDIUM-4: 计算机网络常识与实验</span></a></li><li class="astro-ojxuodky"><a href="/cs/hard-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇HARD-1: cache</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">前端</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/frontend/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">前端简介</span></a></li><li class="astro-ojxuodky"><a href="/frontend/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">1: 初识HTML</span></a></li><li class="astro-ojxuodky"><a href="/frontend/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">2: 了解网页F12开发者工具</span></a></li><li class="astro-ojxuodky"><a href="/frontend/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">3: CSS初识</span></a></li><li class="astro-ojxuodky"><a href="/frontend/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: Javascript入门与进阶</span></a></li><li class="astro-ojxuodky"><a href="/frontend/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: 制作blog</span></a></li><li class="astro-ojxuodky"><a href="/frontend/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">6: 第三方API&amp;&amp;排序</span></a></li><li class="astro-ojxuodky"><a href="/frontend/7/" class="astro-ojxuodky"><span class="astro-ojxuodky">7: Node.js初体验</span></a></li><li class="astro-ojxuodky"><a href="/frontend/8/" class="astro-ojxuodky"><span class="astro-ojxuodky">8: VitePress</span></a></li><li class="astro-ojxuodky"><a href="/frontend/9/" class="astro-ojxuodky"><span class="astro-ojxuodky">9: Vue的学习</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">后端</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/backend/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">后端简介</span></a></li><li class="astro-ojxuodky"><a href="/backend/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇1: 环境搭建</span></a></li><li class="astro-ojxuodky"><a href="/backend/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇2: 程序运行</span></a></li><li class="astro-ojxuodky"><a href="/backend/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇3: 数据类型与数据结构</span></a></li><li class="astro-ojxuodky"><a href="/backend/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: 集合、泛型与Stream流</span></a></li><li class="astro-ojxuodky"><a href="/backend/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: IO流与项目挑战</span></a></li><li class="astro-ojxuodky"><a href="/backend/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇6: 封装继承与多态</span></a></li><li class="astro-ojxuodky"><a href="/backend/7/" class="astro-ojxuodky"><span class="astro-ojxuodky">7: Linux的使用</span></a></li><li class="astro-ojxuodky"><a href="/backend/8/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇8: 异常处理与Stream流</span></a></li><li class="astro-ojxuodky"><a href="/backend/9/" class="astro-ojxuodky"><span class="astro-ojxuodky">9: 网络编程基础</span></a></li><li class="astro-ojxuodky"><a href="/backend/10/" class="astro-ojxuodky"><span class="astro-ojxuodky">10: 初窥后端世界</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">机器学习</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/ml/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">机器学习简介</span></a></li><li class="astro-ojxuodky"><a href="/ml/0/" class="astro-ojxuodky"><span class="astro-ojxuodky">0: 迈出机器学习的第一步</span></a></li><li class="astro-ojxuodky"><a href="/ml/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">1: 基础的线性回归</span></a></li><li class="astro-ojxuodky"><a href="/ml/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">2: 多层感知机理论</span></a></li><li class="astro-ojxuodky"><a href="/ml/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">3: 多层感知机实战</span></a></li><li class="astro-ojxuodky"><a href="/ml/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: 卷积神经网络理论</span></a></li><li class="astro-ojxuodky"><a href="/ml/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: 卷积神经网络实战</span></a></li><li class="astro-ojxuodky"><a href="/ml/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇6: 循环神经网络理论</span></a></li><li class="astro-ojxuodky"><a href="/ml/7/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇7: 循环神经网络实战</span></a></li><li class="astro-ojxuodky"><a href="/ml/8/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇8: Transformer</span></a></li><li class="astro-ojxuodky"><a href="/ml/9/" class="astro-ojxuodky"><span class="astro-ojxuodky">〇9: BERT</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><a href="mailto:glimmer401@outlook.com" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">邮箱</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M19 4H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-.41 2-5.88 5.88a1 1 0 0 1-1.42 0L5.41 6ZM20 17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7.41l5.88 5.88a3 3 0 0 0 4.24 0L20 7.41Z"/></svg></a></div><starlight-theme-select class="md3-theme-select astro-v7alfmhz" data-accessible-label="选择主题" data-label-auto="自动" data-label-dark="深色" data-label-light="浅色"><button type="button" class="md3-theme-select__button astro-v7alfmhz" aria-haspopup="menu" aria-expanded="false" aria-label="选择主题: 自动" title="选择主题: 自动" data-theme-value="auto"><span class="md3-theme-select__button-icon-stack astro-v7alfmhz" aria-hidden="true"><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--dark astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--light astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--auto astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><span class="md3-theme-select__current astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__caret astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></button><div class="md3-theme-select__menu astro-v7alfmhz" role="menu" hidden><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="dark"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><span class="astro-v7alfmhz">深色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="light"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><span class="astro-v7alfmhz">浅色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="true" data-theme-value="auto"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><span class="astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button></div></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()}),addEventListener(`pageHide`,a);</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">本页内容<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">概述</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#题目要求" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">题目要求</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#回答要求" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">回答要求</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#需要掌握的知识点" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">需要掌握的知识点</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#思考题" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">思考题</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#本题提交方式" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">本题提交方式</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#出题者联系方式" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">出题者联系方式</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">本页内容</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">概述</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#题目要求" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">题目要求</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#回答要求" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">回答要求</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#需要掌握的知识点" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">需要掌握的知识点</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#思考题" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">思考题</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#本题提交方式" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">本题提交方式</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#出题者联系方式" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">出题者联系方式</span></a></li></ul></nav></starlight-toc><script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="zh-CN" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">机器学习方向-02：梯度下降理论和实践</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><blockquote>
+<p>当前正在浏览归档文件。若需要返回索引，请<a href="/archives/">点击此处</a></p>
+</blockquote>
+<p><img src="https://img1.imgtp.com/2023/09/10/081jz2kT.PNG" alt=""></p>
+<blockquote>
+<p><code dir="auto">难度系数</code>：简单</p>
+<p>在之前的微积分课程里，你应该学过了导数。那偏导数是什么？它在机器学习里扮演了怎样的角色？不妨来试试吧！高中的时候都学过用最小二乘法求直线方程，你知道它是怎么来的吗？不用怕，这里不用你推导它。根据采样点求直线可以直接套公式就好了，可惜更多时候这个公式<strong>复杂得超乎想象甚至根本不存在</strong>。那么使用损失函数和偏导数的方法能做到什么呢?上吧，梯度下降法！</p>
+<p><strong>温馨提示：微积分很重要！😊</strong></p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="题目要求">题目要求</h2><a class="sl-anchor-link" href="#题目要求"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “题目要求”</span></a></div>
+<ul>
+<li>
+<p>生成数据集，随机生成常数 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a,b,c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span></span></span></span></p>
+<p>生成 500 条数据，满足以下条件：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>b</mi><msup><mi>e</mi><mi>y</mi></msup><mo>+</mo><mi>c</mi><mo>+</mo><mi>e</mi></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>x</mi><mo>∼</mo><mi>U</mi><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>y</mi><mo>∼</mo><mi>U</mi><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>e</mi><mo>∼</mo><mi>N</mi><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mn>0.01</mn><mo stretchy="false">)</mo></mrow></mstyle></mtd></mtr></mtable></mrow><annotation encoding="application/x-tex">\begin{cases}F(x,y)=ax^3+be^y+c+e\\x\sim U(-2, 2)\\y\sim U(-2, 2)\\e\sim N(0, 0.01)\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:5.76em;vertical-align:-2.63em;"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.95em;"><span style="top:-1.6em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-1.592em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.916em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.916em" style="width:0.8889em" viewBox="0 0 888.89 916" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V916 H384z M384 0 H504 V916 H384z"></path></svg></span></span><span style="top:-3.15em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.292em;"><span class="pstrut" style="height:3.15em;"></span><span style="height:0.916em;width:0.8889em;"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.916em" style="width:0.8889em" viewBox="0 0 888.89 916" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V916 H384z M384 0 H504 V916 H384z"></path></svg></span></span><span style="top:-5.2em;"><span class="pstrut" style="height:3.15em;"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.45em;"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:3.13em;"><span style="top:-5.13em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">b</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord mathnormal">e</span></span></span><span style="top:-3.69em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mopen">(</span><span class="mord">−</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span><span style="top:-2.25em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mopen">(</span><span class="mord">−</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span><span style="top:-0.81em;"><span class="pstrut" style="height:3.008em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0.01</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.63em;"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></p>
+<p>其中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∼</mo><mi>U</mi><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">x\sim U(-2,2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mopen">(</span><span class="mord">−</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span></span> 表示随机变量 x 服从 -2 到 2 的均匀分布，e 为人为构造的噪声，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>∼</mo><mi>N</mi><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mn>0.01</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">e\sim N(0,0.01)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">0.01</span><span class="mclose">)</span></span></span></span> 表示随机变量 e 服从均值为 0，方差为 0.01 的正态分布。</p>
+</li>
+<li>
+<p>应用<strong>梯度下降法</strong>，求出恰当的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>a</mi><mo>^</mo></mover><mo separator="true">,</mo><mover accent="true"><mi>b</mi><mo>^</mo></mover><mo separator="true">,</mo><mover accent="true"><mi>c</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">\hat{a}, \hat{b}, \hat{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1523em;vertical-align:-0.1944em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">a</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">b</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">c</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">^</span></span></span></span></span></span></span></span></span></span> ，使每个数据点到平面 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>F</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mover accent="true"><mi>a</mi><mo>^</mo></mover><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mover accent="true"><mi>b</mi><mo>^</mo></mover><msup><mi>e</mi><mi>y</mi></msup><mo>+</mo><mover accent="true"><mi>c</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">\hat{F}(x,y)=\hat{a}x^3+\hat{b}e^y+\hat{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1968em;vertical-align:-0.25em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">a</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0412em;vertical-align:-0.0833em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">b</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">c</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">^</span></span></span></span></span></span></span></span></span></span> 的<strong>竖直方向距离（Z轴方向）的平方之和</strong>最小。 训练过程中，要求每 20 次迭代打印当前损失（点到平面的竖直距离）。</p>
+</li>
+<li>
+<p>将上述任务代入到机器学习中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">F(x, y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mclose">)</span></span></span></span> 即标签 label，而 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>F</mi><mo>^</mo></mover><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\hat{F}(x, y)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1968em;vertical-align:-0.25em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9468em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span></span><span style="top:-3.2523em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1667em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mclose">)</span></span></span></span> 即每次的预测值，损失采用 MSE 损失</p>
+</li>
+<li>
+<p>如果你正确的使用了梯度下降法，那么求得的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover accent="true"><mi>a</mi><mo>^</mo></mover><mo separator="true">,</mo><mover accent="true"><mi>b</mi><mo>^</mo></mover><mo separator="true">,</mo><mover accent="true"><mi>c</mi><mo>^</mo></mover></mrow><annotation encoding="application/x-tex">\hat{a},\hat{b},\hat{c}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.1523em;vertical-align:-0.1944em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">a</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.9579em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">b</span></span><span style="top:-3.2634em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.25em;"><span class="mord">^</span></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6944em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mathnormal">c</span></span><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="accent-body" style="left:-0.1944em;"><span class="mord">^</span></span></span></span></span></span></span></span></span></span> 将与你预先设定的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a,b,c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span></span></span></span> 非常接近。</p>
+</li>
+<li>
+<p>把你的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∼</mo><mi>U</mi><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>y</mi><mo>∼</mo><mi>U</mi><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo separator="true">,</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">x\sim U(-2, 2),y\sim U(-2, 2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mopen">(</span><span class="mord">−</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mopen">(</span><span class="mord">−</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span></span> 修改为 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∼</mo><mi>U</mi><mo stretchy="false">(</mo><mn>3</mn><mo separator="true">,</mo><mn>7</mn><mo stretchy="false">)</mo><mo separator="true">,</mo><mi>y</mi><mo>∼</mo><mi>U</mi><mo stretchy="false">(</mo><mn>3</mn><mo separator="true">,</mo><mn>7</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">x\sim U(3, 7), y\sim U(3, 7)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mopen">(</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">7</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">∼</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">U</span><span class="mopen">(</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">7</span><span class="mclose">)</span></span></span></span> 之后，还能得到预期结果吗？如果不能，思考原因并给出解决方案。（提示：和梯度有关）</p>
+</li>
+</ul>
+<div class="sl-heading-wrapper level-h2"><h2 id="回答要求">回答要求</h2><a class="sl-anchor-link" href="#回答要求"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “回答要求”</span></a></div>
+<ol>
+<li>梯度和偏导的关系；</li>
+<li>梯度下降法实现拟合函数的过程（简单推导）；</li>
+<li>生成数据的代码 和 拟合数据的代码；</li>
+<li>代码运行结果截图；</li>
+<li>必要的注释说明及良好的代码规范；</li>
+<li>实现思路和学到的知识点。</li>
+</ol>
+<div class="sl-heading-wrapper level-h2"><h2 id="需要掌握的知识点">需要掌握的知识点</h2><a class="sl-anchor-link" href="#需要掌握的知识点"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “需要掌握的知识点”</span></a></div>
+<ol>
+<li>梯度下降法的原理</li>
+<li>基础的 Python 语法（<em><strong>库函数只能使用 Numpy，不能使用 tf , sklearn ,</strong></em> <em><strong>pytorch</strong></em> <em><strong>等</strong></em>）</li>
+<li>损失函数的作用</li>
+</ol>
+<div class="sl-heading-wrapper level-h2"><h2 id="思考题">思考题</h2><a class="sl-anchor-link" href="#思考题"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “思考题”</span></a></div>
+<ol>
+<li>
+<p>在这道题中，我们必须设定一个<strong>学习率</strong>才能进行正常的训练。结合数学公式谈谈学习率的作用，并且动手调试你的代码，看看学习率过大或者过小时会发生什么事情</p>
+</li>
+<li>
+<p>我们在这道题中使用梯度下降法拟合了一个简单函数。在训练之前，我们已经知道了 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a,b,c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span></span></span></span>的值，所以能对你得出的结果进行直观的检验。但在实际应用中，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a,b,c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span></span></span></span> 通常是未知数。<strong>如果我们不知道一个函数的参数（在这道题中是</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false">(</mo><mi>x</mi><mo separator="true">,</mo><mi>y</mi><mo stretchy="false">)</mo><mo>=</mo><mi>a</mi><msup><mi>x</mi><mn>3</mn></msup><mo>+</mo><mi>b</mi><msup><mi>e</mi><mi>y</mi></msup><mo>+</mo><mi>c</mi><mo>+</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">F(x,y)=ax^3+be^y+c+e</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.0359em;">y</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">c</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">e</span></span></span></span> <strong>中的</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo separator="true">,</mo><mi>b</mi><mo separator="true">,</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a,b,c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">a</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">c</span></span></span></span> <strong>)，我们也需要检验所得结果的准确性。想想应该怎么做？</strong></p>
+</li>
+</ol>
+<div class="sl-heading-wrapper level-h2"><h2 id="本题提交方式">本题提交方式</h2><a class="sl-anchor-link" href="#本题提交方式"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “本题提交方式”</span></a></div>
+<blockquote>
+<p>收件邮箱：<a href="mailto:glimmer401@outlook.com">glimmer401@outlook.com</a></p>
+<p>主题格式：学号-姓名-考核-机器学习-02</p>
+<p>主题示例：2020091202014-张三-考核-机器学习-02</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="出题者联系方式">出题者联系方式</h2><a class="sl-anchor-link" href="#出题者联系方式"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore="">Section titled “出题者联系方式”</span></a></div>
+<blockquote>
+<p>QQ：1191732972</p>
+<p>邮箱：<a href="mailto:1191732972@qq.com">1191732972@qq.com</a></p>
+</blockquote></div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/archives/23/ml/机器学习方向-01入门理论基础/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">上一页<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">机器学习方向-01：入门理论基础</span></span></a><a href="/archives/23/ml/机器学习方向-03文本分类/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">下一页<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">机器学习-03：文本分类任务</span></span></a></div></footer><div class="custom-footer astro-jo6i4kqk"><!-- 网站统计信息 --><div class="footer-row astro-jo6i4kqk"><span class="astro-jo6i4kqk">本页阅读次数 <span id="vercount_value_page_pv" class="astro-jo6i4kqk">Loading</span> 次</span><span class="separator astro-jo6i4kqk"> | </span><span class="astro-jo6i4kqk">本站访问次数 <span id="vercount_value_site_pv" class="astro-jo6i4kqk">Loading</span> 次</span><span class="separator astro-jo6i4kqk"> | </span><span class="astro-jo6i4kqk">本站访问人数 <span id="vercount_value_site_uv" class="astro-jo6i4kqk">Loading</span> 人</span></div><script defer src="https://events.vercount.one/js"></script><!-- 站点基础信息 --><div class="footer-row astro-jo6i4kqk"><span class="astro-jo6i4kqk">本站已支持IPv6访问</span><span class="separator astro-jo6i4kqk"> || </span><span class="astro-jo6i4kqk">Copyright &copy; 2026 </span><a href="https://www.glimmer.org.cn/" class="astro-jo6i4kqk">glimmer</a></div><!-- 备案信息 --><div class="footer-row astro-jo6i4kqk"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="astro-jo6i4kqk">蜀ICP备2026040807号-1</a><a href="https://beian.mps.gov.cn/#/query/webSearch?code=51010802033346" rel="noreferrer" target="_blank" class="police-link astro-jo6i4kqk"><img src="/_astro/police.5eBpD1mQ_Z1LFlT6.webp" alt="公安备案图标" loading="lazy" decoding="async" width="16" height="16" class="astro-jo6i4kqk">川公网安备51010802033346号</a></div></div></div></div></main></div></div></div></div></body></html>

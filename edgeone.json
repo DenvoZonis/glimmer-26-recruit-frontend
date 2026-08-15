@@ -5,6 +5,22 @@
       "destination": "/submit/assets/:splat"
     },
     {
+      "source": "/submit/favicon.ico",
+      "destination": "/submit/favicon.ico"
+    },
+    {
+      "source": "/submit/Glimmer-logo.png",
+      "destination": "/submit/Glimmer-logo.png"
+    },
+    {
+      "source": "/submit/logo.png",
+      "destination": "/submit/logo.png"
+    },
+    {
+      "source": "/submit/logo1.png",
+      "destination": "/submit/logo1.png"
+    },
+    {
       "source": "/submit/*",
       "destination": "/submit/index.html"
     },

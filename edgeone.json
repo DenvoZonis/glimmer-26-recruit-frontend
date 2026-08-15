@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/submit/assets/*",
+      "destination": "/submit/assets/:splat"
+    },
+    {
       "source": "/submit/*",
       "destination": "/submit/index.html"
     },

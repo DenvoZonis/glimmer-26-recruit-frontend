@@ -1,0 +1,1589 @@
+<!DOCTYPE html><html lang="zh-CN" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>碎碎念：机器学习方向 | Glimmer</title><link rel="canonical" href="https://www.glimmer.org.cn/senior-words/ml/"/><link rel="sitemap" href="/sitemap-index.xml"/><link rel="icon" href="/favicon.png" sizes="32x32"/><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180"/><style data-starlight-theme-md3="options">:root,
+	::backdrop {
+		--md-sys-color-primary: #b7c4ff;
+		--md-sys-color-on-primary: #002682;
+		--md-sys-color-primary-container: #0038b6;
+		--md-sys-color-on-primary-container: #dce1ff;
+		--md-sys-color-secondary: #c2c5dd;
+		--md-sys-color-on-secondary: #2b3042;
+		--md-sys-color-secondary-container: #424659;
+		--md-sys-color-on-secondary-container: #dee1f9;
+		--md-sys-color-tertiary: #e4bada;
+		--md-sys-color-on-tertiary: #43273f;
+		--md-sys-color-tertiary-container: #5c3d56;
+		--md-sys-color-on-tertiary-container: #ffd7f4;
+		--md-sys-color-error: #ffb4ab;
+		--md-sys-color-on-error: #690005;
+		--md-sys-color-error-container: #93000a;
+		--md-sys-color-on-error-container: #ffb4ab;
+		--md-sys-color-background: #131316;
+		--md-sys-color-on-background: #e4e1e6;
+		--md-sys-color-surface: #131316;
+		--md-sys-color-surface-dim: #131316;
+		--md-sys-color-surface-container-lowest: #0e0e11;
+		--md-sys-color-surface-container-low: #1b1b1f;
+		--md-sys-color-surface-container: #1f1f23;
+		--md-sys-color-surface-container-high: #2a2a2d;
+		--md-sys-color-surface-container-highest: #343438;
+		--md-sys-color-on-surface: #e4e1e6;
+		--md-sys-color-surface-variant: #45464f;
+		--md-sys-color-on-surface-variant: #c6c5d0;
+		--md-sys-color-outline: #90909a;
+		--md-sys-color-outline-variant: #45464f;
+		--md-sys-color-inverse-surface: #e4e1e6;
+		--md-sys-color-inverse-on-surface: #303034;
+		--md-sys-color-inverse-primary: #004ced;
+		--md-sys-color-scrim: #000000;
+	}
+
+	:root[data-theme='light'],
+	[data-theme='light'] ::backdrop {
+		--md-sys-color-primary: #004ced;
+		--md-sys-color-on-primary: #ffffff;
+		--md-sys-color-primary-container: #dce1ff;
+		--md-sys-color-on-primary-container: #001552;
+		--md-sys-color-secondary: #5a5d72;
+		--md-sys-color-on-secondary: #ffffff;
+		--md-sys-color-secondary-container: #dee1f9;
+		--md-sys-color-on-secondary-container: #171b2c;
+		--md-sys-color-tertiary: #75546f;
+		--md-sys-color-on-tertiary: #ffffff;
+		--md-sys-color-tertiary-container: #ffd7f4;
+		--md-sys-color-on-tertiary-container: #2c1229;
+		--md-sys-color-error: #ba1a1a;
+		--md-sys-color-on-error: #ffffff;
+		--md-sys-color-error-container: #ffdad6;
+		--md-sys-color-on-error-container: #410002;
+		--md-sys-color-background: #fefbff;
+		--md-sys-color-on-background: #1b1b1f;
+		--md-sys-color-surface: #fefbff;
+		--md-sys-color-surface-dim: #dbd9de;
+		--md-sys-color-surface-container-lowest: #ffffff;
+		--md-sys-color-surface-container-low: #f5f3f7;
+		--md-sys-color-surface-container: #efedf1;
+		--md-sys-color-surface-container-high: #eae7ec;
+		--md-sys-color-surface-container-highest: #e4e1e6;
+		--md-sys-color-on-surface: #1b1b1f;
+		--md-sys-color-surface-variant: #e2e1ec;
+		--md-sys-color-on-surface-variant: #45464f;
+		--md-sys-color-outline: #767680;
+		--md-sys-color-outline-variant: #c6c5d0;
+		--md-sys-color-inverse-surface: #303034;
+		--md-sys-color-inverse-on-surface: #f2f0f4;
+		--md-sys-color-inverse-primary: #b7c4ff;
+		--md-sys-color-scrim: #000000;
+	}</style><script data-starlight-theme-md3="route-bootstrap">
+(() => {
+	const storageKey = 'md3-route-transition';
+	const sidebarStorageKey = 'md3-sidebar-route-transition';
+	let shouldEnter = false;
+	let shouldEnterSidebar = false;
+
+	try {
+		shouldEnter = sessionStorage.getItem(storageKey) === 'true';
+		shouldEnterSidebar = sessionStorage.getItem(sidebarStorageKey) === 'true';
+		sessionStorage.removeItem(storageKey);
+		sessionStorage.removeItem(sidebarStorageKey);
+	} catch {
+		return;
+	}
+
+	if (!shouldEnter || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+	document.documentElement.setAttribute('data-md3-route-state', 'entering');
+	if (shouldEnterSidebar) {
+		document.documentElement.setAttribute('data-md3-sidebar-route-state', 'entering');
+	}
+
+	const clearRouteState = () => {
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				if (document.documentElement.getAttribute('data-md3-route-state') === 'entering') {
+					document.documentElement.removeAttribute('data-md3-route-state');
+				}
+				if (document.documentElement.getAttribute('data-md3-sidebar-route-state') === 'entering') {
+					document.documentElement.removeAttribute('data-md3-sidebar-route-state');
+				}
+			});
+		});
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', clearRouteState, { once: true });
+	} else {
+		clearRouteState();
+	}
+})();
+</script><script data-starlight-theme-md3="motion">
+(() => {
+	const routeTransitionStorageKey = 'md3-route-transition';
+	const sidebarRouteTransitionStorageKey = 'md3-sidebar-route-transition';
+		const rippleSelector = [
+			'button:not([disabled])',
+			'.sl-link-button:not([aria-disabled="true"])',
+			'.sidebar-content a[href]',
+			'.sidebar-content summary',
+			'starlight-toc a[href]',
+			'mobile-starlight-toc summary .toggle',
+			'mobile-starlight-toc .dropdown a[href]',
+			'.pagination-links a[href]',
+			'starlight-tabs [role="tab"]:not([aria-disabled="true"])',
+			'.sl-link-card[href]',
+			'starlight-menu-button button',
+			'.social-icons a[href]',
+			'.right-group label'
+	].join(',');
+	const navigationSelector = [
+		'.sidebar-content a[href]',
+		'starlight-toc a[href]',
+		'.pagination-links a[href]',
+		'.sl-link-button[href]',
+		'.sl-link-card[href]'
+	].join(',');
+
+	const reducedMotion = () =>
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+		getComputedStyle(document.documentElement).getPropertyValue('--md3-motion-duration-state').trim() === '0ms';
+
+	const durationToMs = (value) => {
+		const token = value.trim();
+		if (!token) return 0;
+		if (token.endsWith('ms')) return Number.parseFloat(token);
+		if (token.endsWith('s')) return Number.parseFloat(token) * 1000;
+		return Number.parseFloat(token) || 0;
+	};
+
+			const activeRipples = new Map();
+			const sidebarDisclosureAnimations = new WeakMap();
+			const mobileTocAnimations = new WeakMap();
+			const tocNavigationLocks = new WeakMap();
+			const tocIndicatorControllers = new WeakMap();
+
+	const getMotionDuration = (tokenName, fallback) => {
+		const styles = getComputedStyle(document.documentElement);
+		return durationToMs(styles.getPropertyValue(tokenName)) || fallback;
+	};
+
+	const getMotionEasing = (tokenName, fallback) => {
+		const value = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+		return value || fallback;
+	};
+
+	const getDisclosureContent = (details) => {
+		const content = details.querySelector(':scope > ul');
+		return content instanceof HTMLElement ? content : null;
+	};
+
+	const getMobileTocContent = (details) => {
+		const content = details.querySelector(':scope > .dropdown');
+		return content instanceof HTMLElement ? content : null;
+	};
+
+	const animateSidebarDisclosure = (summary) => {
+		const details = summary.parentElement;
+		if (!(details instanceof HTMLDetailsElement)) return false;
+		const content = getDisclosureContent(details);
+		if (!content) return false;
+
+		const active = sidebarDisclosureAnimations.get(details);
+		const currentHeight = active ? content.getBoundingClientRect().height : null;
+		const isClosing = active ? !active.closing : details.open;
+		if (active) {
+			active.animation.cancel();
+			sidebarDisclosureAnimations.delete(details);
+		}
+
+		const duration = getMotionDuration(
+			isClosing ? '--md3-motion-duration-sidebar-collapse' : '--md3-motion-duration-sidebar-expand',
+			isClosing ? 200 : 400
+		);
+		if (duration <= 0) return false;
+
+		const easing = isClosing
+			? getMotionEasing('--md-sys-motion-easing-emphasized-accelerate', 'cubic-bezier(0.3, 0, 0.8, 0.15)')
+			: getMotionEasing('--md-sys-motion-easing-emphasized-decelerate', 'cubic-bezier(0.05, 0.7, 0.1, 1)');
+		details.dataset.md3DisclosureState = isClosing ? 'closing' : 'opening';
+
+		if (!isClosing) {
+			details.open = true;
+		}
+
+		const startHeight = currentHeight ?? (isClosing ? content.offsetHeight : 0);
+		const endHeight = isClosing ? 0 : content.scrollHeight;
+		content.style.overflow = 'clip';
+		const animation = content.animate(
+			isClosing
+				? [
+						{ blockSize: startHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 0 },
+						{ blockSize: Math.round(startHeight * 0.28) + 'px', opacity: 1, transform: 'translateY(-0.125rem)', offset: 0.75 },
+						{ blockSize: endHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 1 },
+					]
+				: [
+						{ blockSize: startHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 0 },
+						{ blockSize: Math.round(endHeight * 0.72) + 'px', opacity: 1, transform: 'translateY(0)', offset: 0.34 },
+						{ blockSize: endHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 1 },
+					],
+			{ duration, easing }
+		);
+		sidebarDisclosureAnimations.set(details, { animation, closing: isClosing });
+
+		animation.finished
+			.catch(() => {})
+			.finally(() => {
+				const active = sidebarDisclosureAnimations.get(details);
+				if (!active || active.animation !== animation) return;
+				if (isClosing) {
+					details.open = false;
+				} else {
+					details.open = true;
+				}
+				content.style.removeProperty('overflow');
+				delete details.dataset.md3DisclosureState;
+				sidebarDisclosureAnimations.delete(details);
+		});
+		return true;
+	};
+
+	const animateMobileTocDisclosure = (summary, desiredOpen) => {
+		const details = summary.closest('mobile-starlight-toc details');
+		if (!(details instanceof HTMLDetailsElement)) return null;
+		const content = getMobileTocContent(details);
+		if (!content) return null;
+
+		const active = mobileTocAnimations.get(details);
+		const currentHeight = active ? content.getBoundingClientRect().height : null;
+		const isClosing =
+			typeof desiredOpen === 'boolean' ? !desiredOpen : active ? !active.closing : details.open;
+		if (active && active.closing === isClosing) return { handled: true, finished: active.finished };
+		if (active) {
+			active.animation.cancel();
+			mobileTocAnimations.delete(details);
+		}
+
+		const duration = getMotionDuration(
+			isClosing ? '--md3-motion-duration-toc-menu-collapse' : '--md3-motion-duration-toc-menu-expand',
+			isClosing ? 160 : 220
+		);
+		if (duration <= 0) return null;
+
+		const easing = isClosing
+			? getMotionEasing('--md-sys-motion-easing-emphasized-accelerate', 'cubic-bezier(0.3, 0, 0.8, 0.15)')
+			: getMotionEasing('--md-sys-motion-easing-emphasized-decelerate', 'cubic-bezier(0.05, 0.7, 0.1, 1)');
+		details.dataset.md3TocState = isClosing ? 'closing' : 'opening';
+
+		if (!isClosing) {
+			details.open = true;
+		}
+
+		const startHeight = currentHeight ?? (isClosing ? content.offsetHeight : 0);
+		const endHeight = isClosing ? 0 : content.scrollHeight;
+		content.style.overflow = 'clip';
+
+		const animation = content.animate(
+			isClosing
+				? [
+						{ blockSize: startHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 0 },
+						{ blockSize: Math.round(startHeight * 0.38) + 'px', opacity: 0.78, transform: 'translateY(-0.125rem)', offset: 0.72 },
+						{ blockSize: endHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 1 },
+					]
+				: [
+						{ blockSize: startHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 0 },
+						{ blockSize: Math.round(endHeight * 0.72) + 'px', opacity: 1, transform: 'translateY(0)', offset: 0.38 },
+						{ blockSize: endHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 1 },
+					],
+			{ duration, easing }
+		);
+
+		const finished = animation.finished
+			.catch(() => {})
+			.finally(() => {
+				const active = mobileTocAnimations.get(details);
+				if (!active || active.animation !== animation) return;
+				if (isClosing) {
+					details.open = false;
+				} else {
+					details.open = true;
+				}
+				content.style.removeProperty('overflow');
+				delete details.dataset.md3TocState;
+				mobileTocAnimations.delete(details);
+			});
+		mobileTocAnimations.set(details, { animation, closing: isClosing, finished });
+		return { handled: true, finished };
+	};
+
+	const getHashTarget = (hash) => {
+		if (!hash || hash === '#') return null;
+		const id = decodeURIComponent(hash.slice(1));
+		return document.getElementById(id);
+	};
+
+	const scrollToHashTarget = (url, target) => {
+		const path = url.pathname + url.search + url.hash;
+		if (window.location.pathname + window.location.search + window.location.hash !== path) {
+			history.pushState(null, '', path);
+		}
+		if (target instanceof HTMLElement) {
+			const hadTabIndex = target.hasAttribute('tabindex');
+			target.setAttribute('tabindex', '-1');
+			target.focus({ preventScroll: true });
+			if (!hadTabIndex) {
+				window.setTimeout(() => target.removeAttribute('tabindex'), 1000);
+			}
+		}
+		target.scrollIntoView({
+			behavior: reducedMotion() ? 'auto' : 'smooth',
+			block: 'start',
+		});
+	};
+
+	const closeMobileTocWithAnimation = (details) => {
+		const summary = details.querySelector(':scope > summary');
+		if (!(summary instanceof HTMLElement) || !details.open) return Promise.resolve();
+		if (reducedMotion()) {
+			details.open = false;
+			return Promise.resolve();
+		}
+		const result = animateMobileTocDisclosure(summary, false);
+		return result?.finished ?? Promise.resolve();
+	};
+
+	const createRipple = (surface, positionEvent) => {
+		if (!(surface instanceof HTMLElement) || surface.matches('[aria-disabled="true"], [disabled]')) return;
+
+		const rect = surface.getBoundingClientRect();
+		if (!rect.width || !rect.height) return;
+
+		const maxDim = Math.max(rect.width, rect.height);
+		const initialSize = Math.max(1, Math.floor(maxDim * 0.2));
+		const softEdgeSize = Math.max(maxDim * 0.35, 75);
+		const rippleScale = (Math.hypot(rect.width, rect.height) + 10 + softEdgeSize) / initialSize;
+		const originX = positionEvent ? positionEvent.clientX - rect.left : rect.width / 2;
+		const originY = positionEvent ? positionEvent.clientY - rect.top : rect.height / 2;
+		const startX = originX - initialSize / 2;
+		const startY = originY - initialSize / 2;
+		const endX = rect.width / 2 - initialSize / 2;
+		const endY = rect.height / 2 - initialSize / 2;
+		const ripple = document.createElement('span');
+		ripple.className = 'md3-ripple';
+		ripple.style.setProperty('--md3-ripple-size', initialSize + 'px');
+		ripple.style.setProperty('--md3-ripple-start-x', startX + 'px');
+		ripple.style.setProperty('--md3-ripple-start-y', startY + 'px');
+		ripple.style.setProperty('--md3-ripple-end-x', endX + 'px');
+		ripple.style.setProperty('--md3-ripple-end-y', endY + 'px');
+		ripple.style.setProperty('--md3-ripple-scale', rippleScale.toString());
+		surface.append(ripple);
+
+		return {
+			ripple,
+			surface,
+			startedAt: performance.now(),
+			minimumPressMs: getMotionDuration('--md3-motion-ripple-minimum-press', 225),
+			fadeMs: getMotionDuration('--md3-motion-duration-ripple-fade', 150),
+			released: false,
+		};
+	};
+
+	const releaseRipple = (record) => {
+		if (!record || record.released) return;
+		record.released = true;
+
+		const elapsedMs = performance.now() - record.startedAt;
+		const delayMs = Math.max(0, record.minimumPressMs - elapsedMs);
+		window.setTimeout(() => {
+			if (!record.ripple.isConnected) return;
+			record.ripple.classList.add('md3-ripple--releasing');
+			window.setTimeout(() => record.ripple.remove(), record.fadeMs + 50);
+		}, delayMs);
+	};
+
+			const getLockedTocLink = (nav) => {
+				const record = tocNavigationLocks.get(nav);
+				if (!record || !record.link.isConnected || !nav.contains(record.link)) {
+					return null;
+				}
+				return record.link;
+			};
+
+			const getTocHost = (surface) => {
+				if (!(surface instanceof Element)) return null;
+				const host = surface.matches('starlight-toc, mobile-starlight-toc')
+					? surface
+					: surface.closest('starlight-toc, mobile-starlight-toc');
+				return host instanceof HTMLElement ? host : null;
+			};
+
+			const setTocCurrentThroughHost = (surface, link) => {
+				const host = getTocHost(surface);
+				if (!(host instanceof HTMLElement) || !(link instanceof HTMLAnchorElement) || !host.contains(link)) {
+					return false;
+				}
+
+				// Starlight keeps a private current-link reference; its setter must update both states.
+				let prototype = Object.getPrototypeOf(host);
+				while (prototype && prototype !== HTMLElement.prototype) {
+					const descriptor = Object.getOwnPropertyDescriptor(prototype, 'current');
+					if (typeof descriptor?.set === 'function') {
+						try {
+							descriptor.set.call(host, link);
+							host.querySelectorAll('a[aria-current="true"]').forEach((currentLink) => {
+								if (currentLink !== link) currentLink.removeAttribute('aria-current');
+							});
+							return link.getAttribute('aria-current') === 'true';
+						} catch {
+							return false;
+						}
+					}
+					prototype = Object.getPrototypeOf(prototype);
+				}
+				return false;
+			};
+
+			const transformForTocPosition = (x, y) =>
+				'translate3d(' + x.toFixed(3) + 'px, ' + y.toFixed(3) + 'px, 0)';
+
+			const readTocIndicatorPosition = (controller) => {
+				try {
+					const matrix = new DOMMatrixReadOnly(getComputedStyle(controller.indicator).transform);
+					return { x: matrix.m41, y: matrix.m42 };
+				} catch {
+					return { x: controller.x, y: controller.y };
+				}
+			};
+
+			const getTocIndicatorController = (nav) => {
+				const existing = tocIndicatorControllers.get(nav);
+				if (existing?.indicator?.isConnected) return existing;
+
+				const indicator = document.createElement('span');
+				indicator.className = 'md3-toc-indicator';
+				indicator.setAttribute('aria-hidden', 'true');
+				nav.prepend(indicator);
+				const controller = {
+					nav,
+					indicator,
+					initialized: false,
+					x: 0,
+					y: 0,
+					targetX: 0,
+					targetY: 0,
+					velocityX: 0,
+					velocityY: 0,
+					frame: 0,
+					lastTime: 0,
+					animation: null,
+					stiffness: 1400,
+					dampingRatio: 0.9,
+				};
+				tocIndicatorControllers.set(nav, controller);
+				return controller;
+			};
+
+			const stopTocIndicatorMotion = (controller, capturePosition = true) => {
+				const position = capturePosition ? readTocIndicatorPosition(controller) : null;
+				if (controller.frame) {
+					cancelAnimationFrame(controller.frame);
+					controller.frame = 0;
+				}
+				if (controller.animation) {
+					controller.animation.cancel();
+					controller.animation = null;
+				}
+				if (position) {
+					controller.x = position.x;
+					controller.y = position.y;
+					controller.indicator.style.transform = transformForTocPosition(position.x, position.y);
+				}
+				controller.velocityX = 0;
+				controller.velocityY = 0;
+				controller.lastTime = 0;
+			};
+
+			const snapTocIndicator = (controller, targetX, targetY) => {
+				stopTocIndicatorMotion(controller, false);
+				controller.x = targetX;
+				controller.y = targetY;
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				controller.indicator.style.transform = transformForTocPosition(targetX, targetY);
+				controller.nav.dataset.md3TocMotion = 'settled';
+			};
+
+			const stepTocIndicatorSpring = (controller, now) => {
+				if (!controller.indicator.isConnected) {
+					controller.frame = 0;
+					return;
+				}
+				const elapsed = controller.lastTime ? Math.min((now - controller.lastTime) / 1000, 0.032) : 0;
+				controller.lastTime = now;
+				const steps = Math.max(1, Math.ceil(elapsed / 0.008));
+				const dt = steps ? elapsed / steps : 0;
+				const damping = 2 * controller.dampingRatio * Math.sqrt(controller.stiffness);
+
+				for (let index = 0; index < steps; index += 1) {
+					const accelerationX =
+						-controller.stiffness * (controller.x - controller.targetX) - damping * controller.velocityX;
+					const accelerationY =
+						-controller.stiffness * (controller.y - controller.targetY) - damping * controller.velocityY;
+					controller.velocityX += accelerationX * dt;
+					controller.velocityY += accelerationY * dt;
+					controller.x += controller.velocityX * dt;
+					controller.y += controller.velocityY * dt;
+				}
+
+				controller.indicator.style.transform = transformForTocPosition(controller.x, controller.y);
+				const settled =
+					Math.abs(controller.x - controller.targetX) < 0.1 &&
+					Math.abs(controller.y - controller.targetY) < 0.1 &&
+					Math.abs(controller.velocityX) < 2 &&
+					Math.abs(controller.velocityY) < 2;
+				if (settled) {
+					controller.frame = 0;
+					controller.x = controller.targetX;
+					controller.y = controller.targetY;
+					controller.velocityX = 0;
+					controller.velocityY = 0;
+					controller.indicator.style.transform = transformForTocPosition(controller.x, controller.y);
+					controller.nav.dataset.md3TocMotion = 'settled';
+					return;
+				}
+				controller.frame = requestAnimationFrame((frameNow) => stepTocIndicatorSpring(controller, frameNow));
+			};
+
+			const retargetTocIndicatorSpring = (controller, targetX, targetY) => {
+				if (controller.animation) {
+					stopTocIndicatorMotion(controller, true);
+				}
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				const styles = getComputedStyle(document.documentElement);
+				controller.stiffness =
+					Number.parseFloat(styles.getPropertyValue('--md3-motion-toc-spring-stiffness')) || 1400;
+				controller.dampingRatio =
+					Number.parseFloat(styles.getPropertyValue('--md3-motion-toc-spring-damping-ratio')) || 0.9;
+				controller.nav.dataset.md3TocMotion = 'spring';
+				if (!controller.frame) {
+					controller.lastTime = performance.now();
+					controller.frame = requestAnimationFrame((frameNow) => stepTocIndicatorSpring(controller, frameNow));
+				}
+			};
+
+			const animateTocIndicatorFlip = (controller, targetX, targetY) => {
+				const duration = getMotionDuration('--md3-motion-duration-toc-marker', 250);
+				if (duration <= 0 || reducedMotion()) {
+					snapTocIndicator(controller, targetX, targetY);
+					return;
+				}
+				const current = readTocIndicatorPosition(controller);
+				stopTocIndicatorMotion(controller, false);
+				controller.x = current.x;
+				controller.y = current.y;
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				controller.indicator.style.transform = transformForTocPosition(targetX, targetY);
+				controller.nav.dataset.md3TocMotion = 'flip';
+				const animation = controller.indicator.animate(
+					[
+						{ transform: transformForTocPosition(current.x, current.y) },
+						{ transform: transformForTocPosition(targetX, targetY) },
+					],
+					{
+						duration,
+						easing: getMotionEasing('--md-sys-motion-easing-emphasized', 'cubic-bezier(0.2, 0, 0, 1)'),
+					}
+				);
+				controller.animation = animation;
+				animation.finished
+					.catch(() => {})
+					.finally(() => {
+						if (controller.animation !== animation) return;
+						controller.animation = null;
+						controller.x = targetX;
+						controller.y = targetY;
+						controller.nav.dataset.md3TocMotion = 'settled';
+					});
+			};
+
+			const syncTocIndicator = (nav, source = 'scroll') => {
+				if (!(nav instanceof HTMLElement)) return;
+				const lockedLink = getLockedTocLink(nav);
+				const activeLink = lockedLink || nav.querySelector('a[aria-current="true"]');
+				const controller = getTocIndicatorController(nav);
+				nav.dataset.md3TocTracker = 'true';
+
+				if (!(activeLink instanceof HTMLElement)) {
+					controller.indicator.style.opacity = '0';
+					return;
+				}
+
+				const indicatorBlockSize = 16;
+				const navRect = nav.getBoundingClientRect();
+				const activeRect = activeLink.getBoundingClientRect();
+				const activeStyles = getComputedStyle(activeLink);
+				const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+				const indicatorDepth = Math.max(0, Number.parseFloat(activeStyles.getPropertyValue('--depth')) || 0);
+				const indicatorDirection = activeStyles.direction === 'rtl' ? -1 : 1;
+				const targetX = indicatorDepth * indicatorDirection * rootFontSize;
+				const targetY =
+					activeRect.top - navRect.top + Math.max(0, (activeRect.height - indicatorBlockSize) / 2);
+				nav.style.setProperty('--md3-toc-indicator-x', targetX + 'px');
+				nav.style.setProperty('--md3-toc-indicator-y', targetY + 'px');
+				controller.indicator.style.opacity = '1';
+
+				if (!controller.initialized || source === 'layout' || reducedMotion()) {
+					controller.initialized = true;
+					snapTocIndicator(controller, targetX, targetY);
+					return;
+				}
+
+				const targetChanged =
+					Math.abs(controller.targetX - targetX) > 0.1 || Math.abs(controller.targetY - targetY) > 0.1;
+				if (!targetChanged) return;
+				if (lockedLink || source === 'click') {
+					animateTocIndicatorFlip(controller, targetX, targetY);
+				} else {
+					retargetTocIndicatorSpring(controller, targetX, targetY);
+				}
+			};
+
+			const setTocActiveLink = (link, source = 'click') => {
+				const nav = link.closest('starlight-toc nav');
+				if (!(nav instanceof HTMLElement)) return false;
+				const updated = setTocCurrentThroughHost(nav, link);
+				syncTocIndicator(nav, source);
+				return updated;
+			};
+
+		const lockTocActiveLink = (link, lockMs = 1200) => {
+			const nav = link.closest('starlight-toc nav');
+			if (!(nav instanceof HTMLElement)) return false;
+
+			const previous = tocNavigationLocks.get(nav);
+			if (previous) {
+				window.clearTimeout(previous.timeout);
+				previous.link.classList.remove('md3-toc-navigation-target');
+			}
+
+			nav.dataset.md3TocNavigationLock = 'true';
+			link.classList.add('md3-toc-navigation-target');
+			setTocActiveLink(link);
+
+			const timeout = window.setTimeout(() => {
+				const active = tocNavigationLocks.get(nav);
+				if (!active || active.link !== link) return;
+				setTocActiveLink(link);
+				link.classList.remove('md3-toc-navigation-target');
+				delete nav.dataset.md3TocNavigationLock;
+				tocNavigationLocks.delete(nav);
+				syncTocIndicator(nav);
+			}, lockMs);
+
+			tocNavigationLocks.set(nav, { link, timeout });
+			return true;
+		};
+
+		const setMobileTocActiveLink = (details, link) => {
+			if (!(details instanceof HTMLDetailsElement) || !(link instanceof HTMLAnchorElement)) return false;
+			return setTocCurrentThroughHost(details, link);
+		};
+
+	const setupTocIndicators = () => {
+		const navs = document.querySelectorAll('starlight-toc nav');
+		navs.forEach((nav) => {
+			if (!(nav instanceof HTMLElement) || nav.dataset.md3TocTrackerReady === 'true') return;
+			nav.dataset.md3TocTrackerReady = 'true';
+			let frame = 0;
+				let pendingSource = 'scroll';
+				const scheduleSync = (source = 'scroll') => {
+					if (source === 'layout') pendingSource = 'layout';
+					if (frame) return;
+					frame = requestAnimationFrame(() => {
+						frame = 0;
+						const source = pendingSource;
+						pendingSource = 'scroll';
+						syncTocIndicator(nav, source);
+					});
+				};
+
+				syncTocIndicator(nav, 'initial');
+				requestAnimationFrame(() => {
+					if (nav.isConnected) {
+						nav.dataset.md3TocMotionReady = 'true';
+					}
+				});
+				new MutationObserver(() => {
+					const lockedLink = getLockedTocLink(nav);
+					const currentLinks = nav.querySelectorAll('a[aria-current="true"]');
+					if (
+						lockedLink &&
+						(lockedLink.getAttribute('aria-current') !== 'true' || currentLinks.length !== 1)
+					) {
+						setTocCurrentThroughHost(nav, lockedLink);
+					}
+					scheduleSync('scroll');
+				}).observe(nav, {
+					attributes: true,
+					attributeFilter: ['aria-current'],
+					childList: true,
+					subtree: true,
+				});
+				if ('ResizeObserver' in window) {
+					new ResizeObserver(() => scheduleSync('layout')).observe(nav);
+				}
+				window.addEventListener('scroll', () => scheduleSync('scroll'), { passive: true });
+				window.addEventListener('resize', () => scheduleSync('layout'), { passive: true });
+		});
+	};
+
+	const setupTocEndState = () => {
+		let frame = 0;
+		const syncEndState = () => {
+			const scrollingElement = document.scrollingElement || document.documentElement;
+			const remainingScroll =
+				scrollingElement.scrollHeight - scrollingElement.clientHeight - scrollingElement.scrollTop;
+			if (remainingScroll > 2) return false;
+
+			document.querySelectorAll('starlight-toc nav').forEach((nav) => {
+				if (!(nav instanceof HTMLElement)) return;
+				if (getLockedTocLink(nav)) {
+					syncTocIndicator(nav);
+					return;
+				}
+				const links = Array.from(nav.querySelectorAll('a[href]')).filter(
+					(link) => link instanceof HTMLElement
+				);
+				const lastLink = links.at(-1);
+				if (!(lastLink instanceof HTMLElement)) return;
+				const currentLinks = links.filter((link) => link.getAttribute('aria-current') === 'true');
+				if (currentLinks.length === 1 && currentLinks[0] === lastLink) {
+					syncTocIndicator(nav);
+					return;
+				}
+
+					setTocActiveLink(lastLink, 'scroll');
+			});
+			document.querySelectorAll('mobile-starlight-toc details').forEach((details) => {
+				if (!(details instanceof HTMLDetailsElement)) return;
+				const links = Array.from(details.querySelectorAll('.dropdown a[href]')).filter(
+					(link) => link instanceof HTMLElement
+				);
+				const lastLink = links.at(-1);
+				if (!(lastLink instanceof HTMLElement)) return;
+				const currentLinks = links.filter((link) => link.getAttribute('aria-current') === 'true');
+				if (currentLinks.length === 1 && currentLinks[0] === lastLink) {
+					setMobileTocActiveLink(details, lastLink);
+					return;
+				}
+
+				setMobileTocActiveLink(details, lastLink);
+			});
+			return true;
+		};
+		const scheduleEndState = () => {
+			if (frame) return;
+			frame = requestAnimationFrame(() => {
+				frame = 0;
+					syncEndState();
+			});
+		};
+
+		window.addEventListener('scroll', scheduleEndState, { passive: true });
+		window.addEventListener('resize', scheduleEndState, { passive: true });
+			document.querySelectorAll('starlight-toc nav, mobile-starlight-toc details').forEach((tocSurface) => {
+				new MutationObserver(() => syncEndState()).observe(tocSurface, {
+					attributes: true,
+					attributeFilter: ['aria-current'],
+					subtree: true,
+			});
+		});
+		scheduleEndState();
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener(
+			'DOMContentLoaded',
+			() => {
+				setupTocIndicators();
+				setupTocEndState();
+			},
+			{ once: true }
+		);
+	} else {
+		setupTocIndicators();
+		setupTocEndState();
+	}
+
+	document.addEventListener('pointerdown', (event) => {
+		const targetElement = event.target instanceof Element ? event.target : null;
+		const openMobileMenu = document.querySelector('starlight-menu-button[aria-expanded="true"]');
+		if (
+			openMobileMenu &&
+			targetElement &&
+			!targetElement.closest('#starlight__sidebar') &&
+			!targetElement.closest('starlight-menu-button')
+		) {
+			if (typeof openMobileMenu.setExpanded === 'function') {
+				openMobileMenu.setExpanded(false);
+			} else {
+				openMobileMenu.setAttribute('aria-expanded', 'false');
+				document.body.removeAttribute('data-mobile-menu-expanded');
+			}
+		}
+
+		if (event.button !== 0 || !event.isPrimary || reducedMotion()) return;
+		const surface = targetElement ? targetElement.closest(rippleSelector) : null;
+		const record = createRipple(surface, event);
+		if (record) {
+			activeRipples.set(event.pointerId, record);
+		}
+	}, { passive: true });
+
+	document.addEventListener('pointerup', (event) => {
+		const record = activeRipples.get(event.pointerId);
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('pointercancel', (event) => {
+		const record = activeRipples.get(event.pointerId);
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('pointerout', (event) => {
+		if (event.pointerType === 'touch') return;
+		const record = activeRipples.get(event.pointerId);
+		if (!record) return;
+		if (event.relatedTarget instanceof Node && record.surface.contains(event.relatedTarget)) return;
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('contextmenu', () => {
+		activeRipples.forEach(releaseRipple);
+		activeRipples.clear();
+	});
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || event.button !== 0) return;
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+		const link = event.target instanceof Element
+			? event.target.closest('starlight-toc a[href], mobile-starlight-toc .dropdown a[href]')
+			: null;
+		if (!(link instanceof HTMLAnchorElement)) return;
+		if (link.target || link.hasAttribute('download') || link.getAttribute('aria-disabled') === 'true') return;
+
+		const url = new URL(link.href, window.location.href);
+		const current = new URL(window.location.href);
+		if (url.origin !== current.origin || url.pathname !== current.pathname || url.search !== current.search || !url.hash) {
+			return;
+		}
+
+		const target = getHashTarget(url.hash);
+		if (!target) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+			link.classList.add('md3-navigation-pending');
+			const hasLockedTocTarget = lockTocActiveLink(link);
+			if (!hasLockedTocTarget) {
+				setTocActiveLink(link);
+			}
+
+		const mobileToc = link.closest('mobile-starlight-toc details');
+		if (mobileToc instanceof HTMLDetailsElement) {
+				closeMobileTocWithAnimation(mobileToc).finally(() => {
+					link.classList.remove('md3-navigation-pending');
+					scrollToHashTarget(url, target);
+				});
+				return;
+			}
+
+			link.classList.remove('md3-navigation-pending');
+			scrollToHashTarget(url, target);
+		}, { capture: true });
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || reducedMotion()) return;
+			const mobileTocSummary = event.target instanceof Element
+				? event.target.closest('mobile-starlight-toc details > summary')
+				: null;
+			if (
+				mobileTocSummary instanceof HTMLElement &&
+				event.detail > 0 &&
+				!(event.target instanceof Element && event.target.closest('mobile-starlight-toc summary .toggle'))
+			) {
+				event.preventDefault();
+				return;
+			}
+			const mobileTocAnimation =
+				mobileTocSummary instanceof HTMLElement ? animateMobileTocDisclosure(mobileTocSummary) : null;
+		if (mobileTocAnimation?.handled) {
+			event.preventDefault();
+			return;
+		}
+
+		const summary = event.target instanceof Element
+			? event.target.closest('.sidebar-content details > summary')
+			: null;
+		if (!(summary instanceof HTMLElement)) return;
+		if (animateSidebarDisclosure(summary)) {
+			event.preventDefault();
+		}
+	});
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || event.button !== 0 || reducedMotion()) return;
+		if (event.detail === 0) {
+			const surface = event.target instanceof Element ? event.target.closest(rippleSelector) : null;
+			const record = createRipple(surface);
+			releaseRipple(record);
+		}
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+		const link = event.target instanceof Element ? event.target.closest(navigationSelector) : null;
+		if (!(link instanceof HTMLAnchorElement)) return;
+		if (link.target || link.hasAttribute('download') || link.getAttribute('aria-disabled') === 'true') return;
+
+		const url = new URL(link.href, window.location.href);
+		const current = new URL(window.location.href);
+		if (url.origin !== current.origin) return;
+		if (url.pathname === current.pathname && url.search === current.search && url.hash) return;
+		if (url.href === current.href) return;
+		const shouldAnimateSidebarRoute =
+			document.documentElement.hasAttribute('data-has-hero') &&
+			!document.documentElement.hasAttribute('data-has-sidebar');
+
+		const delay = durationToMs(
+			getComputedStyle(document.documentElement).getPropertyValue('--md3-motion-route-delay')
+		) || 100;
+		if (delay <= 0) return;
+
+		event.preventDefault();
+		link.classList.add('md3-navigation-pending');
+		document.documentElement.setAttribute('data-md3-route-state', 'leaving');
+		try {
+			sessionStorage.setItem(routeTransitionStorageKey, 'true');
+			if (shouldAnimateSidebarRoute) {
+				sessionStorage.setItem(sidebarRouteTransitionStorageKey, 'true');
+			} else {
+				sessionStorage.removeItem(sidebarRouteTransitionStorageKey);
+			}
+		} catch {}
+		window.setTimeout(() => {
+			window.location.href = url.href;
+		}, delay);
+	});
+})();
+</script><link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.1.1"/><meta name="generator" content="Starlight v0.41.3"/><meta property="og:title" content="碎碎念：机器学习方向"/><meta property="og:type" content="article"/><meta property="og:url" content="https://www.glimmer.org.cn/senior-words/ml/"/><meta property="og:locale" content="zh-CN"/><meta property="og:description" content="电子科技大学微光工作室：碎碎念：机器学习方向"/><meta property="og:site_name" content="Glimmer"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="电子科技大学微光工作室：碎碎念：机器学习方向"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/_astro/middleware.DNbCBke2.css"><style>@layer starlight.components{:root{--sl-badge-default-border:var(--sl-color-accent);--sl-badge-default-bg:var(--sl-color-accent-low);--sl-badge-default-text:#fff;--sl-badge-note-border:var(--sl-color-blue);--sl-badge-note-bg:var(--sl-color-blue-low);--sl-badge-note-text:#fff;--sl-badge-danger-border:var(--sl-color-red);--sl-badge-danger-bg:var(--sl-color-red-low);--sl-badge-danger-text:#fff;--sl-badge-success-border:var(--sl-color-green);--sl-badge-success-bg:var(--sl-color-green-low);--sl-badge-success-text:#fff;--sl-badge-caution-border:var(--sl-color-orange);--sl-badge-caution-bg:var(--sl-color-orange-low);--sl-badge-caution-text:#fff;--sl-badge-tip-border:var(--sl-color-purple);--sl-badge-tip-bg:var(--sl-color-purple-low);--sl-badge-tip-text:#fff}[data-theme=light]:root{--sl-badge-default-bg:var(--sl-color-accent-high);--sl-badge-note-bg:var(--sl-color-blue-high);--sl-badge-danger-bg:var(--sl-color-red-high);--sl-badge-success-bg:var(--sl-color-green-high);--sl-badge-caution-bg:var(--sl-color-orange-high);--sl-badge-tip-bg:var(--sl-color-purple-high)}.sl-badge:where(.astro-7hkzaclv){border:1px solid var(--sl-color-border-badge);font-family:var(--sl-font-system-mono);color:var(--sl-color-text-badge);background-color:var(--sl-color-bg-badge);overflow-wrap:anywhere;border-radius:.25rem;line-height:normal;display:inline-block}.sidebar-content .sl-badge:where(.astro-7hkzaclv){line-height:1;font-size:var(--sl-text-xs);padding:.125rem .375rem}.sidebar-content a[aria-current=page]>.sl-badge:where(.astro-7hkzaclv){--sl-color-bg-badge:transparent;--sl-color-border-badge:currentColor;color:inherit}.default:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-default-bg);--sl-color-border-badge:var(--sl-badge-default-border);--sl-color-text-badge:var(--sl-badge-default-text)}.note:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-note-bg);--sl-color-border-badge:var(--sl-badge-note-border);--sl-color-text-badge:var(--sl-badge-note-text)}.danger:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-danger-bg);--sl-color-border-badge:var(--sl-badge-danger-border);--sl-color-text-badge:var(--sl-badge-danger-text)}.success:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-success-bg);--sl-color-border-badge:var(--sl-badge-success-border);--sl-color-text-badge:var(--sl-badge-success-text)}.tip:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-tip-bg);--sl-color-border-badge:var(--sl-badge-tip-border);--sl-color-text-badge:var(--sl-badge-tip-text)}.caution:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-caution-bg);--sl-color-border-badge:var(--sl-badge-caution-border);--sl-color-text-badge:var(--sl-badge-caution-text)}.small:where(.astro-7hkzaclv){font-size:var(--sl-text-xs);padding:.125rem .25rem}.medium:where(.astro-7hkzaclv){font-size:var(--sl-text-sm);padding:.175rem .35rem}.large:where(.astro-7hkzaclv){font-size:var(--sl-text-base);padding:.225rem .45rem}.sl-markdown-content :is(h1,h2,h3,h4,h5,h6) .sl-badge:where(.astro-7hkzaclv){vertical-align:middle}}
+</style><link rel="stylesheet" href="/_astro/index.Bgf0apwf.css"><style>@layer starlight.components{svg:where(.astro-n5k4ipy7){color:var(--sl-icon-color);font-size:var(--sl-icon-size,1em);width:1em;height:1em}}
+@layer starlight.components{.sl-steps{--bullet-size:calc(var(--sl-line-height) * 1rem);--bullet-margin:.375rem;counter-reset:steps-counter var(--sl-steps-start,0);padding-inline-start:0;list-style:none}.sl-steps>li{counter-increment:steps-counter;padding-inline-start:calc(var(--bullet-size) + 1rem);min-height:calc(var(--bullet-size) + var(--bullet-margin));padding-bottom:1px;position:relative}.sl-steps>li+li{margin-top:0}.sl-steps>li:before{content:counter(steps-counter);top:0;width:var(--bullet-size);height:var(--bullet-size);line-height:var(--bullet-size);font-size:var(--sl-text-xs);text-align:center;color:var(--sl-color-white);background-color:var(--sl-color-gray-6);box-shadow:inset 0 0 0 1px var(--sl-color-gray-5);border-radius:99rem;font-weight:600;position:absolute;inset-inline-start:0}.sl-steps>li:after{--guide-width:1px;content:"";top:calc(var(--bullet-size) + var(--bullet-margin));bottom:var(--bullet-margin);width:var(--guide-width);background-color:var(--sl-color-hairline-light);position:absolute;inset-inline-start:calc((var(--bullet-size) - var(--guide-width)) / 2)}}@layer starlight.content{.sl-steps>li>:first-child{--lh:calc(1em * var(--sl-line-height));--shift-y:calc(.5 * (var(--bullet-size) - var(--lh)));transform:translateY(var(--shift-y));margin-bottom:var(--shift-y)}.sl-steps>li>:first-child:where(h1,h2,h3,h4,h5,h6){--lh:calc(1em * var(--sl-line-height-headings))}@supports (--prop:1lh){.sl-steps>li>:first-child{--lh:1lh}}}
+</style><script type="module" src="/_astro/page.B2uBVZjk.js"></script><style>.nn-container:where(.astro-prhjz3mi){--nn-bg-primary:var(--md-sys-color-background);--nn-bg-overlay:color-mix(in srgb, var(--md-sys-color-surface) 90%, transparent);--nn-transparent:transparent;--nn-text-primary:var(--md-sys-color-on-surface);--nn-neuron-border-default:var(--md-sys-color-outline);--nn-neuron-fill-default:var(--md-sys-color-surface-container-lowest);--nn-neuron-gray-base:0;--nn-neuron-gray-multiplier:255;--nn-connection-negative-rgb:249, 115, 22;--nn-connection-positive-rgb:29, 155, 240;--nn-connection-animation:color-mix(in srgb, var(--md-sys-color-primary) 55%, transparent);--nn-grid-white:var(--md-sys-color-on-surface);--nn-grid-white-rgb:255, 255, 255;--nn-grid-fill:var(--md-sys-color-surface);--nn-cover:var(--md-sys-color-background);flex-direction:column;align-items:center;gap:1.25rem;width:100%;max-width:500px;margin:0 auto;display:flex}:root[data-theme=light] .nn-container:where(.astro-prhjz3mi){--nn-neuron-gray-base:255;--nn-neuron-gray-multiplier:-255;--nn-grid-white-rgb:0, 0, 0;--nn-connection-animation:color-mix(in srgb, var(--md-sys-color-primary) 70%, transparent)}.nn-surface:where(.astro-prhjz3mi){background:var(--nn-bg-primary);border-radius:8px;width:100%;line-height:0;position:relative;overflow:hidden}.nn-surface:where(.astro-prhjz3mi):after{content:"";border:1px solid var(--md-sys-color-outline-variant);pointer-events:none;border-radius:8px;position:absolute;inset:0}.nn-frame:where(.astro-prhjz3mi){aspect-ratio:1;width:100%;max-width:500px;position:relative}.nn-svg:where(.astro-prhjz3mi){touch-action:none;user-select:none;width:100%;height:100%;display:block}.nn-controls:where(.astro-prhjz3mi){grid-template-columns:repeat(2,1fr);align-items:end;gap:.6rem;width:100%;display:grid}.nn-controls:where(.astro-prhjz3mi)>:where(.astro-prhjz3mi){width:100%}.nn-btn:where(.astro-prhjz3mi){letter-spacing:.01em;white-space:nowrap;cursor:pointer;appearance:none;-webkit-tap-highlight-color:transparent;border-radius:10px;justify-content:center;align-items:center;gap:.4rem;height:40px;padding:0 1rem;font-size:.9rem;font-weight:600;transition:background-color .16s,border-color .16s,color .16s,box-shadow .16s,opacity .16s,transform .16s;display:inline-flex}.nn-btn:where(.astro-prhjz3mi):focus-visible{box-shadow:0 0 0 3px color-mix(in srgb, var(--md-sys-color-primary) 30%, transparent);outline:none}.nn-btn:where(.astro-prhjz3mi):not(:disabled):active{transform:scale(.97)}.nn-btn:where(.astro-prhjz3mi):disabled{opacity:.45;cursor:not-allowed}.nn-btn-secondary:where(.astro-prhjz3mi){border:1px solid var(--md-sys-color-outline-variant);color:var(--md-sys-color-on-surface);background:0 0}.nn-btn-secondary:where(.astro-prhjz3mi):not(:disabled):hover{border-color:var(--md-sys-color-primary);color:var(--md-sys-color-primary)}
+</style></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">跳转到内容</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="/" class="site-title sl-flex astro-clw6ags5"><span class="astro-clw6ags5" translate="no">Glimmer</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;搜索&quot;}"><button data-open-modal disabled aria-label="搜索" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">搜索</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="搜索" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">取消</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.vTFUHulS.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><a href="mailto:glimmer401@outlook.com" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">邮箱</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M19 4H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-.41 2-5.88 5.88a1 1 0 0 1-1.42 0L5.41 6ZM20 17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7.41l5.88 5.88a3 3 0 0 0 4.24 0L20 7.41Z"/></svg></a></div><starlight-theme-select class="md3-theme-select astro-v7alfmhz" data-accessible-label="选择主题" data-label-auto="自动" data-label-dark="深色" data-label-light="浅色"><button type="button" class="md3-theme-select__button astro-v7alfmhz" aria-haspopup="menu" aria-expanded="false" aria-label="选择主题: 自动" title="选择主题: 自动" data-theme-value="auto"><span class="md3-theme-select__button-icon-stack astro-v7alfmhz" aria-hidden="true"><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--dark astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--light astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--auto astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><span class="md3-theme-select__current astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__caret astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></button><div class="md3-theme-select__menu astro-v7alfmhz" role="menu" hidden><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="dark"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><span class="astro-v7alfmhz">深色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="light"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><span class="astro-v7alfmhz">浅色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="true" data-theme-value="auto"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><span class="astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button></div></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e,t){return e.dataset[`label${t[0].toUpperCase()}${t.slice(1)}`]??t}function o(e,t){return`${e.dataset.accessibleLabel??`Theme`}: ${a(e,t)}`}var s=new WeakMap,c=new WeakMap;function l(e){let t=s.get(e);t&&window.clearTimeout(t),s.delete(e),c.get(e)?.(),c.delete(e)}function u(e){let t=e.querySelector(`.md3-theme-select__button`),n=e.querySelector(`.md3-theme-select__menu`);if(!t||!n)return;if(t.setAttribute(`aria-expanded`,`false`),l(e),n.hidden||matchMedia(`(prefers-reduced-motion: reduce)`).matches){n.hidden=!0,n.removeAttribute(`data-md3-menu-state`);return}n.dataset.md3MenuState=`closing`;let r=()=>{n.hidden=!0,n.removeAttribute(`data-md3-menu-state`),l(e)},i=e=>{e.target===n&&e.propertyName===`transform`&&r()};n.addEventListener(`transitionend`,i),c.set(e,()=>n.removeEventListener(`transitionend`,i)),s.set(e,window.setTimeout(r,260))}function d(e){let t=e.querySelector(`.md3-theme-select__button`),n=e.querySelector(`.md3-theme-select__menu`),r=e.querySelector(`.md3-theme-select__option[aria-checked="true"]`);!t||!n||(l(e),t.setAttribute(`aria-expanded`,`true`),n.hidden=!1,n.removeAttribute(`data-md3-menu-state`),r?.focus())}function f(e,t){let n=e.querySelector(`.md3-theme-select__button`),r=e.querySelector(`.md3-theme-select__current`);!n||!r||(n.dataset.themeValue=t,r.textContent=a(e,t),n.title=o(e,t),n.setAttribute(`aria-label`,o(e,t)),e.querySelectorAll(`.md3-theme-select__option`).forEach(e=>{let n=e.dataset.themeValue===t;e.setAttribute(`aria-checked`,String(n))}))}function p(e){StarlightThemeProvider.updatePickers(e),document.querySelectorAll(`starlight-theme-select`).forEach(t=>{f(t,e)})}function m(e){p(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&m(`auto`)});var h=class extends HTMLElement{connectedCallback(){this.dataset.md3ThemeSelectReady!==`true`&&(this.dataset.md3ThemeSelectReady=`true`,m(n()),this.querySelector(`.md3-theme-select__button`)?.addEventListener(`click`,()=>{this.querySelector(`.md3-theme-select__button`)?.getAttribute(`aria-expanded`)===`true`?u(this):d(this)}),this.querySelectorAll(`.md3-theme-select__option`).forEach(e=>{e.addEventListener(`click`,()=>{m(t(e.dataset.themeValue)),u(this),this.querySelector(`.md3-theme-select__button`)?.focus()})}),this.addEventListener(`keydown`,e=>{if(!(e instanceof KeyboardEvent))return;let t=this.querySelector(`.md3-theme-select__button`)?.getAttribute(`aria-expanded`)===`true`;if(e.key===`Escape`){e.preventDefault(),u(this),this.querySelector(`.md3-theme-select__button`)?.focus();return}if(!t&&[`ArrowDown`,`Enter`,` `].includes(e.key)){e.preventDefault(),d(this);return}if(!t||![`ArrowDown`,`ArrowUp`,`Home`,`End`].includes(e.key))return;e.preventDefault();let n=[...this.querySelectorAll(`.md3-theme-select__option`)],r=Math.max(0,n.indexOf(document.activeElement));n[e.key===`Home`?0:e.key===`End`?n.length-1:e.key===`ArrowDown`?(r+1)%n.length:(r-1+n.length)%n.length]?.focus()}),document.addEventListener(`pointerdown`,e=>{e.target instanceof Node&&!this.contains(e.target)&&u(this)}))}};customElements.get(`starlight-theme-select`)||customElements.define(`starlight-theme-select`,h);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="主要"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="菜单" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="02ga2k0" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">招新相关</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/information/" class="astro-ojxuodky"><span class="astro-ojxuodky">招新说明</span></a></li><li class="astro-ojxuodky"><a href="/special_recruit/" class="astro-ojxuodky"><span class="astro-ojxuodky">其他渠道招新说明</span></a></li><li class="astro-ojxuodky"><a href="/QA/" class="astro-ojxuodky"><span class="astro-ojxuodky">Q&amp;A 常见问题解答</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">碎碎念</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/senior-words/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">概述</span></a></li><li class="astro-ojxuodky"><a href="/senior-words/cs/" class="astro-ojxuodky"><span class="astro-ojxuodky">计算机系统</span></a></li><li class="astro-ojxuodky"><a href="/senior-words/frontend/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web前端</span></a></li><li class="astro-ojxuodky"><a href="/senior-words/backend/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web后端</span></a></li><li class="astro-ojxuodky"><a href="/senior-words/ml/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">机器学习</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">日常基础</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/daily/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">日常简介</span></a></li><li class="astro-ojxuodky"><a href="/daily/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">1: 什么是计算机？</span></a></li><li class="astro-ojxuodky"><a href="/daily/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">2: markdown</span></a></li><li class="astro-ojxuodky"><a href="/daily/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">3: 数据的表示</span></a></li><li class="astro-ojxuodky"><a href="/daily/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: 代码管理</span></a></li><li class="astro-ojxuodky"><a href="/daily/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: 如何用好AI</span></a></li><li class="astro-ojxuodky"><a href="/daily/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">6: loafer想打派(网络)</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">计算机系统</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/cs/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">计算机系统简介</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Web前端</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/frontend/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web前端简介</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Web后端</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/backend/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web后端简介</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">机器学习</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/ml/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">机器学习简介</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><a href="mailto:glimmer401@outlook.com" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">邮箱</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M19 4H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-.41 2-5.88 5.88a1 1 0 0 1-1.42 0L5.41 6ZM20 17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7.41l5.88 5.88a3 3 0 0 0 4.24 0L20 7.41Z"/></svg></a></div><starlight-theme-select class="md3-theme-select astro-v7alfmhz" data-accessible-label="选择主题" data-label-auto="自动" data-label-dark="深色" data-label-light="浅色"><button type="button" class="md3-theme-select__button astro-v7alfmhz" aria-haspopup="menu" aria-expanded="false" aria-label="选择主题: 自动" title="选择主题: 自动" data-theme-value="auto"><span class="md3-theme-select__button-icon-stack astro-v7alfmhz" aria-hidden="true"><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--dark astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--light astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--auto astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><span class="md3-theme-select__current astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__caret astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></button><div class="md3-theme-select__menu astro-v7alfmhz" role="menu" hidden><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="dark"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><span class="astro-v7alfmhz">深色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="light"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><span class="astro-v7alfmhz">浅色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="true" data-theme-value="auto"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><span class="astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button></div></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()}),addEventListener(`pageHide`,a);</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">本页内容<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">概述</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#一机器学习到底在做什么" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">一、机器学习到底在做什么</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#从一个你已经会的东西说起" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">从一个你已经会的东西说起</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#换一个难一点的问题" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">换一个难一点的问题</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#参数怎么调出来" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">参数怎么调出来</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#泛化面对没见过的数据" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">泛化：面对没见过的数据</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#所以先抓住几个核心要素" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">所以，先抓住几个核心要素</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#二-f-是怎么一步步变好的" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">二、 f 是怎么一步步变好的</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#多层感知机mlp" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">多层感知机（MLP）</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#卷积神经网络cnn" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">卷积神经网络（CNN）</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#循环神经网络rnn" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">循环神经网络（RNN）</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#transformer" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Transformer</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#预训练与大语言模型" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">预训练与大语言模型</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#三几个大家都会问的问题" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">三、几个大家都会问的问题</span></a><ul class="isMobile astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q1学机器学习需要多少数学" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q1：学机器学习需要多少数学？</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q2现在-ai-到底在往哪几个方向走" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q2：现在 AI 到底在往哪几个方向走？</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q3这条路怎么走以及能走到哪里" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q3：这条路怎么走，以及能走到哪里？</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q4关于收入" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q4：关于收入</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q5ai-已经接近上限了吗" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q5：AI 已经接近上限了吗？</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#最后" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">最后</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">本页内容</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">概述</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#一机器学习到底在做什么" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">一、机器学习到底在做什么</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#从一个你已经会的东西说起" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">从一个你已经会的东西说起</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#换一个难一点的问题" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">换一个难一点的问题</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#参数怎么调出来" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">参数怎么调出来</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#泛化面对没见过的数据" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">泛化：面对没见过的数据</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#所以先抓住几个核心要素" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">所以，先抓住几个核心要素</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#二-f-是怎么一步步变好的" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">二、 f 是怎么一步步变好的</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#多层感知机mlp" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">多层感知机（MLP）</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#卷积神经网络cnn" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">卷积神经网络（CNN）</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#循环神经网络rnn" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">循环神经网络（RNN）</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#transformer" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Transformer</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#预训练与大语言模型" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">预训练与大语言模型</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#三几个大家都会问的问题" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">三、几个大家都会问的问题</span></a><ul class="astro-cxyftcne" style="--depth: 1;"><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q1学机器学习需要多少数学" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q1：学机器学习需要多少数学？</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q2现在-ai-到底在往哪几个方向走" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q2：现在 AI 到底在往哪几个方向走？</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q3这条路怎么走以及能走到哪里" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q3：这条路怎么走，以及能走到哪里？</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q4关于收入" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q4：关于收入</span></a></li><li style="--depth: 1;" class="astro-cxyftcne"><a href="#q5ai-已经接近上限了吗" style="--depth: 1;" class="astro-cxyftcne"><span style="--depth: 1;" class="astro-cxyftcne">Q5：AI 已经接近上限了吗？</span></a></li></ul></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#最后" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">最后</span></a></li></ul></nav></starlight-toc><script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="zh-CN" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">碎碎念：机器学习方向</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><blockquote>
+<p><strong>全文约 7,000 字 · 预计阅读 20–25 分钟</strong></p>
+<p>建议第一次先完整读一遍，不用在公式和模型细节上停太久。先建立一张关于机器学习和 AI 的整体地图，之后真正开始学习时，再回来逐节看。</p>
+</blockquote>
+<p>相信大家在进入大学前，对 AI 时代的超高年薪已经有所耳闻，也可能因此对这个领域抱有很多期待和想法。这篇文章只想讲清楚几件事： <strong>机器学习到底是什么，这个领域现在在做什么，以及如果你决定走进来，接下来几年大概会经历什么。</strong> 文章有点长，但我相信，读完之后，你对机器学习和 AI 的整体理解，会比大多数刚进入大学的同龄人清楚很多。</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="一机器学习到底在做什么">一、机器学习到底在做什么</h2><a class="sl-anchor-link" href="#一机器学习到底在做什么"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “一、机器学习到底在做什么”</span></a></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="从一个你已经会的东西说起">从一个你已经会的东西说起</h3><a class="sl-anchor-link" href="#从一个你已经会的东西说起"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “从一个你已经会的东西说起”</span></a></div>
+<p>高中你学过一次函数：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>k</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">y = kx + b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span></p>
+<p>现在给你几个点，比如 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>1</mn><mo separator="true">,</mo><mn>3</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(1,3)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">3</span><span class="mclose">)</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>2</mn><mo separator="true">,</mo><mn>5</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2,5)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">5</span><span class="mclose">)</span></span></span></span>、<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>3</mn><mo separator="true">,</mo><mn>7</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(3,7)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">3</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">7</span><span class="mclose">)</span></span></span></span>，让你把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> 算出来。你会算，答案是：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>2</mn><mo separator="true">,</mo><mspace width="1em"></mspace><mi>b</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k=2,\quad b=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></p>
+<p>你可以把这件事理解成一个最小规模的机器学习问题。在这里，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 是输入，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> 是输出，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> 是参数，那几个点是数据，把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> 和 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> 找出来的过程就叫训练。整个机器学习，本质上都可以先从这件事情的放大版来理解。我们把它写成一个更通用的形式：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>f</mi><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">y=f(x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></p>
+<p>给模型一个输入 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span>，希望得到一个符合预期的输出 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span>。中间这个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span>，就是我们要找的东西。</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="换一个难一点的问题">换一个难一点的问题</h3><a class="sl-anchor-link" href="#换一个难一点的问题"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “换一个难一点的问题”</span></a></div>
+<p>现在把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> 换成一张照片，把 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> 换成：</p>
+<blockquote>
+<p>照片里是猫还是狗？</p>
+</blockquote>
+<p>那么这个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span> 长什么样？没有人写得出来。你没有办法用几十行公式准确描述：</p>
+<blockquote>
+<p>什么样的像素排列算是一只猫？</p>
+</blockquote>
+<p>事实上，人类自己也很难说清楚。你看到一只猫之后可以立刻认出来，但让你写一套完整规则，把所有猫和所有狗区分开，就很困难。机器学习的做法很直接。既然我们写不出这个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span>，那就先规定 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span> 大致长什么样，在里面留下一大堆可以调节的参数，然后拿大量数据把这些参数调出来。一次函数只有两个参数。一个简单的手写数字识别模型可能有几十万个参数。</p>
+<p>今天的大语言模型则可能拥有几十亿、几百亿，甚至更多参数。数量差得非常远，但最基础的思想是一样的：</p>
+<blockquote>
+<p><strong>先设计一个可以调整的函数，再用数据把里面的参数学出来。</strong></p>
+</blockquote>
+<div class="sl-heading-wrapper level-h3"><h3 id="参数怎么调出来">参数怎么调出来</h3><a class="sl-anchor-link" href="#参数怎么调出来"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “参数怎么调出来”</span></a></div>
+<p>要调参数，首先得知道模型现在表现得好不好。一种最简单的办法，是把模型预测出来的结果和真实答案做比较。比如：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false">)</mo><mo>−</mo><msub><mi>y</mi><mn>1</mn></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="false">)</mo><mo>−</mo><msub><mi>y</mi><mn>2</mn></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup><mo>+</mo><mo>⋯</mo><mo>+</mo><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">(</mo><msub><mi>x</mi><mi>n</mi></msub><mo stretchy="false">)</mo><mo>−</mo><msub><mi>y</mi><mi>n</mi></msub><msup><mo stretchy="false">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">L=(f(x_1)-y_1)^2+(f(x_2)-y_2)^2+\cdots+(f(x_n)-y_n)^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="minner">⋯</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0641em;vertical-align:-0.25em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></p>
+<p>这个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span> 叫做<strong>损失（Loss）</strong>。<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span> 越小，说明模型在这些数据上的预测越接近真实答案。因此，训练模型最基本的目标就是：</p>
+<blockquote>
+<p>找到一组参数，让损失尽可能小。</p>
+</blockquote>
+<p>如果模型只有两个参数，我们可以直接解方程。但如果模型里面有几十亿甚至几千亿个参数，我们已经不可能靠手算找到答案。实际使用的方法，可以想象成这样：你站在一座山上，周围全是浓雾，看不见山谷在哪里。你唯一能做的事情，是感受一下脚下哪个方向下降得最快，然后朝那个方向迈一小步。站稳以后，再判断一次。再迈一步。不断重复。走得足够久，你大概率就会走到一个比较低的位置。</p>
+<p>训练神经网络也是类似的过程。每走一步，就是把模型里面大量参数朝着“让损失下降”的方向调整一点点。这个基本方法叫做<strong>梯度下降（Gradient Descent）</strong>。今天绝大多数神经网络的训练，都离不开这个思想。</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="泛化面对没见过的数据">泛化：面对没见过的数据</h3><a class="sl-anchor-link" href="#泛化面对没见过的数据"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “泛化：面对没见过的数据”</span></a></div>
+<p>训练模型时，把手上的训练数据全部答对，只完成了一部分目标。模型还要做到：</p>
+<blockquote>
+<p>模型看到一张从来没有见过的照片时，还能不能判断它是猫还是狗？</p>
+</blockquote>
+<p>这个能力叫做<strong>泛化（Generalization）</strong>。如果一个模型只是把训练数据全部背了下来，遇到新的数据就不会做，那这个模型没有太大意义。以后你学到的很多概念，例如：</p>
+<ul>
+<li>过拟合</li>
+<li>正则化</li>
+<li>数据增强</li>
+<li>预训练</li>
+<li>模型规模</li>
+<li>数据规模</li>
+</ul>
+<p>最后都会和泛化产生关系。机器学习研究中大量的问题，本质上都在追问：</p>
+<blockquote>
+<p><strong>为什么一个模型只看过有限的数据，却能够处理没有见过的新问题？</strong></p>
+</blockquote>
+<div class="sl-heading-wrapper level-h3"><h3 id="所以先抓住几个核心要素">所以，先抓住几个核心要素</h3><a class="sl-anchor-link" href="#所以先抓住几个核心要素"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “所以，先抓住几个核心要素”</span></a></div>
+<p>到这里，机器学习最基本的几个要素就齐了：</p>
+<ul>
+<li>数据</li>
+<li>模型架构</li>
+<li>训练目标</li>
+<li>优化方法</li>
+</ul>
+<p>如果现在只想先建立最基础的直觉，可以重点记住前两个。 <strong>数据决定模型能够从什么经验里学习。</strong> 数据越多、质量越高、越贴近真正想解决的问题，模型通常就越有机会学到我们需要的能力。过去十几年里，AI 能力的多次明显提升，都离不开数据规模和数据质量的进步。 <strong>架构决定模型以什么方式处理和表示信息。</strong> 同样的数据，交给不同形状的 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span> 去学习，最终效果可能完全不同。</p>
+<p>过去几十年的机器学习发展史，很大程度上也是一部：</p>
+<blockquote>
+<p><strong>人们不断设计更合适的</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span> <strong>的历史</strong>。</p>
+</blockquote>
+<p>下面就讲这段历史。它也差不多是你进入工作室之后，要亲自走一遍的路。</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="二-f-是怎么一步步变好的">二、 f 是怎么一步步变好的</h2><a class="sl-anchor-link" href="#二-f-是怎么一步步变好的"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “二、 f 是怎么一步步变好的”</span></a></div>
+<p>这一部分不追求严格的数学定义。目标只有一个：</p>
+<blockquote>
+<p>让你看到一个名字的时候，脑子里面能大概知道它的来历，以及它解决了什么问题。</p>
+</blockquote>
+<p>你可以先用一个非常简单的视角理解这段历史：</p>
+<blockquote>
+<p><strong>新的模型架构，往往是为了处理旧方法在某类问题上的明显限制。</strong></p>
+</blockquote>
+<p>这些模型之间往往是共存和补充的关系。今天的神经网络里，MLP、卷积、注意力等结构依然同时存在。</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="多层感知机mlp">多层感知机（MLP）</h3><a class="sl-anchor-link" href="#多层感知机mlp"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “多层感知机（MLP）”</span></a></div>
+<p>最朴素的神经网络，可以从这样一件事情理解。把输入的一堆数字分别乘上不同的权重，再加起来，得到新的数字。如果并排做很多次，就得到了一层。然后把这一层的输出继续送进下一层。一层接一层堆起来，就形成了一个神经网络。但这里有一个问题。如果每一层都只是做线性变换，例如：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">y=ax+b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span></p>
+<p>那么堆一百层和堆一层，本质上没有区别。因为线性函数套很多次之后，最终仍然是一个线性函数。所以我们会在每一层之间加入一个<strong>非线性操作</strong>。比如非常经典的 ReLU：</p>
+<p><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">ReLU</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>x</mi><mo stretchy="false">)</mo><mo>=</mo><mi>max</mi><mo>⁡</mo><mo stretchy="false">(</mo><mn>0</mn><mo separator="true">,</mo><mi>x</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{ReLU}(x)=\max(0,x)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop"><span class="mord mathrm">ReLU</span></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mop">max</span><span class="mopen">(</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal">x</span><span class="mclose">)</span></span></span></span></p>
+<p>简单来说：</p>
+<blockquote>
+<p>正数保留，负数变成 0。</p>
+</blockquote>
+<p>虽然这个操作看起来极其简单，但有了非线性之后，多层神经网络才能表示非常复杂的函数。MLP 是现代神经网络最基础的结构之一。哪怕到了 Transformer 时代，每一个 Transformer Block 里面也仍然存在 MLP。你进入工作室之后要做的第一件事情，就是自己从头实现一个简单的神经网络，或许你可以用它来识别数字，当然，或许你也可以使用接下来的CNN对数字进行分类识别。</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="卷积神经网络cnn">卷积神经网络（CNN）</h3><a class="sl-anchor-link" href="#卷积神经网络cnn"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “卷积神经网络（CNN）”</span></a></div>
+<p>一张 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>224</mn><mo>×</mo><mn>224</mn></mrow><annotation encoding="application/x-tex">224\times224</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">224</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">224</span></span></span></span> 的彩色图片，大约包含十五万个数字。如果直接把所有像素全部连接到一个巨大的 MLP 上，参数量会迅速膨胀。更重要的是，这种模型没有充分利用图像本身一个很明显的特点：</p>
+<blockquote>
+<p><strong>相邻像素之间通常存在很强的关系。</strong></p>
+</blockquote>
+<p>于是，卷积神经网络出现了。卷积的基本做法，可以想象成拿着一个 <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">3\times3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">3</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">3</span></span></span></span> 的小窗口，在整张图片上一格一格地滑动。每到一个位置，就对附近的像素做一次计算。最关键的一点是：</p>
+<blockquote>
+<p><strong>同一个窗口的参数会在整张图片上重复使用。</strong></p>
+</blockquote>
+<p>这样做有两个很明显的好处。第一，参数量大幅减少。第二，同一个模式无论出现在图片左上角还是右下角，都可以被同一套参数识别。例如某个卷积核学会了识别边缘，那么这个边缘出现在图片哪里，它都可以检测到。CNN 曾经统治计算机视觉领域接近十年，并推动了现代深度学习第一次大规模爆发。你也会亲手用 CNN 做一次图像分类。</p>
+<p>下面有一个小玩具，来尝试一下CNN的有趣之处吧~</p>
+
+<div class="nn-container astro-prhjz3mi"><div class="nn-surface astro-prhjz3mi"><div class="nn-frame astro-prhjz3mi"><svg id="nn-svg" class="nn-svg astro-prhjz3mi" width="500" height="500" viewBox="0 0 500 500"></svg></div></div><div class="nn-controls astro-prhjz3mi"><button id="clearBtn" class="nn-btn nn-btn-secondary astro-prhjz3mi" type="button">清除</button><button id="checkBtn" class="nn-btn nn-btn-secondary astro-prhjz3mi" type="button">识别</button></div></div><script type="module" src="/_astro/MnistDemo.astro_astro_type_script_index_0_lang.DDkyCHFk.js"></script>
+<div class="sl-heading-wrapper level-h3"><h3 id="循环神经网络rnn">循环神经网络（RNN）</h3><a class="sl-anchor-link" href="#循环神经网络rnn"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “循环神经网络（RNN）”</span></a></div>
+<p>图像通常可以整理成固定大小的输入，但语言不一样。一句话可能只有几个词，也可能有几百个词。而且词的顺序非常重要。例如：</p>
+<blockquote>
+<p>狗咬人</p>
+</blockquote>
+<p>和：</p>
+<blockquote>
+<p>人咬狗</p>
+</blockquote>
+<p>用到的字差不多，但意思完全不同。RNN 的基本想法是：</p>
+<blockquote>
+<p>一个词一个词地读。</p>
+</blockquote>
+<p>每读进来一个词，模型就更新一次自己的“状态”。这个状态记录了模型目前为止看到的信息，然后继续向后传递。于是模型读到后面的词时，理论上仍然可以知道前面发生了什么。这个思路非常自然，但也有明显的问题。第一个问题是<strong>长距离信息很难保存</strong>。一句话非常长的时候，前面的信息经过很多次更新以后，很容易逐渐变弱。第二个问题是<strong>难以并行计算</strong>。第二个词的状态依赖第一个词。</p>
+<p>第三个词又依赖第二个词。于是很多计算必须按照顺序一个接一个完成。在数据量越来越大的情况下，这会严重影响训练效率。你会用 RNN 做一次情感分析，例如判断：</p>
+<blockquote>
+<p>一条电影评论究竟是好评还是差评。</p>
+</blockquote>
+<p>做完之后，你会更直观地理解这种架构的特点和限制。</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="transformer">Transformer</h3><a class="sl-anchor-link" href="#transformer"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Transformer”</span></a></div>
+<p>2017 年，Transformer 被提出。今天这一轮生成式 AI 浪潮，几乎都建立在这套架构之上。Transformer 最核心的思想之一叫做：</p>
+<blockquote>
+<p><strong>注意力（Attention）。</strong></p>
+</blockquote>
+<p>处理一个词的时候，模型可以直接查看序列中的其他位置，并判断：</p>
+<blockquote>
+<p>当前这个词应该重点关注哪些信息？</p>
+</blockquote>
+<p>举个非常简单的例子：</p>
+<blockquote>
+<p>小明把书放在桌子上，因为它很重。</p>
+</blockquote>
+<p>这里的“它”到底指“书”还是“桌子”？模型需要结合上下文判断。在 RNN 里面，前面的信息需要沿着序列一步一步传递过来。而在 Transformer 中，一个位置可以通过注意力机制直接和其他位置建立联系。这使模型处理长距离关系的方式发生了明显变化。Transformer 还有另一个非常重要的优势：</p>
+<blockquote>
+<p><strong>训练时，同一序列中的多个位置可以进行大规模并行计算。</strong></p>
+</blockquote>
+<p>这件事情听起来没有“智能”那么酷，但工程意义极大。因为现代 AI 的核心资源是 GPU。一个架构如果能够充分利用 GPU 并行计算，就意味着：</p>
+<ul>
+<li>可以训练更大的模型</li>
+<li>可以使用更多的数据</li>
+<li>可以进行更长时间的训练</li>
+</ul>
+<p>模型规模和数据规模因此被真正推了上去。你现在使用的 ChatGPT、Claude、豆包，以及绝大多数现代大语言模型，底层都和 Transformer 有密切关系。亲手实现一次 Transformer，是你这个月最后、也是最重要的任务之一。</p>
+<div class="sl-heading-wrapper level-h3"><h3 id="预训练与大语言模型">预训练与大语言模型</h3><a class="sl-anchor-link" href="#预训练与大语言模型"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “预训练与大语言模型”</span></a></div>
+<p>有了能够扩展到很大规模的模型架构之后，一个非常朴素的想法开始展现出惊人的效果：</p>
+<blockquote>
+<p>拿互联网上的大量文本训练模型，让它不断预测下一个 token。</p>
+</blockquote>
+<p>比如：</p>
+<blockquote>
+<p>中国的首都是____</p>
+</blockquote>
+<p>模型需要预测：</p>
+<blockquote>
+<p>北京</p>
+</blockquote>
+<p>再比如：</p>
+<blockquote>
+<p>1 + 1 = ____</p>
+</blockquote>
+<p>模型需要预测：</p>
+<blockquote>
+<p>2</p>
+</blockquote>
+<p>训练数据中的一句话本身就可以提供训练目标，因此不需要人类为每一条数据手工标注答案。这让模型能够利用规模极其庞大的文本数据。而当模型不断尝试把“下一个词”预测准确时，它会逐渐学习：</p>
+<ul>
+<li>语言</li>
+<li>语法</li>
+<li>世界知识</li>
+<li>代码</li>
+<li>数学</li>
+<li>某些形式的推理能力</li>
+</ul>
+<p>这就是<strong>预训练（Pre-Training）</strong>。BERT 是同一时期非常重要的另一条路线。它采用的训练方式有所不同。例如：</p>
+<blockquote>
+<p>北京是中国的 [MASK]。</p>
+</blockquote>
+<p>模型需要把被遮住的词补出来。这种训练方式曾经极大推动了自然语言理解的发展。你也需要读懂 BERT，因为它可以帮助你真正理解一件事情：</p>
+<blockquote>
+<p><strong>“预训练”本身就是机器学习历史上一个极其重要的思想。</strong></p>
+</blockquote>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="三几个大家都会问的问题">三、几个大家都会问的问题</h2><a class="sl-anchor-link" href="#三几个大家都会问的问题"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “三、几个大家都会问的问题”</span></a></div>
+<div class="sl-heading-wrapper level-h3"><h3 id="q1学机器学习需要多少数学">Q1：学机器学习需要多少数学？</h3><a class="sl-anchor-link" href="#q1学机器学习需要多少数学"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Q1：学机器学习需要多少数学？”</span></a></div>
+<p>先给结论。 <strong>入门阶段需要的数学不算多，普通应用涉及的数学通常也不深；到了真正前沿的研究，数学要求会明显提高。</strong> 更直接一点：</p>
+<blockquote>
+<p><strong>本科刚入门的时候，数学通常不会成为你的主要瓶颈。</strong></p>
+</blockquote>
+<p>大胆去做，先把困难留到真正遇见时再解决。入门阶段真正重要的是建立直觉。看到一个模型设计时，你应该不断问：</p>
+<blockquote>
+<p>为什么这里要这样做？</p>
+</blockquote>
+<blockquote>
+<p>换一种做法会发生什么？</p>
+</blockquote>
+<blockquote>
+<p>有没有更简单的方法？</p>
+</blockquote>
+<p>如果回答不出来，就去查资料，去问 AI，去看代码，去做实验。现在这个时代学习机器学习其实非常幸运。以前一个公式看不懂，可能需要翻几本书、找很多资料。现在你完全可以把推导交给 AI，让它一步一步解释。哪一步看不懂，就继续追问哪一步。但是有一点非常重要：</p>
+<blockquote>
+<p><strong>AI 能把一个东西讲到“你感觉自己听懂了”，并不代表你真的掌握了。</strong></p>
+</blockquote>
+<p>真正判断自己懂没懂的方法，是关掉 AI 之后，看自己能不能重新解释一遍。最好还能进一步做到：</p>
+<ul>
+<li>自己把关键公式写出来</li>
+<li>自己把代码实现出来</li>
+<li>自己把实验跑出来</li>
+<li>实验结果不对的时候，知道应该从哪里排查</li>
+</ul>
+<p>比较有效的学习过程通常是：</p>
+<blockquote>
+<p><strong>看概念 → 追问原因 → 自己重新解释 → 写代码 → 看实验现象 → 再回来理解公式</strong></p>
+</blockquote>
+<p>真正需要大量使用数学，一般是在你开始深入研究某些问题之后。比如你以后可能会接触：</p>
+<ul>
+<li>线性代数</li>
+<li>概率论</li>
+<li>信息论</li>
+<li>优化</li>
+<li>随机过程</li>
+<li>数值计算</li>
+</ul>
+<p>不同研究方向需要的数学也完全不同。所以现在数学不好，不值得焦虑。边做边补。遇到什么问题，就补对应的数学。很多时候，这比大一一开始就抱着三本数学教材从第一页往后啃效率高得多。</p>
+<hr>
+<div class="sl-heading-wrapper level-h3"><h3 id="q2现在-ai-到底在往哪几个方向走">Q2：现在 AI 到底在往哪几个方向走？</h3><a class="sl-anchor-link" href="#q2现在-ai-到底在往哪几个方向走"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Q2：现在 AI 到底在往哪几个方向走？”</span></a></div>
+<p>机器学习今天已经是一个非常大的领域。计算机视觉、自然语言处理、生成模型、推荐系统、语音、强化学习、AI for Science、机器人、机器学习系统等，都属于其中的一部分。为了让你先建立一张简单的地图，这里只讲目前最受关注、也和工作室后续学习关系比较大的几条主线。</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="基础模型">基础模型</h4><a class="sl-anchor-link" href="#基础模型"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “基础模型”</span></a></div>
+<p>今天很多 AI 系统的核心，已经从过去针对单个任务训练一个模型，逐渐发展成：</p>
+<blockquote>
+<p><strong>先训练一个能力很强的基础模型，再让它适应大量不同任务。</strong></p>
+</blockquote>
+<p>最典型的就是大语言模型。如果按照训练流程来看，一个现代大模型大致会经历几个阶段。</p>
+<div class="sl-heading-wrapper level-h5"><h5 id="预训练pre-train">预训练（Pre-Train）</h5><a class="sl-anchor-link" href="#预训练pre-train"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “预训练（Pre-Train）”</span></a></div>
+<p>预训练阶段会使用规模巨大的数据，让模型完成类似：</p>
+<blockquote>
+<p>根据前面的内容预测下一个 token</p>
+</blockquote>
+<p>这样的任务。这一步训练成本最高。大型模型的预训练可能消耗极其庞大的 GPU 计算资源和资金。预训练得到的，是模型最基础的：</p>
+<ul>
+<li>语言能力</li>
+<li>世界知识</li>
+<li>代码能力</li>
+<li>推理基础</li>
+<li>通用表示能力</li>
+</ul>
+<p>可以把它理解成模型的“底子”。</p>
+<div class="sl-heading-wrapper level-h5"><h5 id="中训练mid-train">中训练（Mid-Train）</h5><a class="sl-anchor-link" href="#中训练mid-train"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “中训练（Mid-Train）”</span></a></div>
+<p>预训练之后，还可能继续使用更加高质量、更加有针对性的数据训练模型。例如：</p>
+<ul>
+<li>数学</li>
+<li>代码</li>
+<li>长上下文</li>
+<li>特定领域知识</li>
+</ul>
+<p>目标是进一步强化某些能力。这一阶段通常被称为 Mid-Training。</p>
+<div class="sl-heading-wrapper level-h5"><h5 id="后训练post-train">后训练（Post-Train）</h5><a class="sl-anchor-link" href="#后训练post-train"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “后训练（Post-Train）”</span></a></div>
+<p>预训练得到的模型虽然已经很强，但它还不一定“好用”。比如你问一个问题，它可能只会机械续写，而不知道应该按照什么格式回答，也不知道什么时候应该拒绝、什么时候应该调用工具。所以还需要进行后训练。常见的方法包括两类。 <strong>监督微调（SFT）</strong> 给模型大量这样的数据：</p>
+<blockquote>
+<p>用户这样问 → 一个优秀的助手应该这样回答</p>
+</blockquote>
+<p>然后让模型模仿这些答案。这种方法简单直接、效果稳定。模型能够达到什么水平，很大程度上取决于训练数据本身的质量。 <strong>强化学习（RL）</strong> 让模型自己尝试生成答案。如果答案好，就给予更高的奖励。如果答案差，就给予更低的奖励。模型通过大量尝试，逐渐学会哪些行为能够获得更高奖励。近年来，大语言模型在数学、代码、推理等能力上的明显进步，很大一部分研究工作都集中在这一阶段。</p>
+<p>这也是目前最热门的研究方向之一。</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="agent让模型真正开始干活">Agent：让模型真正开始“干活”</h4><a class="sl-anchor-link" href="#agent让模型真正开始干活"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Agent：让模型真正开始“干活””</span></a></div>
+<p>当基础模型拥有足够强的语言和推理能力之后，人们开始尝试让模型从回答问题走向直接完成任务，于是有了 Agent。Agent 可以让模型拥有更多行动能力，例如：</p>
+<ul>
+<li>搜索网页</li>
+<li>调用 API</li>
+<li>执行代码</li>
+<li>读写文件</li>
+<li>操作软件</li>
+<li>使用数据库</li>
+<li>调用其他模型</li>
+</ul>
+<p>它还可以把一个复杂任务拆成很多步骤，执行一步，观察结果，再决定下一步做什么。你们可能已经听说过 Claude Code、Codex 等产品。这些都和 Agent 这条路线密切相关。</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="多模态与生成模型">多模态与生成模型</h4><a class="sl-anchor-link" href="#多模态与生成模型"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “多模态与生成模型”</span></a></div>
+<p>Transformer 的影响也早就超出了文字。今天的大模型可以同时处理：</p>
+<ul>
+<li>文字</li>
+<li>图片</li>
+<li>视频</li>
+<li>音频</li>
+</ul>
+<p>模型开始逐渐拥有统一理解不同模态信息的能力。同时，生成模型也在快速发展。现在模型已经可以生成：</p>
+<ul>
+<li>图片</li>
+<li>视频</li>
+<li>3D 场景</li>
+<li>音频</li>
+</ul>
+<p>今天所谓的“基础模型”，范围已经扩展到大语言模型之外。很多研究正在尝试让一个模型同时理解和生成不同模态的信息。</p>
+<hr>
+<div class="sl-heading-wrapper level-h4"><h4 id="具身智能">具身智能</h4><a class="sl-anchor-link" href="#具身智能"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “具身智能”</span></a></div>
+<p>如果说大语言模型主要生活在电脑里面，那么具身智能研究的是：</p>
+<blockquote>
+<p><strong>怎样让 AI 真正进入物理世界。</strong></p>
+</blockquote>
+<p>最典型的载体就是机器人。目标是让模型控制一个真实的身体，在现实世界中完成任务。例如：</p>
+<blockquote>
+<p>把桌子上的杯子拿起来。</p>
+</blockquote>
+<blockquote>
+<p>把衣服叠好。</p>
+</blockquote>
+<blockquote>
+<p>从冰箱里拿一瓶水。</p>
+</blockquote>
+<p>听起来很简单，但对机器人来说非常困难。机器人首先要看懂环境。然后理解人的指令。接着判断应该做什么。最后还要真正控制机械臂和身体完成动作。其中最大的困难之一，就是<strong>数据</strong>。互联网天然积累了海量的文字、图片和视频。但高质量的机器人动作数据非常稀缺。而且机器人数据采集成本非常高。因为一条训练数据往往意味着：</p>
+<blockquote>
+<p>一台真实机器人真的在现实世界里面执行了一次动作。</p>
+</blockquote>
+<p>所以这个方向发展出了很多获取数据的方法。</p>
+<div class="sl-heading-wrapper level-h5"><h5 id="遥操作">遥操作</h5><a class="sl-anchor-link" href="#遥操作"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “遥操作”</span></a></div>
+<p>让人直接控制机器人完成任务。机器人把整个过程中：</p>
+<ul>
+<li>摄像头看到的画面</li>
+<li>机械臂的位置</li>
+<li>关节运动</li>
+<li>操作结果</li>
+</ul>
+<p>全部记录下来。这些数据可以直接用于训练模型。优点是数据质量高。缺点也很明显：</p>
+<blockquote>
+<p>贵，而且慢。</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h5"><h5 id="仿真">仿真</h5><a class="sl-anchor-link" href="#仿真"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “仿真”</span></a></div>
+<p>在虚拟世界里面创建机器人和环境。机器人可以在里面进行数百万甚至更多次尝试。这样采集数据会便宜很多。但又会出现一个新的问题：</p>
+<blockquote>
+<p>虚拟世界终究和真实世界不完全一样。</p>
+</blockquote>
+<p>模型在模拟器里面学会的动作，放到现实机器人上以后，不一定还能正常工作。这叫做 Sim-to-Real 问题。</p>
+<div class="sl-heading-wrapper level-h5"><h5 id="从人类视频里面学习">从人类视频里面学习</h5><a class="sl-anchor-link" href="#从人类视频里面学习"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “从人类视频里面学习”</span></a></div>
+<p>互联网上存在海量人类做事情的视频。比如：</p>
+<ul>
+<li>做饭</li>
+<li>修东西</li>
+<li>打扫卫生</li>
+<li>操作工具</li>
+</ul>
+<p>如果模型能够从这些视频里面学到：</p>
+<blockquote>
+<p>人类到底是怎样和物理世界交互的？</p>
+</blockquote>
+<p>那么机器人可能就不再完全依赖昂贵的机器人数据。怎样把普通人类视频真正转化成机器人可以利用的知识，目前仍然是一个很重要的开放问题。模型方面，现在一个重要方向是把：</p>
+<blockquote>
+<p><strong>视觉 + 语言 + 动作</strong></p>
+</blockquote>
+<p>放进同一个模型里面。输入可以是：</p>
+<blockquote>
+<p>摄像头画面 + 一句话指令</p>
+</blockquote>
+<p>输出则直接告诉机器人：</p>
+<blockquote>
+<p>下一步应该怎样运动。</p>
+</blockquote>
+<p>这类模型通常会被称为 VLA：</p>
+<blockquote>
+<p>Vision-Language-Action Model。</p>
+</blockquote>
+<p>语言模型正在从“会说话”，逐渐向“能够行动”发展。</p>
+<hr>
+<div class="sl-heading-wrapper level-h3"><h3 id="q3这条路怎么走以及能走到哪里">Q3：这条路怎么走，以及能走到哪里？</h3><a class="sl-anchor-link" href="#q3这条路怎么走以及能走到哪里"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Q3：这条路怎么走，以及能走到哪里？”</span></a></div>
+<p>如果你决定认真做 AI，那么读研几乎是绝大多数人的标准路线。原因很简单。今天真正有技术壁垒的 AI 工作，尤其是算法、模型和研究岗位，通常都要求非常系统的训练。本科四年的时间，对于真正理解一个方向、完成科研训练、做出有质量的工作来说，其实非常短。如果你以后想进入前沿 AI 研究，那么博士就非常常见了。一条比较典型的路线，大概是这样。</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="大一上">大一上</h4><a class="sl-anchor-link" href="#大一上"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “大一上”</span></a></div>
+<p>先建立最基础的认识。这个阶段你要完成的事情包括：</p>
+<ul>
+<li>把 Linux 和开发环境配置好</li>
+<li>学会 Python</li>
+<li>学会 PyTorch</li>
+<li>学会使用 GPU</li>
+<li>把基本代码跑通</li>
+<li>理解机器学习的基本概念</li>
+<li>亲手实现几个经典模型</li>
+</ul>
+<p>比如：</p>
+<ul>
+<li>MLP</li>
+<li>CNN</li>
+<li>RNN</li>
+<li>Transformer</li>
+</ul>
+<p>这一阶段最重要的目标是：</p>
+<blockquote>
+<p><strong>建立直觉和基本能力。</strong></p>
+</blockquote>
+<p>这一阶段可以先放下发论文的压力。你现在最缺的东西不是论文，而是判断一个问题到底在干什么的能力。</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="大一下到大二">大一下到大二</h4><a class="sl-anchor-link" href="#大一下到大二"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “大一下到大二”</span></a></div>
+<p>如果你发现自己确实喜欢这个方向，就可以开始提前进入实验室做科研。这一步非常关键。你会第一次发现：</p>
+<blockquote>
+<p>上课和科研其实是两件完全不同的事情。</p>
+</blockquote>
+<p>上课的问题通常已经有答案。科研的问题往往连答案是否存在都不知道。最开始可以从：</p>
+<ul>
+<li>阅读论文</li>
+<li>复现代码</li>
+<li>跑实验</li>
+<li>整理数据</li>
+<li>做 baseline</li>
+</ul>
+<p>开始。慢慢理解：</p>
+<blockquote>
+<p>一篇真正的研究论文到底是怎么做出来的？</p>
+</blockquote>
+<p>这也是工作室存在的一个重要意义。工作室的学长学姐会分享自己的科研经历、套磁经验、实验经验和踩过的坑，帮助大家更快进入科研状态。如果条件合适，也可能有机会获得清北 Top 实验室的科研实习和内推。工作室里已经有不少非常优秀的学长学姐在不同 AI 发展一线进行研究和工作。</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="大二到大三">大二到大三</h4><a class="sl-anchor-link" href="#大二到大三"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “大二到大三”</span></a></div>
+<p>这个阶段应该逐渐从：</p>
+<blockquote>
+<p>复现别人</p>
+</blockquote>
+<p>走到：</p>
+<blockquote>
+<p>做自己的东西。</p>
+</blockquote>
+<p>你需要开始尝试：</p>
+<ul>
+<li>自己发现问题</li>
+<li>自己提出假设</li>
+<li>自己设计实验</li>
+<li>自己判断结果</li>
+<li>自己写论文</li>
+</ul>
+<p>如果研究进展顺利，就开始尝试把工作投稿到真正有影响力的会议和期刊。本科阶段如果能够做出一篇真正有质量的论文，你在保研、申请硕士、申请博士的时候，竞争力会发生明显变化。论文可以给简历添一行字，更重要的是，真正经历一次完整科研过程之后，你会第一次系统理解：</p>
+<blockquote>
+<p>一个没人知道答案的问题，究竟应该怎样被解决。</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h4"><h4 id="升学">升学</h4><a class="sl-anchor-link" href="#升学"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “升学”</span></a></div>
+<p>对于想长期做 AI 的人，研究生阶段基本是很重要的一步。本科之后可以选择：</p>
+<ul>
+<li>保研</li>
+<li>考研</li>
+<li>海外硕士</li>
+<li>海外博士</li>
+<li>国内直博</li>
+</ul>
+<p>具体走哪条路线，要根据个人情况决定，但成绩永远是最重要且是最基础的一个门槛。如果你的目标是前沿 AI 研究，那么一个好的研究环境非常重要。你需要：</p>
+<ul>
+<li>更强的导师</li>
+<li>更好的同学</li>
+<li>更充足的算力</li>
+<li>更前沿的问题</li>
+<li>更成熟的科研训练</li>
+</ul>
+<p>这些东西会明显改变一个人的成长速度。</p>
+<div class="sl-heading-wrapper level-h4"><h4 id="研究生阶段">研究生阶段</h4><a class="sl-anchor-link" href="#研究生阶段"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “研究生阶段”</span></a></div>
+<p>研究生阶段，一方面继续做研究。另一方面，也非常建议去真正的工业界实习。因为工业界和学术界看问题的方法并不完全一样。学术界可能更关心：</p>
+<blockquote>
+<p>这个问题有没有新的科学发现？</p>
+</blockquote>
+<p>工业界可能更关心：</p>
+<blockquote>
+<p>这个东西能不能稳定运行？</p>
+</blockquote>
+<blockquote>
+<p>能不能服务几百万用户？</p>
+</blockquote>
+<blockquote>
+<p>成本能不能降下来？</p>
+</blockquote>
+<blockquote>
+<p>延迟能不能降低？</p>
+</blockquote>
+<blockquote>
+<p>数据怎么来？</p>
+</blockquote>
+<blockquote>
+<p>系统怎么部署？</p>
+</blockquote>
+<p>两边都真正待过之后，你对 AI 的理解会完整很多。</p>
+<hr>
+<div class="sl-heading-wrapper level-h3"><h3 id="q4关于收入">Q4：关于收入</h3><a class="sl-anchor-link" href="#q4关于收入"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Q4：关于收入”</span></a></div>
+<p>说一点大家最爱听的。AI 目前仍然是整个计算机行业里面回报最高的方向之一。尤其是在基础模型迅速发展的这几年，真正优秀的 AI 研究和算法人才依然非常稀缺。顶尖博士毕业生拿到 <strong>200 万到 400 万人民币年包</strong>，并不罕见。一些头部公司的特殊人才计划、核心研究岗位，以及极少数顶尖候选人的 offer，还可能明显高于这个数字。</p>
+<p>大厂之外，也有大量估值非常高的 AI 创业公司在抢人。当然，需要把一件事情说清楚：</p>
+<blockquote>
+<p><strong>这些数字对应的是这条路上走得非常好的那一批人。</strong></p>
+</blockquote>
+<p>收入分布非常不均匀。普通算法工程师、普通硕士、顶尖研究员之间的收入，可以差很多倍。一个极端数字代表不了大多数人的情况，毕业后的实际收入仍然取决于个人能力和所处岗位。但即使看平均水平，AI 相关岗位目前依然是工科专业中回报非常靠前的一类。当然，如果你决定认真走这条路，前提也很明确：</p>
+<blockquote>
+<p>你要接受它对学历、技术能力和持续学习能力都有很高要求。</p>
+</blockquote>
+<hr>
+<div class="sl-heading-wrapper level-h3"><h3 id="q5ai-已经接近上限了吗">Q5：AI 已经接近上限了吗？</h3><a class="sl-anchor-link" href="#q5ai-已经接近上限了吗"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “Q5：AI 已经接近上限了吗？”</span></a></div>
+<p>你以后大概会经常听见一种说法：</p>
+<blockquote>
+<p>大模型快到头了吗？</p>
+</blockquote>
+<blockquote>
+<p>现在每一代模型之间的差距正在变小吗？</p>
+</blockquote>
+<blockquote>
+<p>AI 的能力开始饱和了吗？</p>
+</blockquote>
+<p>这个观察有一定道理。我想用手机来打个比方。从 iPhone 6 到今天，中间已经隔了很多代。屏幕变得更好。芯片变得更快。相机变得更强。续航变得更长。但它本质上仍然是一部智能手机。我们已经很久没有看到第一代 iPhone 发布时那种：</p>
+<blockquote>
+<p>整个平台突然发生变化</p>
+</blockquote>
+<p>的感觉。但是回头看会发现一个很有意思的事情。真正改变中国人生活方式的大量产品，比如：</p>
+<ul>
+<li>抖音</li>
+<li>拼多多</li>
+<li>外卖</li>
+<li>移动支付</li>
+<li>网约车</li>
+</ul>
+<p>几乎全部出现在智能手机平台成熟之后。第一代 iPhone 发布的时候，这些东西很多还做不出来。因为当时：</p>
+<ul>
+<li>手机不够强</li>
+<li>网络不够快</li>
+<li>用户规模不够大</li>
+<li>基础设施不成熟</li>
+</ul>
+<p>后来智能手机本身没有继续发生同样级别的革命，应用反而开始爆发。 <strong>硬件停止剧烈革命的几年，恰恰成为应用快速爆发的几年。</strong> 我觉得 AI 今天可能正在接近这样一个阶段。基础模型已经拥有非常强的能力。模型可以：</p>
+<ul>
+<li>写代码</li>
+<li>读论文</li>
+<li>看图片</li>
+<li>理解视频</li>
+<li>调用工具</li>
+<li>搜索信息</li>
+<li>完成越来越长的任务</li>
+</ul>
+<p>但整个社会其实还远远没有想明白：</p>
+<blockquote>
+<p><strong>这么强的东西，到底应该怎样真正被使用？</strong></p>
+</blockquote>
+<p>今天的大部分软件，本质上仍然是在人类使用软件。如果未来模型可以自己操作软件、调用工具、处理信息、完成任务，那么很多产品的基本形态都可能重新设计。机器人也是一样。如果一个模型真的能够理解现实世界，并可靠地控制身体，那么很多现在依赖人完成的工作，也会出现新的可能性。接下来到底会出现什么产品、什么公司、什么研究方向，现在没有人知道标准答案。大量问题没有解决。大量方向甚至还没有被提出。</p>
+<p>而你们从大一入学，到研究生毕业，大约还有七年时间。这七年，很可能恰好就是 AI 技术继续发展、进入更多行业和真实场景的七年。你们会使用这一轮技术变化带来的工具；如果走得足够远，也完全有可能成为真正参与这件事情的人。</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="最后">最后</h2><a class="sl-anchor-link" href="#最后"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “最后”</span></a></div>
+<blockquote>
+<p>希望大家能够在这一轮 AI 技术浪潮之中，实现自己的理想。</p>
+</blockquote>
+<p>欢迎大家加入微光工作室机器学习方向。希望一年以后再回头看这篇文章的时候，你已经知道 MLP、CNN、Transformer、LLM 这些名字是什么意思，也真正亲手写过它们、训练过它们、调过它们，踩过很多坑。再往后，希望你能够开始读论文、做研究，慢慢找到自己真正喜欢的问题。我们工作室能做的事情，就是尽可能让大家少走一点弯路，更早看到这个领域真正是什么样子。</p>
+<p>剩下的路，需要你自己走。</p></div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"></div></footer><div class="custom-footer astro-jo6i4kqk"><!-- 网站统计信息 --><div class="footer-row astro-jo6i4kqk"><span class="astro-jo6i4kqk">本页阅读次数 <span id="vercount_value_page_pv" class="astro-jo6i4kqk">Loading</span> 次</span><span class="separator astro-jo6i4kqk"> | </span><span class="astro-jo6i4kqk">本站访问次数 <span id="vercount_value_site_pv" class="astro-jo6i4kqk">Loading</span> 次</span><span class="separator astro-jo6i4kqk"> | </span><span class="astro-jo6i4kqk">本站访问人数 <span id="vercount_value_site_uv" class="astro-jo6i4kqk">Loading</span> 人</span></div><script defer src="https://events.vercount.one/js"></script><!-- 站点基础信息 --><div class="footer-row astro-jo6i4kqk"><span class="astro-jo6i4kqk">本站已支持IPv6访问</span><span class="separator astro-jo6i4kqk"> || </span><span class="astro-jo6i4kqk">Copyright &copy; 2026 </span><a href="https://www.glimmer.org.cn/" class="astro-jo6i4kqk">glimmer</a></div><!-- 备案信息 --><div class="footer-row astro-jo6i4kqk"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="astro-jo6i4kqk">蜀ICP备2026040807号-1</a><a href="https://beian.mps.gov.cn/#/query/webSearch?code=51010802033346" rel="noreferrer" target="_blank" class="police-link astro-jo6i4kqk"><img src="/_astro/police.5eBpD1mQ_Z1LFlT6.webp" alt="公安备案图标" loading="lazy" decoding="async" width="16" height="16" class="astro-jo6i4kqk">川公网安备51010802033346号</a></div></div></div></div></main></div></div></div></div></body></html>

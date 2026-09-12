@@ -1,6 +1,6 @@
 # glimmer-26-recruit-frontend
 
-这是一个用于部署最终的前端网页的仓库。
+这是一个用于部署最终的前端网页的仓库。当前分支为未发布招新题时的分支。
 
 访问域名：https://www.glimmer.org.cn。
 

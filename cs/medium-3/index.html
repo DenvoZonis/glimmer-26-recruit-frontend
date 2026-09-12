@@ -1,0 +1,1224 @@
+<!DOCTYPE html><html lang="zh-CN" dir="ltr" data-theme="dark" data-has-toc data-has-sidebar class="astro-vdxcvpsm"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>MEDIUM-3：初识Linux系统 | Glimmer</title><link rel="canonical" href="https://www.glimmer.org.cn/cs/medium-3/"/><link rel="sitemap" href="/sitemap-index.xml"/><link rel="icon" href="/favicon.png" sizes="32x32"/><link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180"/><style data-starlight-theme-md3="options">:root,
+	::backdrop {
+		--md-sys-color-primary: #b7c4ff;
+		--md-sys-color-on-primary: #002682;
+		--md-sys-color-primary-container: #0038b6;
+		--md-sys-color-on-primary-container: #dce1ff;
+		--md-sys-color-secondary: #c2c5dd;
+		--md-sys-color-on-secondary: #2b3042;
+		--md-sys-color-secondary-container: #424659;
+		--md-sys-color-on-secondary-container: #dee1f9;
+		--md-sys-color-tertiary: #e4bada;
+		--md-sys-color-on-tertiary: #43273f;
+		--md-sys-color-tertiary-container: #5c3d56;
+		--md-sys-color-on-tertiary-container: #ffd7f4;
+		--md-sys-color-error: #ffb4ab;
+		--md-sys-color-on-error: #690005;
+		--md-sys-color-error-container: #93000a;
+		--md-sys-color-on-error-container: #ffb4ab;
+		--md-sys-color-background: #131316;
+		--md-sys-color-on-background: #e4e1e6;
+		--md-sys-color-surface: #131316;
+		--md-sys-color-surface-dim: #131316;
+		--md-sys-color-surface-container-lowest: #0e0e11;
+		--md-sys-color-surface-container-low: #1b1b1f;
+		--md-sys-color-surface-container: #1f1f23;
+		--md-sys-color-surface-container-high: #2a2a2d;
+		--md-sys-color-surface-container-highest: #343438;
+		--md-sys-color-on-surface: #e4e1e6;
+		--md-sys-color-surface-variant: #45464f;
+		--md-sys-color-on-surface-variant: #c6c5d0;
+		--md-sys-color-outline: #90909a;
+		--md-sys-color-outline-variant: #45464f;
+		--md-sys-color-inverse-surface: #e4e1e6;
+		--md-sys-color-inverse-on-surface: #303034;
+		--md-sys-color-inverse-primary: #004ced;
+		--md-sys-color-scrim: #000000;
+	}
+
+	:root[data-theme='light'],
+	[data-theme='light'] ::backdrop {
+		--md-sys-color-primary: #004ced;
+		--md-sys-color-on-primary: #ffffff;
+		--md-sys-color-primary-container: #dce1ff;
+		--md-sys-color-on-primary-container: #001552;
+		--md-sys-color-secondary: #5a5d72;
+		--md-sys-color-on-secondary: #ffffff;
+		--md-sys-color-secondary-container: #dee1f9;
+		--md-sys-color-on-secondary-container: #171b2c;
+		--md-sys-color-tertiary: #75546f;
+		--md-sys-color-on-tertiary: #ffffff;
+		--md-sys-color-tertiary-container: #ffd7f4;
+		--md-sys-color-on-tertiary-container: #2c1229;
+		--md-sys-color-error: #ba1a1a;
+		--md-sys-color-on-error: #ffffff;
+		--md-sys-color-error-container: #ffdad6;
+		--md-sys-color-on-error-container: #410002;
+		--md-sys-color-background: #fefbff;
+		--md-sys-color-on-background: #1b1b1f;
+		--md-sys-color-surface: #fefbff;
+		--md-sys-color-surface-dim: #dbd9de;
+		--md-sys-color-surface-container-lowest: #ffffff;
+		--md-sys-color-surface-container-low: #f5f3f7;
+		--md-sys-color-surface-container: #efedf1;
+		--md-sys-color-surface-container-high: #eae7ec;
+		--md-sys-color-surface-container-highest: #e4e1e6;
+		--md-sys-color-on-surface: #1b1b1f;
+		--md-sys-color-surface-variant: #e2e1ec;
+		--md-sys-color-on-surface-variant: #45464f;
+		--md-sys-color-outline: #767680;
+		--md-sys-color-outline-variant: #c6c5d0;
+		--md-sys-color-inverse-surface: #303034;
+		--md-sys-color-inverse-on-surface: #f2f0f4;
+		--md-sys-color-inverse-primary: #b7c4ff;
+		--md-sys-color-scrim: #000000;
+	}</style><script data-starlight-theme-md3="route-bootstrap">
+(() => {
+	const storageKey = 'md3-route-transition';
+	const sidebarStorageKey = 'md3-sidebar-route-transition';
+	let shouldEnter = false;
+	let shouldEnterSidebar = false;
+
+	try {
+		shouldEnter = sessionStorage.getItem(storageKey) === 'true';
+		shouldEnterSidebar = sessionStorage.getItem(sidebarStorageKey) === 'true';
+		sessionStorage.removeItem(storageKey);
+		sessionStorage.removeItem(sidebarStorageKey);
+	} catch {
+		return;
+	}
+
+	if (!shouldEnter || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+	document.documentElement.setAttribute('data-md3-route-state', 'entering');
+	if (shouldEnterSidebar) {
+		document.documentElement.setAttribute('data-md3-sidebar-route-state', 'entering');
+	}
+
+	const clearRouteState = () => {
+		requestAnimationFrame(() => {
+			requestAnimationFrame(() => {
+				if (document.documentElement.getAttribute('data-md3-route-state') === 'entering') {
+					document.documentElement.removeAttribute('data-md3-route-state');
+				}
+				if (document.documentElement.getAttribute('data-md3-sidebar-route-state') === 'entering') {
+					document.documentElement.removeAttribute('data-md3-sidebar-route-state');
+				}
+			});
+		});
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', clearRouteState, { once: true });
+	} else {
+		clearRouteState();
+	}
+})();
+</script><script data-starlight-theme-md3="motion">
+(() => {
+	const routeTransitionStorageKey = 'md3-route-transition';
+	const sidebarRouteTransitionStorageKey = 'md3-sidebar-route-transition';
+		const rippleSelector = [
+			'button:not([disabled])',
+			'.sl-link-button:not([aria-disabled="true"])',
+			'.sidebar-content a[href]',
+			'.sidebar-content summary',
+			'starlight-toc a[href]',
+			'mobile-starlight-toc summary .toggle',
+			'mobile-starlight-toc .dropdown a[href]',
+			'.pagination-links a[href]',
+			'starlight-tabs [role="tab"]:not([aria-disabled="true"])',
+			'.sl-link-card[href]',
+			'starlight-menu-button button',
+			'.social-icons a[href]',
+			'.right-group label'
+	].join(',');
+	const navigationSelector = [
+		'.sidebar-content a[href]',
+		'starlight-toc a[href]',
+		'.pagination-links a[href]',
+		'.sl-link-button[href]',
+		'.sl-link-card[href]'
+	].join(',');
+
+	const reducedMotion = () =>
+		window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+		getComputedStyle(document.documentElement).getPropertyValue('--md3-motion-duration-state').trim() === '0ms';
+
+	const durationToMs = (value) => {
+		const token = value.trim();
+		if (!token) return 0;
+		if (token.endsWith('ms')) return Number.parseFloat(token);
+		if (token.endsWith('s')) return Number.parseFloat(token) * 1000;
+		return Number.parseFloat(token) || 0;
+	};
+
+			const activeRipples = new Map();
+			const sidebarDisclosureAnimations = new WeakMap();
+			const mobileTocAnimations = new WeakMap();
+			const tocNavigationLocks = new WeakMap();
+			const tocIndicatorControllers = new WeakMap();
+
+	const getMotionDuration = (tokenName, fallback) => {
+		const styles = getComputedStyle(document.documentElement);
+		return durationToMs(styles.getPropertyValue(tokenName)) || fallback;
+	};
+
+	const getMotionEasing = (tokenName, fallback) => {
+		const value = getComputedStyle(document.documentElement).getPropertyValue(tokenName).trim();
+		return value || fallback;
+	};
+
+	const getDisclosureContent = (details) => {
+		const content = details.querySelector(':scope > ul');
+		return content instanceof HTMLElement ? content : null;
+	};
+
+	const getMobileTocContent = (details) => {
+		const content = details.querySelector(':scope > .dropdown');
+		return content instanceof HTMLElement ? content : null;
+	};
+
+	const animateSidebarDisclosure = (summary) => {
+		const details = summary.parentElement;
+		if (!(details instanceof HTMLDetailsElement)) return false;
+		const content = getDisclosureContent(details);
+		if (!content) return false;
+
+		const active = sidebarDisclosureAnimations.get(details);
+		const currentHeight = active ? content.getBoundingClientRect().height : null;
+		const isClosing = active ? !active.closing : details.open;
+		if (active) {
+			active.animation.cancel();
+			sidebarDisclosureAnimations.delete(details);
+		}
+
+		const duration = getMotionDuration(
+			isClosing ? '--md3-motion-duration-sidebar-collapse' : '--md3-motion-duration-sidebar-expand',
+			isClosing ? 200 : 400
+		);
+		if (duration <= 0) return false;
+
+		const easing = isClosing
+			? getMotionEasing('--md-sys-motion-easing-emphasized-accelerate', 'cubic-bezier(0.3, 0, 0.8, 0.15)')
+			: getMotionEasing('--md-sys-motion-easing-emphasized-decelerate', 'cubic-bezier(0.05, 0.7, 0.1, 1)');
+		details.dataset.md3DisclosureState = isClosing ? 'closing' : 'opening';
+
+		if (!isClosing) {
+			details.open = true;
+		}
+
+		const startHeight = currentHeight ?? (isClosing ? content.offsetHeight : 0);
+		const endHeight = isClosing ? 0 : content.scrollHeight;
+		content.style.overflow = 'clip';
+		const animation = content.animate(
+			isClosing
+				? [
+						{ blockSize: startHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 0 },
+						{ blockSize: Math.round(startHeight * 0.28) + 'px', opacity: 1, transform: 'translateY(-0.125rem)', offset: 0.75 },
+						{ blockSize: endHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 1 },
+					]
+				: [
+						{ blockSize: startHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 0 },
+						{ blockSize: Math.round(endHeight * 0.72) + 'px', opacity: 1, transform: 'translateY(0)', offset: 0.34 },
+						{ blockSize: endHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 1 },
+					],
+			{ duration, easing }
+		);
+		sidebarDisclosureAnimations.set(details, { animation, closing: isClosing });
+
+		animation.finished
+			.catch(() => {})
+			.finally(() => {
+				const active = sidebarDisclosureAnimations.get(details);
+				if (!active || active.animation !== animation) return;
+				if (isClosing) {
+					details.open = false;
+				} else {
+					details.open = true;
+				}
+				content.style.removeProperty('overflow');
+				delete details.dataset.md3DisclosureState;
+				sidebarDisclosureAnimations.delete(details);
+		});
+		return true;
+	};
+
+	const animateMobileTocDisclosure = (summary, desiredOpen) => {
+		const details = summary.closest('mobile-starlight-toc details');
+		if (!(details instanceof HTMLDetailsElement)) return null;
+		const content = getMobileTocContent(details);
+		if (!content) return null;
+
+		const active = mobileTocAnimations.get(details);
+		const currentHeight = active ? content.getBoundingClientRect().height : null;
+		const isClosing =
+			typeof desiredOpen === 'boolean' ? !desiredOpen : active ? !active.closing : details.open;
+		if (active && active.closing === isClosing) return { handled: true, finished: active.finished };
+		if (active) {
+			active.animation.cancel();
+			mobileTocAnimations.delete(details);
+		}
+
+		const duration = getMotionDuration(
+			isClosing ? '--md3-motion-duration-toc-menu-collapse' : '--md3-motion-duration-toc-menu-expand',
+			isClosing ? 160 : 220
+		);
+		if (duration <= 0) return null;
+
+		const easing = isClosing
+			? getMotionEasing('--md-sys-motion-easing-emphasized-accelerate', 'cubic-bezier(0.3, 0, 0.8, 0.15)')
+			: getMotionEasing('--md-sys-motion-easing-emphasized-decelerate', 'cubic-bezier(0.05, 0.7, 0.1, 1)');
+		details.dataset.md3TocState = isClosing ? 'closing' : 'opening';
+
+		if (!isClosing) {
+			details.open = true;
+		}
+
+		const startHeight = currentHeight ?? (isClosing ? content.offsetHeight : 0);
+		const endHeight = isClosing ? 0 : content.scrollHeight;
+		content.style.overflow = 'clip';
+
+		const animation = content.animate(
+			isClosing
+				? [
+						{ blockSize: startHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 0 },
+						{ blockSize: Math.round(startHeight * 0.38) + 'px', opacity: 0.78, transform: 'translateY(-0.125rem)', offset: 0.72 },
+						{ blockSize: endHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 1 },
+					]
+				: [
+						{ blockSize: startHeight + 'px', opacity: 0, transform: 'translateY(-0.25rem)', offset: 0 },
+						{ blockSize: Math.round(endHeight * 0.72) + 'px', opacity: 1, transform: 'translateY(0)', offset: 0.38 },
+						{ blockSize: endHeight + 'px', opacity: 1, transform: 'translateY(0)', offset: 1 },
+					],
+			{ duration, easing }
+		);
+
+		const finished = animation.finished
+			.catch(() => {})
+			.finally(() => {
+				const active = mobileTocAnimations.get(details);
+				if (!active || active.animation !== animation) return;
+				if (isClosing) {
+					details.open = false;
+				} else {
+					details.open = true;
+				}
+				content.style.removeProperty('overflow');
+				delete details.dataset.md3TocState;
+				mobileTocAnimations.delete(details);
+			});
+		mobileTocAnimations.set(details, { animation, closing: isClosing, finished });
+		return { handled: true, finished };
+	};
+
+	const getHashTarget = (hash) => {
+		if (!hash || hash === '#') return null;
+		const id = decodeURIComponent(hash.slice(1));
+		return document.getElementById(id);
+	};
+
+	const scrollToHashTarget = (url, target) => {
+		const path = url.pathname + url.search + url.hash;
+		if (window.location.pathname + window.location.search + window.location.hash !== path) {
+			history.pushState(null, '', path);
+		}
+		if (target instanceof HTMLElement) {
+			const hadTabIndex = target.hasAttribute('tabindex');
+			target.setAttribute('tabindex', '-1');
+			target.focus({ preventScroll: true });
+			if (!hadTabIndex) {
+				window.setTimeout(() => target.removeAttribute('tabindex'), 1000);
+			}
+		}
+		target.scrollIntoView({
+			behavior: reducedMotion() ? 'auto' : 'smooth',
+			block: 'start',
+		});
+	};
+
+	const closeMobileTocWithAnimation = (details) => {
+		const summary = details.querySelector(':scope > summary');
+		if (!(summary instanceof HTMLElement) || !details.open) return Promise.resolve();
+		if (reducedMotion()) {
+			details.open = false;
+			return Promise.resolve();
+		}
+		const result = animateMobileTocDisclosure(summary, false);
+		return result?.finished ?? Promise.resolve();
+	};
+
+	const createRipple = (surface, positionEvent) => {
+		if (!(surface instanceof HTMLElement) || surface.matches('[aria-disabled="true"], [disabled]')) return;
+
+		const rect = surface.getBoundingClientRect();
+		if (!rect.width || !rect.height) return;
+
+		const maxDim = Math.max(rect.width, rect.height);
+		const initialSize = Math.max(1, Math.floor(maxDim * 0.2));
+		const softEdgeSize = Math.max(maxDim * 0.35, 75);
+		const rippleScale = (Math.hypot(rect.width, rect.height) + 10 + softEdgeSize) / initialSize;
+		const originX = positionEvent ? positionEvent.clientX - rect.left : rect.width / 2;
+		const originY = positionEvent ? positionEvent.clientY - rect.top : rect.height / 2;
+		const startX = originX - initialSize / 2;
+		const startY = originY - initialSize / 2;
+		const endX = rect.width / 2 - initialSize / 2;
+		const endY = rect.height / 2 - initialSize / 2;
+		const ripple = document.createElement('span');
+		ripple.className = 'md3-ripple';
+		ripple.style.setProperty('--md3-ripple-size', initialSize + 'px');
+		ripple.style.setProperty('--md3-ripple-start-x', startX + 'px');
+		ripple.style.setProperty('--md3-ripple-start-y', startY + 'px');
+		ripple.style.setProperty('--md3-ripple-end-x', endX + 'px');
+		ripple.style.setProperty('--md3-ripple-end-y', endY + 'px');
+		ripple.style.setProperty('--md3-ripple-scale', rippleScale.toString());
+		surface.append(ripple);
+
+		return {
+			ripple,
+			surface,
+			startedAt: performance.now(),
+			minimumPressMs: getMotionDuration('--md3-motion-ripple-minimum-press', 225),
+			fadeMs: getMotionDuration('--md3-motion-duration-ripple-fade', 150),
+			released: false,
+		};
+	};
+
+	const releaseRipple = (record) => {
+		if (!record || record.released) return;
+		record.released = true;
+
+		const elapsedMs = performance.now() - record.startedAt;
+		const delayMs = Math.max(0, record.minimumPressMs - elapsedMs);
+		window.setTimeout(() => {
+			if (!record.ripple.isConnected) return;
+			record.ripple.classList.add('md3-ripple--releasing');
+			window.setTimeout(() => record.ripple.remove(), record.fadeMs + 50);
+		}, delayMs);
+	};
+
+			const getLockedTocLink = (nav) => {
+				const record = tocNavigationLocks.get(nav);
+				if (!record || !record.link.isConnected || !nav.contains(record.link)) {
+					return null;
+				}
+				return record.link;
+			};
+
+			const getTocHost = (surface) => {
+				if (!(surface instanceof Element)) return null;
+				const host = surface.matches('starlight-toc, mobile-starlight-toc')
+					? surface
+					: surface.closest('starlight-toc, mobile-starlight-toc');
+				return host instanceof HTMLElement ? host : null;
+			};
+
+			const setTocCurrentThroughHost = (surface, link) => {
+				const host = getTocHost(surface);
+				if (!(host instanceof HTMLElement) || !(link instanceof HTMLAnchorElement) || !host.contains(link)) {
+					return false;
+				}
+
+				// Starlight keeps a private current-link reference; its setter must update both states.
+				let prototype = Object.getPrototypeOf(host);
+				while (prototype && prototype !== HTMLElement.prototype) {
+					const descriptor = Object.getOwnPropertyDescriptor(prototype, 'current');
+					if (typeof descriptor?.set === 'function') {
+						try {
+							descriptor.set.call(host, link);
+							host.querySelectorAll('a[aria-current="true"]').forEach((currentLink) => {
+								if (currentLink !== link) currentLink.removeAttribute('aria-current');
+							});
+							return link.getAttribute('aria-current') === 'true';
+						} catch {
+							return false;
+						}
+					}
+					prototype = Object.getPrototypeOf(prototype);
+				}
+				return false;
+			};
+
+			const transformForTocPosition = (x, y) =>
+				'translate3d(' + x.toFixed(3) + 'px, ' + y.toFixed(3) + 'px, 0)';
+
+			const readTocIndicatorPosition = (controller) => {
+				try {
+					const matrix = new DOMMatrixReadOnly(getComputedStyle(controller.indicator).transform);
+					return { x: matrix.m41, y: matrix.m42 };
+				} catch {
+					return { x: controller.x, y: controller.y };
+				}
+			};
+
+			const getTocIndicatorController = (nav) => {
+				const existing = tocIndicatorControllers.get(nav);
+				if (existing?.indicator?.isConnected) return existing;
+
+				const indicator = document.createElement('span');
+				indicator.className = 'md3-toc-indicator';
+				indicator.setAttribute('aria-hidden', 'true');
+				nav.prepend(indicator);
+				const controller = {
+					nav,
+					indicator,
+					initialized: false,
+					x: 0,
+					y: 0,
+					targetX: 0,
+					targetY: 0,
+					velocityX: 0,
+					velocityY: 0,
+					frame: 0,
+					lastTime: 0,
+					animation: null,
+					stiffness: 1400,
+					dampingRatio: 0.9,
+				};
+				tocIndicatorControllers.set(nav, controller);
+				return controller;
+			};
+
+			const stopTocIndicatorMotion = (controller, capturePosition = true) => {
+				const position = capturePosition ? readTocIndicatorPosition(controller) : null;
+				if (controller.frame) {
+					cancelAnimationFrame(controller.frame);
+					controller.frame = 0;
+				}
+				if (controller.animation) {
+					controller.animation.cancel();
+					controller.animation = null;
+				}
+				if (position) {
+					controller.x = position.x;
+					controller.y = position.y;
+					controller.indicator.style.transform = transformForTocPosition(position.x, position.y);
+				}
+				controller.velocityX = 0;
+				controller.velocityY = 0;
+				controller.lastTime = 0;
+			};
+
+			const snapTocIndicator = (controller, targetX, targetY) => {
+				stopTocIndicatorMotion(controller, false);
+				controller.x = targetX;
+				controller.y = targetY;
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				controller.indicator.style.transform = transformForTocPosition(targetX, targetY);
+				controller.nav.dataset.md3TocMotion = 'settled';
+			};
+
+			const stepTocIndicatorSpring = (controller, now) => {
+				if (!controller.indicator.isConnected) {
+					controller.frame = 0;
+					return;
+				}
+				const elapsed = controller.lastTime ? Math.min((now - controller.lastTime) / 1000, 0.032) : 0;
+				controller.lastTime = now;
+				const steps = Math.max(1, Math.ceil(elapsed / 0.008));
+				const dt = steps ? elapsed / steps : 0;
+				const damping = 2 * controller.dampingRatio * Math.sqrt(controller.stiffness);
+
+				for (let index = 0; index < steps; index += 1) {
+					const accelerationX =
+						-controller.stiffness * (controller.x - controller.targetX) - damping * controller.velocityX;
+					const accelerationY =
+						-controller.stiffness * (controller.y - controller.targetY) - damping * controller.velocityY;
+					controller.velocityX += accelerationX * dt;
+					controller.velocityY += accelerationY * dt;
+					controller.x += controller.velocityX * dt;
+					controller.y += controller.velocityY * dt;
+				}
+
+				controller.indicator.style.transform = transformForTocPosition(controller.x, controller.y);
+				const settled =
+					Math.abs(controller.x - controller.targetX) < 0.1 &&
+					Math.abs(controller.y - controller.targetY) < 0.1 &&
+					Math.abs(controller.velocityX) < 2 &&
+					Math.abs(controller.velocityY) < 2;
+				if (settled) {
+					controller.frame = 0;
+					controller.x = controller.targetX;
+					controller.y = controller.targetY;
+					controller.velocityX = 0;
+					controller.velocityY = 0;
+					controller.indicator.style.transform = transformForTocPosition(controller.x, controller.y);
+					controller.nav.dataset.md3TocMotion = 'settled';
+					return;
+				}
+				controller.frame = requestAnimationFrame((frameNow) => stepTocIndicatorSpring(controller, frameNow));
+			};
+
+			const retargetTocIndicatorSpring = (controller, targetX, targetY) => {
+				if (controller.animation) {
+					stopTocIndicatorMotion(controller, true);
+				}
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				const styles = getComputedStyle(document.documentElement);
+				controller.stiffness =
+					Number.parseFloat(styles.getPropertyValue('--md3-motion-toc-spring-stiffness')) || 1400;
+				controller.dampingRatio =
+					Number.parseFloat(styles.getPropertyValue('--md3-motion-toc-spring-damping-ratio')) || 0.9;
+				controller.nav.dataset.md3TocMotion = 'spring';
+				if (!controller.frame) {
+					controller.lastTime = performance.now();
+					controller.frame = requestAnimationFrame((frameNow) => stepTocIndicatorSpring(controller, frameNow));
+				}
+			};
+
+			const animateTocIndicatorFlip = (controller, targetX, targetY) => {
+				const duration = getMotionDuration('--md3-motion-duration-toc-marker', 250);
+				if (duration <= 0 || reducedMotion()) {
+					snapTocIndicator(controller, targetX, targetY);
+					return;
+				}
+				const current = readTocIndicatorPosition(controller);
+				stopTocIndicatorMotion(controller, false);
+				controller.x = current.x;
+				controller.y = current.y;
+				controller.targetX = targetX;
+				controller.targetY = targetY;
+				controller.indicator.style.transform = transformForTocPosition(targetX, targetY);
+				controller.nav.dataset.md3TocMotion = 'flip';
+				const animation = controller.indicator.animate(
+					[
+						{ transform: transformForTocPosition(current.x, current.y) },
+						{ transform: transformForTocPosition(targetX, targetY) },
+					],
+					{
+						duration,
+						easing: getMotionEasing('--md-sys-motion-easing-emphasized', 'cubic-bezier(0.2, 0, 0, 1)'),
+					}
+				);
+				controller.animation = animation;
+				animation.finished
+					.catch(() => {})
+					.finally(() => {
+						if (controller.animation !== animation) return;
+						controller.animation = null;
+						controller.x = targetX;
+						controller.y = targetY;
+						controller.nav.dataset.md3TocMotion = 'settled';
+					});
+			};
+
+			const syncTocIndicator = (nav, source = 'scroll') => {
+				if (!(nav instanceof HTMLElement)) return;
+				const lockedLink = getLockedTocLink(nav);
+				const activeLink = lockedLink || nav.querySelector('a[aria-current="true"]');
+				const controller = getTocIndicatorController(nav);
+				nav.dataset.md3TocTracker = 'true';
+
+				if (!(activeLink instanceof HTMLElement)) {
+					controller.indicator.style.opacity = '0';
+					return;
+				}
+
+				const indicatorBlockSize = 16;
+				const navRect = nav.getBoundingClientRect();
+				const activeRect = activeLink.getBoundingClientRect();
+				const activeStyles = getComputedStyle(activeLink);
+				const rootFontSize = Number.parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+				const indicatorDepth = Math.max(0, Number.parseFloat(activeStyles.getPropertyValue('--depth')) || 0);
+				const indicatorDirection = activeStyles.direction === 'rtl' ? -1 : 1;
+				const targetX = indicatorDepth * indicatorDirection * rootFontSize;
+				const targetY =
+					activeRect.top - navRect.top + Math.max(0, (activeRect.height - indicatorBlockSize) / 2);
+				nav.style.setProperty('--md3-toc-indicator-x', targetX + 'px');
+				nav.style.setProperty('--md3-toc-indicator-y', targetY + 'px');
+				controller.indicator.style.opacity = '1';
+
+				if (!controller.initialized || source === 'layout' || reducedMotion()) {
+					controller.initialized = true;
+					snapTocIndicator(controller, targetX, targetY);
+					return;
+				}
+
+				const targetChanged =
+					Math.abs(controller.targetX - targetX) > 0.1 || Math.abs(controller.targetY - targetY) > 0.1;
+				if (!targetChanged) return;
+				if (lockedLink || source === 'click') {
+					animateTocIndicatorFlip(controller, targetX, targetY);
+				} else {
+					retargetTocIndicatorSpring(controller, targetX, targetY);
+				}
+			};
+
+			const setTocActiveLink = (link, source = 'click') => {
+				const nav = link.closest('starlight-toc nav');
+				if (!(nav instanceof HTMLElement)) return false;
+				const updated = setTocCurrentThroughHost(nav, link);
+				syncTocIndicator(nav, source);
+				return updated;
+			};
+
+		const lockTocActiveLink = (link, lockMs = 1200) => {
+			const nav = link.closest('starlight-toc nav');
+			if (!(nav instanceof HTMLElement)) return false;
+
+			const previous = tocNavigationLocks.get(nav);
+			if (previous) {
+				window.clearTimeout(previous.timeout);
+				previous.link.classList.remove('md3-toc-navigation-target');
+			}
+
+			nav.dataset.md3TocNavigationLock = 'true';
+			link.classList.add('md3-toc-navigation-target');
+			setTocActiveLink(link);
+
+			const timeout = window.setTimeout(() => {
+				const active = tocNavigationLocks.get(nav);
+				if (!active || active.link !== link) return;
+				setTocActiveLink(link);
+				link.classList.remove('md3-toc-navigation-target');
+				delete nav.dataset.md3TocNavigationLock;
+				tocNavigationLocks.delete(nav);
+				syncTocIndicator(nav);
+			}, lockMs);
+
+			tocNavigationLocks.set(nav, { link, timeout });
+			return true;
+		};
+
+		const setMobileTocActiveLink = (details, link) => {
+			if (!(details instanceof HTMLDetailsElement) || !(link instanceof HTMLAnchorElement)) return false;
+			return setTocCurrentThroughHost(details, link);
+		};
+
+	const setupTocIndicators = () => {
+		const navs = document.querySelectorAll('starlight-toc nav');
+		navs.forEach((nav) => {
+			if (!(nav instanceof HTMLElement) || nav.dataset.md3TocTrackerReady === 'true') return;
+			nav.dataset.md3TocTrackerReady = 'true';
+			let frame = 0;
+				let pendingSource = 'scroll';
+				const scheduleSync = (source = 'scroll') => {
+					if (source === 'layout') pendingSource = 'layout';
+					if (frame) return;
+					frame = requestAnimationFrame(() => {
+						frame = 0;
+						const source = pendingSource;
+						pendingSource = 'scroll';
+						syncTocIndicator(nav, source);
+					});
+				};
+
+				syncTocIndicator(nav, 'initial');
+				requestAnimationFrame(() => {
+					if (nav.isConnected) {
+						nav.dataset.md3TocMotionReady = 'true';
+					}
+				});
+				new MutationObserver(() => {
+					const lockedLink = getLockedTocLink(nav);
+					const currentLinks = nav.querySelectorAll('a[aria-current="true"]');
+					if (
+						lockedLink &&
+						(lockedLink.getAttribute('aria-current') !== 'true' || currentLinks.length !== 1)
+					) {
+						setTocCurrentThroughHost(nav, lockedLink);
+					}
+					scheduleSync('scroll');
+				}).observe(nav, {
+					attributes: true,
+					attributeFilter: ['aria-current'],
+					childList: true,
+					subtree: true,
+				});
+				if ('ResizeObserver' in window) {
+					new ResizeObserver(() => scheduleSync('layout')).observe(nav);
+				}
+				window.addEventListener('scroll', () => scheduleSync('scroll'), { passive: true });
+				window.addEventListener('resize', () => scheduleSync('layout'), { passive: true });
+		});
+	};
+
+	const setupTocEndState = () => {
+		let frame = 0;
+		const syncEndState = () => {
+			const scrollingElement = document.scrollingElement || document.documentElement;
+			const remainingScroll =
+				scrollingElement.scrollHeight - scrollingElement.clientHeight - scrollingElement.scrollTop;
+			if (remainingScroll > 2) return false;
+
+			document.querySelectorAll('starlight-toc nav').forEach((nav) => {
+				if (!(nav instanceof HTMLElement)) return;
+				if (getLockedTocLink(nav)) {
+					syncTocIndicator(nav);
+					return;
+				}
+				const links = Array.from(nav.querySelectorAll('a[href]')).filter(
+					(link) => link instanceof HTMLElement
+				);
+				const lastLink = links.at(-1);
+				if (!(lastLink instanceof HTMLElement)) return;
+				const currentLinks = links.filter((link) => link.getAttribute('aria-current') === 'true');
+				if (currentLinks.length === 1 && currentLinks[0] === lastLink) {
+					syncTocIndicator(nav);
+					return;
+				}
+
+					setTocActiveLink(lastLink, 'scroll');
+			});
+			document.querySelectorAll('mobile-starlight-toc details').forEach((details) => {
+				if (!(details instanceof HTMLDetailsElement)) return;
+				const links = Array.from(details.querySelectorAll('.dropdown a[href]')).filter(
+					(link) => link instanceof HTMLElement
+				);
+				const lastLink = links.at(-1);
+				if (!(lastLink instanceof HTMLElement)) return;
+				const currentLinks = links.filter((link) => link.getAttribute('aria-current') === 'true');
+				if (currentLinks.length === 1 && currentLinks[0] === lastLink) {
+					setMobileTocActiveLink(details, lastLink);
+					return;
+				}
+
+				setMobileTocActiveLink(details, lastLink);
+			});
+			return true;
+		};
+		const scheduleEndState = () => {
+			if (frame) return;
+			frame = requestAnimationFrame(() => {
+				frame = 0;
+					syncEndState();
+			});
+		};
+
+		window.addEventListener('scroll', scheduleEndState, { passive: true });
+		window.addEventListener('resize', scheduleEndState, { passive: true });
+			document.querySelectorAll('starlight-toc nav, mobile-starlight-toc details').forEach((tocSurface) => {
+				new MutationObserver(() => syncEndState()).observe(tocSurface, {
+					attributes: true,
+					attributeFilter: ['aria-current'],
+					subtree: true,
+			});
+		});
+		scheduleEndState();
+	};
+
+	if (document.readyState === 'loading') {
+		document.addEventListener(
+			'DOMContentLoaded',
+			() => {
+				setupTocIndicators();
+				setupTocEndState();
+			},
+			{ once: true }
+		);
+	} else {
+		setupTocIndicators();
+		setupTocEndState();
+	}
+
+	document.addEventListener('pointerdown', (event) => {
+		const targetElement = event.target instanceof Element ? event.target : null;
+		const openMobileMenu = document.querySelector('starlight-menu-button[aria-expanded="true"]');
+		if (
+			openMobileMenu &&
+			targetElement &&
+			!targetElement.closest('#starlight__sidebar') &&
+			!targetElement.closest('starlight-menu-button')
+		) {
+			if (typeof openMobileMenu.setExpanded === 'function') {
+				openMobileMenu.setExpanded(false);
+			} else {
+				openMobileMenu.setAttribute('aria-expanded', 'false');
+				document.body.removeAttribute('data-mobile-menu-expanded');
+			}
+		}
+
+		if (event.button !== 0 || !event.isPrimary || reducedMotion()) return;
+		const surface = targetElement ? targetElement.closest(rippleSelector) : null;
+		const record = createRipple(surface, event);
+		if (record) {
+			activeRipples.set(event.pointerId, record);
+		}
+	}, { passive: true });
+
+	document.addEventListener('pointerup', (event) => {
+		const record = activeRipples.get(event.pointerId);
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('pointercancel', (event) => {
+		const record = activeRipples.get(event.pointerId);
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('pointerout', (event) => {
+		if (event.pointerType === 'touch') return;
+		const record = activeRipples.get(event.pointerId);
+		if (!record) return;
+		if (event.relatedTarget instanceof Node && record.surface.contains(event.relatedTarget)) return;
+		releaseRipple(record);
+		activeRipples.delete(event.pointerId);
+	}, { passive: true });
+
+	document.addEventListener('contextmenu', () => {
+		activeRipples.forEach(releaseRipple);
+		activeRipples.clear();
+	});
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || event.button !== 0) return;
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+		const link = event.target instanceof Element
+			? event.target.closest('starlight-toc a[href], mobile-starlight-toc .dropdown a[href]')
+			: null;
+		if (!(link instanceof HTMLAnchorElement)) return;
+		if (link.target || link.hasAttribute('download') || link.getAttribute('aria-disabled') === 'true') return;
+
+		const url = new URL(link.href, window.location.href);
+		const current = new URL(window.location.href);
+		if (url.origin !== current.origin || url.pathname !== current.pathname || url.search !== current.search || !url.hash) {
+			return;
+		}
+
+		const target = getHashTarget(url.hash);
+		if (!target) return;
+
+			event.preventDefault();
+			event.stopPropagation();
+			link.classList.add('md3-navigation-pending');
+			const hasLockedTocTarget = lockTocActiveLink(link);
+			if (!hasLockedTocTarget) {
+				setTocActiveLink(link);
+			}
+
+		const mobileToc = link.closest('mobile-starlight-toc details');
+		if (mobileToc instanceof HTMLDetailsElement) {
+				closeMobileTocWithAnimation(mobileToc).finally(() => {
+					link.classList.remove('md3-navigation-pending');
+					scrollToHashTarget(url, target);
+				});
+				return;
+			}
+
+			link.classList.remove('md3-navigation-pending');
+			scrollToHashTarget(url, target);
+		}, { capture: true });
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || reducedMotion()) return;
+			const mobileTocSummary = event.target instanceof Element
+				? event.target.closest('mobile-starlight-toc details > summary')
+				: null;
+			if (
+				mobileTocSummary instanceof HTMLElement &&
+				event.detail > 0 &&
+				!(event.target instanceof Element && event.target.closest('mobile-starlight-toc summary .toggle'))
+			) {
+				event.preventDefault();
+				return;
+			}
+			const mobileTocAnimation =
+				mobileTocSummary instanceof HTMLElement ? animateMobileTocDisclosure(mobileTocSummary) : null;
+		if (mobileTocAnimation?.handled) {
+			event.preventDefault();
+			return;
+		}
+
+		const summary = event.target instanceof Element
+			? event.target.closest('.sidebar-content details > summary')
+			: null;
+		if (!(summary instanceof HTMLElement)) return;
+		if (animateSidebarDisclosure(summary)) {
+			event.preventDefault();
+		}
+	});
+
+	document.addEventListener('click', (event) => {
+		if (event.defaultPrevented || event.button !== 0 || reducedMotion()) return;
+		if (event.detail === 0) {
+			const surface = event.target instanceof Element ? event.target.closest(rippleSelector) : null;
+			const record = createRipple(surface);
+			releaseRipple(record);
+		}
+		if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+		const link = event.target instanceof Element ? event.target.closest(navigationSelector) : null;
+		if (!(link instanceof HTMLAnchorElement)) return;
+		if (link.target || link.hasAttribute('download') || link.getAttribute('aria-disabled') === 'true') return;
+
+		const url = new URL(link.href, window.location.href);
+		const current = new URL(window.location.href);
+		if (url.origin !== current.origin) return;
+		if (url.pathname === current.pathname && url.search === current.search && url.hash) return;
+		if (url.href === current.href) return;
+		const shouldAnimateSidebarRoute =
+			document.documentElement.hasAttribute('data-has-hero') &&
+			!document.documentElement.hasAttribute('data-has-sidebar');
+
+		const delay = durationToMs(
+			getComputedStyle(document.documentElement).getPropertyValue('--md3-motion-route-delay')
+		) || 100;
+		if (delay <= 0) return;
+
+		event.preventDefault();
+		link.classList.add('md3-navigation-pending');
+		document.documentElement.setAttribute('data-md3-route-state', 'leaving');
+		try {
+			sessionStorage.setItem(routeTransitionStorageKey, 'true');
+			if (shouldAnimateSidebarRoute) {
+				sessionStorage.setItem(sidebarRouteTransitionStorageKey, 'true');
+			} else {
+				sessionStorage.removeItem(sidebarRouteTransitionStorageKey);
+			}
+		} catch {}
+		window.setTimeout(() => {
+			window.location.href = url.href;
+		}, delay);
+	});
+})();
+</script><link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml"/><meta name="generator" content="Astro v7.1.1"/><meta name="generator" content="Starlight v0.41.3"/><meta property="og:title" content="MEDIUM-3：初识Linux系统"/><meta property="og:type" content="article"/><meta property="og:url" content="https://www.glimmer.org.cn/cs/medium-3/"/><meta property="og:locale" content="zh-CN"/><meta property="og:description" content="微光工作室2026招新——计算机系统：MEDIUM-3：Read From Memory"/><meta property="og:site_name" content="Glimmer"/><meta name="twitter:card" content="summary_large_image"/><meta name="description" content="微光工作室2026招新——计算机系统：MEDIUM-3：Read From Memory"/><script>
+	window.StarlightThemeProvider = (() => {
+		const storedTheme =
+			typeof localStorage !== 'undefined' && localStorage.getItem('starlight-theme');
+		const theme =
+			storedTheme ||
+			(window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+		document.documentElement.dataset.theme = theme === 'light' ? 'light' : 'dark';
+		return {
+			updatePickers(theme = storedTheme || 'auto') {
+				document.querySelectorAll('starlight-theme-select').forEach((picker) => {
+					const select = picker.querySelector('select');
+					if (select) select.value = theme;
+					/** @type {HTMLTemplateElement | null} */
+					const tmpl = document.querySelector(`#theme-icons`);
+					const newIcon = tmpl && tmpl.content.querySelector('.' + theme);
+					if (newIcon) {
+						const oldIcon = picker.querySelector('svg.label-icon');
+						if (oldIcon) {
+							oldIcon.replaceChildren(...newIcon.cloneNode(true).childNodes);
+						}
+					}
+				});
+			},
+		};
+	})();
+</script><template id="theme-icons"><svg aria-hidden="true" class="light astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="dark astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="auto astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></template><link rel="stylesheet" href="/_astro/print.ehPL0gv-.css" media="print"><link rel="stylesheet" href="/_astro/middleware.DNbCBke2.css"><style>@layer starlight.components{:root{--sl-badge-default-border:var(--sl-color-accent);--sl-badge-default-bg:var(--sl-color-accent-low);--sl-badge-default-text:#fff;--sl-badge-note-border:var(--sl-color-blue);--sl-badge-note-bg:var(--sl-color-blue-low);--sl-badge-note-text:#fff;--sl-badge-danger-border:var(--sl-color-red);--sl-badge-danger-bg:var(--sl-color-red-low);--sl-badge-danger-text:#fff;--sl-badge-success-border:var(--sl-color-green);--sl-badge-success-bg:var(--sl-color-green-low);--sl-badge-success-text:#fff;--sl-badge-caution-border:var(--sl-color-orange);--sl-badge-caution-bg:var(--sl-color-orange-low);--sl-badge-caution-text:#fff;--sl-badge-tip-border:var(--sl-color-purple);--sl-badge-tip-bg:var(--sl-color-purple-low);--sl-badge-tip-text:#fff}[data-theme=light]:root{--sl-badge-default-bg:var(--sl-color-accent-high);--sl-badge-note-bg:var(--sl-color-blue-high);--sl-badge-danger-bg:var(--sl-color-red-high);--sl-badge-success-bg:var(--sl-color-green-high);--sl-badge-caution-bg:var(--sl-color-orange-high);--sl-badge-tip-bg:var(--sl-color-purple-high)}.sl-badge:where(.astro-7hkzaclv){border:1px solid var(--sl-color-border-badge);font-family:var(--sl-font-system-mono);color:var(--sl-color-text-badge);background-color:var(--sl-color-bg-badge);overflow-wrap:anywhere;border-radius:.25rem;line-height:normal;display:inline-block}.sidebar-content .sl-badge:where(.astro-7hkzaclv){line-height:1;font-size:var(--sl-text-xs);padding:.125rem .375rem}.sidebar-content a[aria-current=page]>.sl-badge:where(.astro-7hkzaclv){--sl-color-bg-badge:transparent;--sl-color-border-badge:currentColor;color:inherit}.default:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-default-bg);--sl-color-border-badge:var(--sl-badge-default-border);--sl-color-text-badge:var(--sl-badge-default-text)}.note:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-note-bg);--sl-color-border-badge:var(--sl-badge-note-border);--sl-color-text-badge:var(--sl-badge-note-text)}.danger:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-danger-bg);--sl-color-border-badge:var(--sl-badge-danger-border);--sl-color-text-badge:var(--sl-badge-danger-text)}.success:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-success-bg);--sl-color-border-badge:var(--sl-badge-success-border);--sl-color-text-badge:var(--sl-badge-success-text)}.tip:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-tip-bg);--sl-color-border-badge:var(--sl-badge-tip-border);--sl-color-text-badge:var(--sl-badge-tip-text)}.caution:where(.astro-7hkzaclv){--sl-color-bg-badge:var(--sl-badge-caution-bg);--sl-color-border-badge:var(--sl-badge-caution-border);--sl-color-text-badge:var(--sl-badge-caution-text)}.small:where(.astro-7hkzaclv){font-size:var(--sl-text-xs);padding:.125rem .25rem}.medium:where(.astro-7hkzaclv){font-size:var(--sl-text-sm);padding:.175rem .35rem}.large:where(.astro-7hkzaclv){font-size:var(--sl-text-base);padding:.225rem .45rem}.sl-markdown-content :is(h1,h2,h3,h4,h5,h6) .sl-badge:where(.astro-7hkzaclv){vertical-align:middle}}
+</style><link rel="stylesheet" href="/_astro/index.Bgf0apwf.css"><style>@layer starlight.components{svg:where(.astro-n5k4ipy7){color:var(--sl-icon-color);font-size:var(--sl-icon-size,1em);width:1em;height:1em}}
+@layer starlight.components{.sl-steps{--bullet-size:calc(var(--sl-line-height) * 1rem);--bullet-margin:.375rem;counter-reset:steps-counter var(--sl-steps-start,0);padding-inline-start:0;list-style:none}.sl-steps>li{counter-increment:steps-counter;padding-inline-start:calc(var(--bullet-size) + 1rem);min-height:calc(var(--bullet-size) + var(--bullet-margin));padding-bottom:1px;position:relative}.sl-steps>li+li{margin-top:0}.sl-steps>li:before{content:counter(steps-counter);top:0;width:var(--bullet-size);height:var(--bullet-size);line-height:var(--bullet-size);font-size:var(--sl-text-xs);text-align:center;color:var(--sl-color-white);background-color:var(--sl-color-gray-6);box-shadow:inset 0 0 0 1px var(--sl-color-gray-5);border-radius:99rem;font-weight:600;position:absolute;inset-inline-start:0}.sl-steps>li:after{--guide-width:1px;content:"";top:calc(var(--bullet-size) + var(--bullet-margin));bottom:var(--bullet-margin);width:var(--guide-width);background-color:var(--sl-color-hairline-light);position:absolute;inset-inline-start:calc((var(--bullet-size) - var(--guide-width)) / 2)}}@layer starlight.content{.sl-steps>li>:first-child{--lh:calc(1em * var(--sl-line-height));--shift-y:calc(.5 * (var(--bullet-size) - var(--lh)));transform:translateY(var(--shift-y));margin-bottom:var(--shift-y)}.sl-steps>li>:first-child:where(h1,h2,h3,h4,h5,h6){--lh:calc(1em * var(--sl-line-height-headings))}@supports (--prop:1lh){.sl-steps>li>:first-child{--lh:1lh}}}
+</style><script type="module" src="/_astro/page.B2uBVZjk.js"></script></head><body class="astro-vdxcvpsm"><a class="sl-skip-link astro-vxeigawq" href="#_top">跳转到内容</a><div class="page sl-flex astro-gqpr5s5a"><header class="header astro-gqpr5s5a"><div class="header astro-nczgtkxc"><div class="title-wrapper sl-flex astro-nczgtkxc"><a href="/" class="site-title sl-flex astro-clw6ags5"><span class="astro-clw6ags5" translate="no">Glimmer</span></a></div><div class="sl-flex print:hidden astro-nczgtkxc"><site-search class="astro-nczgtkxc astro-r5ar4xm7" data-translations="{&quot;placeholder&quot;:&quot;搜索&quot;}"><button data-open-modal disabled aria-label="搜索" aria-keyshortcuts="Control+K" class="astro-r5ar4xm7"><svg aria-hidden="true" class="astro-r5ar4xm7 astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.71 20.29 18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z"/></svg><span class="sl-hidden md:sl-block astro-r5ar4xm7" aria-hidden="true">搜索</span><kbd class="sl-hidden md:sl-flex astro-r5ar4xm7" style="display: none;"><kbd class="astro-r5ar4xm7">Ctrl</kbd><kbd class="astro-r5ar4xm7">K</kbd></kbd></button><dialog style="padding:0" aria-label="搜索" class="astro-r5ar4xm7"><div class="dialog-frame sl-flex astro-r5ar4xm7"><button data-close-modal class="sl-flex md:sl-hidden astro-r5ar4xm7">取消</button><div class="search-container astro-r5ar4xm7"><div id="starlight__search" class="astro-r5ar4xm7"></div></div></div></dialog></site-search><script>
+	(() => {
+		const openBtn = document.querySelector('button[data-open-modal]');
+		const shortcut = openBtn?.querySelector('kbd');
+		if (!openBtn || !(shortcut instanceof HTMLElement)) return;
+		const platformKey = shortcut.querySelector('kbd');
+		if (platformKey && /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform)) {
+			platformKey.textContent = '⌘';
+			openBtn.setAttribute('aria-keyshortcuts', 'Meta+K');
+		}
+		shortcut.style.display = '';
+	})();
+</script><script type="module" src="/_astro/Search.astro_astro_type_script_index_0_lang.vTFUHulS.js"></script></div><div class="sl-hidden md:sl-flex print:hidden right-group astro-nczgtkxc"><div class="sl-flex social-icons astro-nczgtkxc"><a href="mailto:glimmer401@outlook.com" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">邮箱</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M19 4H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-.41 2-5.88 5.88a1 1 0 0 1-1.42 0L5.41 6ZM20 17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7.41l5.88 5.88a3 3 0 0 0 4.24 0L20 7.41Z"/></svg></a></div><starlight-theme-select class="md3-theme-select astro-v7alfmhz" data-accessible-label="选择主题" data-label-auto="自动" data-label-dark="深色" data-label-light="浅色"><button type="button" class="md3-theme-select__button astro-v7alfmhz" aria-haspopup="menu" aria-expanded="false" aria-label="选择主题: 自动" title="选择主题: 自动" data-theme-value="auto"><span class="md3-theme-select__button-icon-stack astro-v7alfmhz" aria-hidden="true"><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--dark astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--light astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--auto astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><span class="md3-theme-select__current astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__caret astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></button><div class="md3-theme-select__menu astro-v7alfmhz" role="menu" hidden><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="dark"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><span class="astro-v7alfmhz">深色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="light"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><span class="astro-v7alfmhz">浅色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="true" data-theme-value="auto"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><span class="astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button></div></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script><script type="module">var e=`starlight-theme`,t=e=>e===`auto`||e===`dark`||e===`light`?e:`auto`,n=()=>t(typeof localStorage<`u`&&localStorage.getItem(e));function r(t){typeof localStorage<`u`&&localStorage.setItem(e,t===`light`||t===`dark`?t:``)}var i=()=>matchMedia(`(prefers-color-scheme: light)`).matches?`light`:`dark`;function a(e,t){return e.dataset[`label${t[0].toUpperCase()}${t.slice(1)}`]??t}function o(e,t){return`${e.dataset.accessibleLabel??`Theme`}: ${a(e,t)}`}var s=new WeakMap,c=new WeakMap;function l(e){let t=s.get(e);t&&window.clearTimeout(t),s.delete(e),c.get(e)?.(),c.delete(e)}function u(e){let t=e.querySelector(`.md3-theme-select__button`),n=e.querySelector(`.md3-theme-select__menu`);if(!t||!n)return;if(t.setAttribute(`aria-expanded`,`false`),l(e),n.hidden||matchMedia(`(prefers-reduced-motion: reduce)`).matches){n.hidden=!0,n.removeAttribute(`data-md3-menu-state`);return}n.dataset.md3MenuState=`closing`;let r=()=>{n.hidden=!0,n.removeAttribute(`data-md3-menu-state`),l(e)},i=e=>{e.target===n&&e.propertyName===`transform`&&r()};n.addEventListener(`transitionend`,i),c.set(e,()=>n.removeEventListener(`transitionend`,i)),s.set(e,window.setTimeout(r,260))}function d(e){let t=e.querySelector(`.md3-theme-select__button`),n=e.querySelector(`.md3-theme-select__menu`),r=e.querySelector(`.md3-theme-select__option[aria-checked="true"]`);!t||!n||(l(e),t.setAttribute(`aria-expanded`,`true`),n.hidden=!1,n.removeAttribute(`data-md3-menu-state`),r?.focus())}function f(e,t){let n=e.querySelector(`.md3-theme-select__button`),r=e.querySelector(`.md3-theme-select__current`);!n||!r||(n.dataset.themeValue=t,r.textContent=a(e,t),n.title=o(e,t),n.setAttribute(`aria-label`,o(e,t)),e.querySelectorAll(`.md3-theme-select__option`).forEach(e=>{let n=e.dataset.themeValue===t;e.setAttribute(`aria-checked`,String(n))}))}function p(e){StarlightThemeProvider.updatePickers(e),document.querySelectorAll(`starlight-theme-select`).forEach(t=>{f(t,e)})}function m(e){p(e),document.documentElement.dataset.theme=e===`auto`?i():e,r(e)}matchMedia(`(prefers-color-scheme: light)`).addEventListener(`change`,()=>{n()===`auto`&&m(`auto`)});var h=class extends HTMLElement{connectedCallback(){this.dataset.md3ThemeSelectReady!==`true`&&(this.dataset.md3ThemeSelectReady=`true`,m(n()),this.querySelector(`.md3-theme-select__button`)?.addEventListener(`click`,()=>{this.querySelector(`.md3-theme-select__button`)?.getAttribute(`aria-expanded`)===`true`?u(this):d(this)}),this.querySelectorAll(`.md3-theme-select__option`).forEach(e=>{e.addEventListener(`click`,()=>{m(t(e.dataset.themeValue)),u(this),this.querySelector(`.md3-theme-select__button`)?.focus()})}),this.addEventListener(`keydown`,e=>{if(!(e instanceof KeyboardEvent))return;let t=this.querySelector(`.md3-theme-select__button`)?.getAttribute(`aria-expanded`)===`true`;if(e.key===`Escape`){e.preventDefault(),u(this),this.querySelector(`.md3-theme-select__button`)?.focus();return}if(!t&&[`ArrowDown`,`Enter`,` `].includes(e.key)){e.preventDefault(),d(this);return}if(!t||![`ArrowDown`,`ArrowUp`,`Home`,`End`].includes(e.key))return;e.preventDefault();let n=[...this.querySelectorAll(`.md3-theme-select__option`)],r=Math.max(0,n.indexOf(document.activeElement));n[e.key===`Home`?0:e.key===`End`?n.length-1:e.key===`ArrowDown`?(r+1)%n.length:(r-1+n.length)%n.length]?.focus()}),document.addEventListener(`pointerdown`,e=>{e.target instanceof Node&&!this.contains(e.target)&&u(this)}))}};customElements.get(`starlight-theme-select`)||customElements.define(`starlight-theme-select`,h);</script><script type="module">var e=class extends HTMLElement{constructor(){super();let e=this.querySelector(`select`);e&&(e.addEventListener(`change`,e=>{e.currentTarget instanceof HTMLSelectElement&&(window.location.pathname=e.currentTarget.value)}),window.addEventListener(`pageshow`,t=>{if(!t.persisted)return;let n=e.querySelector(`option[selected]`)?.index;n!==e.selectedIndex&&(e.selectedIndex=n??0)}))}};customElements.define(`starlight-lang-select`,e);</script></div></div></header><nav class="sidebar print:hidden astro-gqpr5s5a" aria-label="主要"><starlight-menu-button class="print:hidden astro-vvx7mffu"><button aria-expanded="false" aria-label="菜单" aria-controls="starlight__sidebar" class="sl-flex md:sl-hidden astro-vvx7mffu"><svg aria-hidden="true" class="open-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M3 8h18a1 1 0 1 0 0-2H3a1 1 0 0 0 0 2Zm18 8H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Zm0-5H3a1 1 0 0 0 0 2h18a1 1 0 0 0 0-2Z"/></svg><svg aria-hidden="true" class="close-menu astro-vvx7mffu astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="m13.41 12 6.3-6.29a1.004 1.004 0 1 0-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 0 0-1.42 1.42l6.3 6.29-6.3 6.29a1 1 0 0 0 0 1.42.998.998 0 0 0 1.42 0l6.29-6.3 6.29 6.3a.999.999 0 0 0 1.42 0 1 1 0 0 0 0-1.42L13.41 12Z"/></svg></button></starlight-menu-button><script type="module">var e=class extends HTMLElement{btn=this.querySelector(`button`);constructor(){super(),this.btn.addEventListener(`click`,()=>this.toggleExpanded());let e=this.closest(`nav`);e&&e.addEventListener(`keyup`,e=>this.closeOnEscape(e)),matchMedia(`(min-width: 50em)`).addEventListener(`change`,()=>this.setExpanded(!1))}setExpanded(e){this.setAttribute(`aria-expanded`,String(e)),document.body.toggleAttribute(`data-mobile-menu-expanded`,e),document.querySelectorAll(`.main-frame, .sl-skip-link`).forEach(t=>{t.toggleAttribute(`inert`,e)})}toggleExpanded(){this.setExpanded(this.getAttribute(`aria-expanded`)!==`true`)}closeOnEscape(e){e.code===`Escape`&&(this.setExpanded(!1),this.btn.focus())}};customElements.define(`starlight-menu-button`,e);</script><div id="starlight__sidebar" class="sidebar-pane astro-gqpr5s5a"><div class="sidebar-content sl-flex astro-gqpr5s5a"><sl-sidebar-state-persist data-hash="1s7flfq" class="astro-f5yvicm7"><script aria-hidden="true">
+		(() => {
+			try {
+				if (!matchMedia('(min-width: 50em)').matches) return;
+				/** @type {HTMLElement | null} */
+				const target = document.querySelector('sl-sidebar-state-persist');
+				const state = JSON.parse(sessionStorage.getItem('sl-sidebar-state') || '0');
+				if (!target || !state || target.dataset.hash !== state.hash) return;
+				window._starlightScrollRestore = state.scroll;
+				customElements.define(
+					'sl-sidebar-restore',
+					class SidebarRestore extends HTMLElement {
+						connectedCallback() {
+							try {
+								const idx = parseInt(this.dataset.index || '');
+								const details = this.closest('details');
+								if (details && typeof state.open[idx] === 'boolean') details.open = state.open[idx];
+							} catch {}
+						}
+					}
+				);
+			} catch {}
+		})();
+	</script><ul class="top-level astro-ojxuodky"><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">招新相关</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="0"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/information/" class="astro-ojxuodky"><span class="astro-ojxuodky">招新说明</span></a></li><li class="astro-ojxuodky"><a href="/special_recruit/" class="astro-ojxuodky"><span class="astro-ojxuodky">其他渠道招新说明</span></a></li><li class="astro-ojxuodky"><a href="/QA/" class="astro-ojxuodky"><span class="astro-ojxuodky">Q&amp;A 常见问题解答</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">碎碎念</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="1"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/senior-words/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">概述</span></a></li><li class="astro-ojxuodky"><a href="/senior-words/cs/" class="astro-ojxuodky"><span class="astro-ojxuodky">计算机系统</span></a></li><li class="astro-ojxuodky"><a href="/senior-words/frontend/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web前端</span></a></li><li class="astro-ojxuodky"><a href="/senior-words/backend/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web后端</span></a></li><li class="astro-ojxuodky"><a href="/senior-words/ml/" class="astro-ojxuodky"><span class="astro-ojxuodky">机器学习</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">日常基础</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="2"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/daily/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">日常简介</span></a></li><li class="astro-ojxuodky"><a href="/daily/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">1: 什么是计算机？</span></a></li><li class="astro-ojxuodky"><a href="/daily/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">2: markdown</span></a></li><li class="astro-ojxuodky"><a href="/daily/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">3: 数据的表示</span></a></li><li class="astro-ojxuodky"><a href="/daily/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: 代码管理</span></a></li><li class="astro-ojxuodky"><a href="/daily/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: 如何用好AI</span></a></li><li class="astro-ojxuodky"><a href="/daily/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">6: loafer想打派(网络)</span></a></li></ul></details></li><li class="astro-ojxuodky"><details open class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">计算机系统</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="3"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/cs/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">计算机系统简介</span></a></li><li class="astro-ojxuodky"><a href="/cs/c-easy-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">C-EASY-1: C语言入门</span></a></li><li class="astro-ojxuodky"><a href="/cs/c-easy-2/" class="astro-ojxuodky"><span class="astro-ojxuodky">C-EASY-2: 指针</span></a></li><li class="astro-ojxuodky"><a href="/cs/c-easy-3/" class="astro-ojxuodky"><span class="astro-ojxuodky">C-EASY-3: 二叉树与递归</span></a></li><li class="astro-ojxuodky"><a href="/cs/c-easy-4/" class="astro-ojxuodky"><span class="astro-ojxuodky">C-EASY-4: 小应用之五子棋游戏</span></a></li><li class="astro-ojxuodky"><a href="/cs/medium-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">MEDIUM-1: 位级操作</span></a></li><li class="astro-ojxuodky"><a href="/cs/medium-2/" class="astro-ojxuodky"><span class="astro-ojxuodky">MEDIUM-2: 计算机中的整数与浮点数</span></a></li><li class="astro-ojxuodky"><a href="/cs/medium-3/" aria-current="page" class="astro-ojxuodky"><span class="astro-ojxuodky">MEDIUM-3: 初识Linux系统</span></a></li><li class="astro-ojxuodky"><a href="/cs/medium-4/" class="astro-ojxuodky"><span class="astro-ojxuodky">MEDIUM-4: 计算机系统内存与执行机制</span></a></li><li class="astro-ojxuodky"><a href="/cs/hard-1/" class="astro-ojxuodky"><span class="astro-ojxuodky">HARD-1: 计算机网络基础</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Web前端</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="4"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/frontend/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web前端简介</span></a></li><li class="astro-ojxuodky"><a href="/frontend/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">1: 初识HTML</span></a></li><li class="astro-ojxuodky"><a href="/frontend/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">2: 了解网页F12开发者工具</span></a></li><li class="astro-ojxuodky"><a href="/frontend/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">3: CSS初识</span></a></li><li class="astro-ojxuodky"><a href="/frontend/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: Javascript入门与进阶</span></a></li><li class="astro-ojxuodky"><a href="/frontend/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: 制作blog</span></a></li><li class="astro-ojxuodky"><a href="/frontend/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">6: 第三方API&amp;&amp;排序</span></a></li><li class="astro-ojxuodky"><a href="/frontend/7/" class="astro-ojxuodky"><span class="astro-ojxuodky">7: Node.js初体验</span></a></li><li class="astro-ojxuodky"><a href="/frontend/8/" class="astro-ojxuodky"><span class="astro-ojxuodky">8: VitePress</span></a></li><li class="astro-ojxuodky"><a href="/frontend/9/" class="astro-ojxuodky"><span class="astro-ojxuodky">9: Vue的学习</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">Web后端</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="5"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/backend/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">Web后端简介</span></a></li><li class="astro-ojxuodky"><a href="/backend/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">1: 环境搭建与程序运行</span></a></li><li class="astro-ojxuodky"><a href="/backend/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">2: 数据类型、控制流与异常处理</span></a></li><li class="astro-ojxuodky"><a href="/backend/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">3: 面向对象、封装继承与多态</span></a></li><li class="astro-ojxuodky"><a href="/backend/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: 集合、泛型与设计模式</span></a></li><li class="astro-ojxuodky"><a href="/backend/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: IO流与项目挑战</span></a></li><li class="astro-ojxuodky"><a href="/backend/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">6: Linux的使用</span></a></li><li class="astro-ojxuodky"><a href="/backend/7/" class="astro-ojxuodky"><span class="astro-ojxuodky">7: 概念补充</span></a></li><li class="astro-ojxuodky"><a href="/backend/8/" class="astro-ojxuodky"><span class="astro-ojxuodky">8: 部署服务器</span></a></li><li class="astro-ojxuodky"><a href="/backend/9/" class="astro-ojxuodky"><span class="astro-ojxuodky">9: 网络编程基础</span></a></li><li class="astro-ojxuodky"><a href="/backend/10/" class="astro-ojxuodky"><span class="astro-ojxuodky">10: 初窥后端世界</span></a></li></ul></details></li><li class="astro-ojxuodky"><details class="astro-ojxuodky"><summary class="astro-ojxuodky"><span class="group-label astro-ojxuodky"><span class="large astro-ojxuodky">机器学习</span></span><svg aria-hidden="true" class="caret astro-ojxuodky astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.25rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></summary><sl-sidebar-restore data-index="6"></sl-sidebar-restore><ul class="astro-ojxuodky"><li class="astro-ojxuodky"><a href="/ml/introduction/" class="astro-ojxuodky"><span class="astro-ojxuodky">机器学习简介</span></a></li><li class="astro-ojxuodky"><a href="/ml/0/" class="astro-ojxuodky"><span class="astro-ojxuodky">0: 迈出机器学习的第一步</span></a></li><li class="astro-ojxuodky"><a href="/ml/1/" class="astro-ojxuodky"><span class="astro-ojxuodky">1: 基础的线性回归</span></a></li><li class="astro-ojxuodky"><a href="/ml/2/" class="astro-ojxuodky"><span class="astro-ojxuodky">2: 多层感知机理论</span></a></li><li class="astro-ojxuodky"><a href="/ml/3/" class="astro-ojxuodky"><span class="astro-ojxuodky">3: 多层感知机实战</span></a></li><li class="astro-ojxuodky"><a href="/ml/4/" class="astro-ojxuodky"><span class="astro-ojxuodky">4: 卷积神经网络理论</span></a></li><li class="astro-ojxuodky"><a href="/ml/5/" class="astro-ojxuodky"><span class="astro-ojxuodky">5: 卷积神经网络实战</span></a></li><li class="astro-ojxuodky"><a href="/ml/6/" class="astro-ojxuodky"><span class="astro-ojxuodky">6: 循环神经网络理论</span></a></li><li class="astro-ojxuodky"><a href="/ml/7/" class="astro-ojxuodky"><span class="astro-ojxuodky">7: 循环神经网络实战</span></a></li><li class="astro-ojxuodky"><a href="/ml/8/" class="astro-ojxuodky"><span class="astro-ojxuodky">8: Transformer</span></a></li><li class="astro-ojxuodky"><a href="/ml/9/" class="astro-ojxuodky"><span class="astro-ojxuodky">9: 初识智能体 Agent</span></a></li></ul></details></li></ul><script aria-hidden="true">
+		(() => {
+			const scroller = document.getElementById('starlight__sidebar');
+			if (!window._starlightScrollRestore || !scroller) return;
+			scroller.scrollTop = window._starlightScrollRestore;
+			delete window._starlightScrollRestore;
+		})();
+	</script></sl-sidebar-state-persist><div class="md:sl-hidden"><div class="mobile-preferences sl-flex astro-b5gddk54"><div class="social-icons astro-b5gddk54"><a href="mailto:glimmer401@outlook.com" rel="me" class="sl-flex astro-cg55etiy"><span class="sr-only astro-cg55etiy">邮箱</span><svg aria-hidden="true" class="astro-cg55etiy astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M19 4H5a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3Zm-.41 2-5.88 5.88a1 1 0 0 1-1.42 0L5.41 6ZM20 17a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7.41l5.88 5.88a3 3 0 0 0 4.24 0L20 7.41Z"/></svg></a></div><starlight-theme-select class="md3-theme-select astro-v7alfmhz" data-accessible-label="选择主题" data-label-auto="自动" data-label-dark="深色" data-label-light="浅色"><button type="button" class="md3-theme-select__button astro-v7alfmhz" aria-haspopup="menu" aria-expanded="false" aria-label="选择主题: 自动" title="选择主题: 自动" data-theme-value="auto"><span class="md3-theme-select__button-icon-stack astro-v7alfmhz" aria-hidden="true"><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--dark astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--light astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><svg aria-hidden="true" class="icon label-icon md3-theme-select__button-icon md3-theme-select__button-icon--auto astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg></span><span class="md3-theme-select__current astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__caret astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M17 9.17a1 1 0 0 0-1.41 0L12 12.71 8.46 9.17a1 1 0 1 0-1.41 1.42l4.24 4.24a1.002 1.002 0 0 0 1.42 0L17 10.59a1.002 1.002 0 0 0 0-1.42Z"/></svg></button><div class="md3-theme-select__menu astro-v7alfmhz" role="menu" hidden><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="dark"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21.64 13a1 1 0 0 0-1.05-.14 8.049 8.049 0 0 1-3.37.73 8.15 8.15 0 0 1-8.14-8.1 8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05Zm-9.5 6.69A8.14 8.14 0 0 1 7.08 5.22v.27a10.15 10.15 0 0 0 10.14 10.14 9.784 9.784 0 0 0 2.1-.22 8.11 8.11 0 0 1-7.18 4.32v-.04Z"/></svg><span class="astro-v7alfmhz">深色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="false" data-theme-value="light"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M5 12a1 1 0 0 0-1-1H3a1 1 0 0 0 0 2h1a1 1 0 0 0 1-1Zm.64 5-.71.71a1 1 0 0 0 0 1.41 1 1 0 0 0 1.41 0l.71-.71A1 1 0 0 0 5.64 17ZM12 5a1 1 0 0 0 1-1V3a1 1 0 0 0-2 0v1a1 1 0 0 0 1 1Zm5.66 2.34a1 1 0 0 0 .7-.29l.71-.71a1 1 0 1 0-1.41-1.41l-.66.71a1 1 0 0 0 0 1.41 1 1 0 0 0 .66.29Zm-12-.29a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.71-.71a1.004 1.004 0 1 0-1.43 1.41l.73.71ZM21 11h-1a1 1 0 0 0 0 2h1a1 1 0 0 0 0-2Zm-2.64 6A1 1 0 0 0 17 18.36l.71.71a1 1 0 0 0 1.41 0 1 1 0 0 0 0-1.41l-.76-.66ZM12 6.5a5.5 5.5 0 1 0 5.5 5.5A5.51 5.51 0 0 0 12 6.5Zm0 9a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7Zm0 3.5a1 1 0 0 0-1 1v1a1 1 0 0 0 2 0v-1a1 1 0 0 0-1-1Z"/></svg><span class="astro-v7alfmhz">浅色</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button><button type="button" class="md3-theme-select__option astro-v7alfmhz" role="menuitemradio" aria-checked="true" data-theme-value="auto"><svg aria-hidden="true" class="icon md3-theme-select__option-icon astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M21 14h-1V7a3 3 0 0 0-3-3H7a3 3 0 0 0-3 3v7H3a1 1 0 0 0-1 1v2a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-2a1 1 0 0 0-1-1ZM6 7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v7H6V7Zm14 10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-1h16v1Z"/></svg><span class="astro-v7alfmhz">自动</span><svg aria-hidden="true" class="icon md3-theme-select__check astro-v7alfmhz astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1em;"><path d="M18.71 7.21a1 1 0 0 0-1.42 0l-7.45 7.46-3.13-3.14A1.02 1.02 0 1 0 5.29 13l3.84 3.84a1.001 1.001 0 0 0 1.42 0l8.16-8.16a1 1 0 0 0 0-1.47Z"/></svg></button></div></starlight-theme-select><script>
+	StarlightThemeProvider.updatePickers();
+</script></div></div></div></div></nav><div class="main-frame astro-gqpr5s5a"><script type="module">var e=document.getElementById(`starlight__sidebar`),t=e?.querySelector(`sl-sidebar-state-persist`),n=`sl-sidebar-state`,r=()=>{let r=[],i=t?.dataset.hash||``;try{let e=sessionStorage.getItem(n),t=JSON.parse(e||`{}`);Array.isArray(t.open)&&t.hash===i&&(r=t.open)}catch{}return{hash:i,open:r,scroll:e?.scrollTop||0}},i=e=>{try{sessionStorage.setItem(n,JSON.stringify(e))}catch{}},a=()=>i(r()),o=(e,t)=>{let n=r();n.open[t]=e,i(n)};t?.addEventListener(`click`,e=>{if(!(e.target instanceof Element))return;let t=e.target.closest(`summary`)?.closest(`details`);if(!t)return;let n=t.querySelector(`sl-sidebar-restore`),r=parseInt(n?.dataset.index||``);isNaN(r)||o(!t.open,r)}),addEventListener(`visibilitychange`,()=>{document.visibilityState===`hidden`&&a()}),addEventListener(`pageHide`,a);</script><div class="lg:sl-flex astro-abfeecmu"><aside class="right-sidebar-container print:hidden astro-abfeecmu"><div class="right-sidebar astro-abfeecmu"><div class="lg:sl-hidden astro-q5mffni3"><mobile-starlight-toc data-min-h="2" data-max-h="3" class="astro-5ulgm6bh"><nav aria-labelledby="starlight__on-this-page--mobile" class="astro-5ulgm6bh"><details id="starlight__mobile-toc" class="astro-5ulgm6bh"><summary id="starlight__on-this-page--mobile" class="sl-flex astro-5ulgm6bh"><span class="toggle sl-flex astro-5ulgm6bh">本页内容<svg aria-hidden="true" class="caret astro-5ulgm6bh astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1rem;"><path d="m14.83 11.29-4.24-4.24a1 1 0 1 0-1.42 1.41L12.71 12l-3.54 3.54a1 1 0 0 0 0 1.41 1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.24-4.24a1.002 1.002 0 0 0 0-1.42Z"/></svg></span><span class="display-current astro-5ulgm6bh"></span></summary><div class="dropdown astro-5ulgm6bh"><ul class="isMobile astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">概述</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#前情提要" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">前情提要</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#第一境算者-命令行参数与路径" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">第一境：算者—— 命令行参数与路径</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#第二境算王-重建-ls-命令与位运算" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">第二境：算王—— 重建 ls 命令与位运算</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#第三境算尊-深入理解-inode-与文件树" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">第三境：算尊—— 深入理解 Inode 与文件树</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#最终境算帝-递归与文件筛选" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">最终境：算帝—— 递归与文件筛选</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#后记" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">后记</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#本题提交方式" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">本题提交方式</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#出题人联系方式" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">出题人联系方式</span></a></li></ul></div></details></nav></mobile-starlight-toc><script type="module" src="/_astro/MobileTableOfContents.astro_astro_type_script_index_0_lang.BcSo_yiZ.js"></script></div><div class="right-sidebar-panel sl-hidden lg:sl-block astro-q5mffni3"><div class="sl-container astro-q5mffni3"><starlight-toc data-min-h="2" data-max-h="3"><nav aria-labelledby="starlight__on-this-page"><h2 id="starlight__on-this-page">本页内容</h2><ul class="astro-cxyftcne" style="--depth: 0;"><li style="--depth: 0;" class="astro-cxyftcne"><a href="#_top" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">概述</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#前情提要" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">前情提要</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#第一境算者-命令行参数与路径" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">第一境：算者—— 命令行参数与路径</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#第二境算王-重建-ls-命令与位运算" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">第二境：算王—— 重建 ls 命令与位运算</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#第三境算尊-深入理解-inode-与文件树" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">第三境：算尊—— 深入理解 Inode 与文件树</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#最终境算帝-递归与文件筛选" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">最终境：算帝—— 递归与文件筛选</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#后记" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">后记</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#本题提交方式" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">本题提交方式</span></a></li><li style="--depth: 0;" class="astro-cxyftcne"><a href="#出题人联系方式" style="--depth: 0;" class="astro-cxyftcne"><span style="--depth: 0;" class="astro-cxyftcne">出题人联系方式</span></a></li></ul></nav></starlight-toc><script type="module" src="/_astro/TableOfContents.astro_astro_type_script_index_0_lang.Csloo1VZ.js"></script></div></div></div></aside><div class="main-pane astro-abfeecmu"><main data-pagefind-body class="astro-vdxcvpsm" lang="zh-CN" dir="ltr"><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><h1 id="_top" class="astro-2sm4b3ln">MEDIUM-3：初识Linux系统</h1></div></div><div class="content-panel astro-oil7k7jf"><div class="sl-container astro-oil7k7jf"><div class="sl-markdown-content"><img src="/_astro/banner.BFOd50bi_Z6IIVN.webp" alt="计算机系统Banner" loading="lazy" decoding="async" width="600" height="188">
+<blockquote>
+<p>前情提要的前情提要：这部分内容硬性要求在<strong>Linux系统下</strong>完成，请电脑里还没有Linux系统的同学速速安装！！！</p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="前情提要">前情提要</h2><a class="sl-anchor-link" href="#前情提要"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “前情提要”</span></a></div>
+<p>“我要出去玩了，你们在宿舍不要偷偷内卷哦。”出门之前，作为宿舍里隐藏最深，但最爱学习之人，你如是说到。然而，空空如也的桌面和背包里的笔记本电脑已经出卖了你，你此行的目的地，不是别处，正是一个名叫图书馆的地方。当你摆好电脑，正襟危坐，觉得再也没有人能阻止你学习时，桌子上却凭空多出来一本旧书。等等，哪来的书？我来的时候没看到有书啊？你疑惑地拿起那本封皮已经旧得软榻了，封面上的字也模糊得难以辨认的书，翻开第一页就想看看有没有丢失者的名字，却看到如下内容：</p>
+<blockquote>
+<p>第一章：陨落的天才</p>
+<p>“算之力，三段！级别：低级！”</p>
+<p>跑分机器之旁，一位中年男子看了一眼显示器上的信息，颇为错愕地将之公布了出来。中年男子话刚说完，人头汹涌的广场上便响起了一阵阵骚动。</p>
+<p>“三段？怎么可能，这家伙不是觉醒了最顶级的Linux系统算魂吗？怎么会连萧家小子算盘算魂的算力都不如！”</p>
+<p>听到这番话，这位来自林家的“天才”—— 林睨柯司，不由得握紧了双拳。为什么算力这么低，只有他自己知道：他的Linux系统是残缺的！</p>
+<p>他越想越气，居然晕了过去…</p>
+<p>本书完。</p>
+</blockquote>
+<p>看到这里，你嘴角不由得抽动了两下，然后被气晕了…再醒来时，你发现你居然穿越成了陨落的天才林睨柯司：</p>
+<blockquote>
+<p>“这一世，我要用我的Linux知识，把失去的一切都夺回来！！！”</p>
+</blockquote>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="第一境算者-命令行参数与路径">第一境：算者—— 命令行参数与路径</h2><a class="sl-anchor-link" href="#第一境算者-命令行参数与路径"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “第一境：算者—— 命令行参数与路径”</span></a></div>
+<blockquote>
+<p>命令行功能没有丢失，在此我们先简要介绍一下命令行:</p>
+<p>不同于Mac、Windows等系统方便的图像化操作界面，Linux系统下的操作主要依靠终端实现。</p>
+<p>Linux终端的操作主要依赖于各类命令，它们的功能包括但不限于文件管理、文档编辑、文件传输、磁盘管理、磁盘维护、网络通讯等内容。</p>
+</blockquote>
+<p>经过日夜吐纳代码，你终于迎来了突破“算者境”的契机。为了冲破瓶颈，你必须先修复体内残缺的 Linux 系统底层回路。</p>
+<p><strong>【任务 1.1：不同的路】</strong></p>
+
+<p>根据这具身体原主“林睨柯司”的残存记忆，无上备份秘典文件就藏在  <span class="sl-badge default small astro-7hkzaclv">/var/backups/turing/</span> 目录下。而他最后一次操作的目录是 <span class="sl-badge default small astro-7hkzaclv">/home/lin/workspace/</span>。</p>
+
+<ol role="list" class="sl-steps">
+<li>请解释什么是<strong>绝对路径</strong>，什么是<strong>相对路径</strong>？</li>
+<li>假设你现在正处于 <span class="sl-badge default small astro-7hkzaclv">/home/lin/workspace/</span>，请分别写出前往 <span class="sl-badge default small astro-7hkzaclv">/var/backups/turing/</span> 的绝对路径命令和相对路径命令（假设 <span class="sl-badge default small astro-7hkzaclv">cd</span> 命令还能用）。</li>
+</ol>
+<p>请回答以上问题并提交至<strong>markdown文档</strong>中。</p>
+<p><strong>【任务 1.2：何处启程】</strong></p>
+<p>为了重写丢失的命令，你打开了 C 语言编辑器。你想起所有的终端命令本质上都是用 C 语言写出的程序，而程序的入口往往是这样定义的：</p>
+<div class="expressive-code"><link rel="stylesheet" href="/_astro/ec.v4551.css"><script type="module" src="/_astro/ec.0vx5m.js"></script><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">int</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">main</span><span style="--0:#D6DEEB;--1:#403F53">(</span><span style="--0:#C792EA;--1:#8844AE">int</span><span style="--1:#403F53"><span style="--0:#D6DEEB"> </span><span style="--0:#D7DBE0">argc</span><span style="--0:#D6DEEB">, </span></span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--0:#D7DBE0;--1:#403F53">argv</span><span style="--0:#C792EA;--1:#8844AE">[]</span><span style="--0:#D6DEEB;--1:#403F53">)</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="int main(int argc, char *argv[])"><div></div></button></div></figure></div>
+<ol role="list" class="sl-steps">
+<li>简要解释主函数参数 <strong>argc</strong> 与 <strong>argv[]</strong> 的含义是什么。</li>
+<li>针对上述命令，请问 argc 的值是多少？argv[0]、argv[1]、argv[2] 分别指向什么字符串？</li>
+</ol>
+<p>请回答以上问题并提交至<strong>markdown文档</strong>中。</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="第二境算王-重建-ls-命令与位运算">第二境：算王—— 重建 ls 命令与位运算</h2><a class="sl-anchor-link" href="#第二境算王-重建-ls-命令与位运算"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “第二境：算王—— 重建 ls 命令与位运算”</span></a></div>
+<blockquote>
+<p>我们同样先简单介绍一下<strong>ls命令</strong>：</p>
+<p><strong>ls</strong>的全称是:list directory contents</p>
+<p>它的使用方法是，在命令行中输入：</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="Bash"><code><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">ls 参数 文件路径</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="ls 参数 文件路径"><div></div></button></div></figure></div>
+<p>并敲击回车。</p>
+<p>命令用于显示指定工作目录下之内容（列出目前工作目录所含的文件及子目录)。</p>
+<p>如果不写文件夹路径的，默认展示的是当前所位于的文件目录。</p>
+<p>还有其他辅助的命令参数：</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="Bash"><code><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">-a 显示所有文件及目录 (. 开头的隐藏文件也会列出)</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">-d 只列出目录（不递归列出目录内的文件）。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">-l 以长格式显示文件和目录信息，包括权限、所有者、大小、创建时间等。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">-r 倒序显示文件和目录。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">-t 将按照修改时间排序，最新的文件在最前面。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">-A 同 -a ，但不列出目前目录及父目录</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">-F 在列出的文件名称后加一符号；例如可执行档则加 &quot;*&quot;, 目录则加 &quot;/&quot;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">-R 递归显示目录中的所有文件和子目录。</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="-a 显示所有文件及目录 (. 开头的隐藏文件也会列出)-d 只列出目录（不递归列出目录内的文件）。-l 以长格式显示文件和目录信息，包括权限、所有者、大小、创建时间等。-r 倒序显示文件和目录。-t 将按照修改时间排序，最新的文件在最前面。-A 同 -a ，但不列出目前目录及父目录-F 在列出的文件名称后加一符号；例如可执行档则加 &quot;*&quot;, 目录则加 &quot;/&quot;-R 递归显示目录中的所有文件和子目录。"><div></div></button></div></figure></div>
+<p>如:</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="Bash"><code><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">ls -a 文件夹路径</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="ls -a 文件夹路径"><div></div></button></div></figure></div>
+<p>对比使用<span class="sl-badge default small astro-7hkzaclv">ls</span>的效果：</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="Bash"><code><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">ATC1   ATC3   cf10   cf12   cf14   cf16   cf18   cf2    cf3    cf5    cf7    cf9    lutece test2</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">ATC2   cf1    cf11   cf13   cf15   cf17   cf19   cf20   cf4    cf6    cf8    luogu  test1</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="ATC1   ATC3   cf10   cf12   cf14   cf16   cf18   cf2    cf3    cf5    cf7    cf9    lutece test2ATC2   cf1    cf11   cf13   cf15   cf17   cf19   cf20   cf4    cf6    cf8    luogu  test1"><div></div></button></div></figure></div>
+<p>使用<span class="sl-badge default small astro-7hkzaclv">ls -a</span> 的效果：</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="Bash"><code><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">.         .DS_Store ATC1      ATC3      cf10      cf12      cf14      cf16      cf18      cf2       cf3       cf5       cf7       cf9       lutece    test2</span></div></div><div class="ec-line"><div class="code"><span style="--0:#d6deeb;--1:#403f53">..        .vscode   ATC2      cf1       cf11      cf13      cf15      cf17      cf19      cf20      cf4       cf6       cf8       luogu     test1</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code=".         .DS_Store ATC1      ATC3      cf10      cf12      cf14      cf16      cf18      cf2       cf3       cf5       cf7       cf9       lutece    test2..        .vscode   ATC2      cf1       cf11      cf13      cf15      cf17      cf19      cf20      cf4       cf6       cf8       luogu     test1"><div></div></button></div></figure></div>
+</blockquote>
+<p>洞中方一日，世上已千年。随着体内算力如大江大河般澎湃，你深知，是时候补全 Linux 系统的下一块拼图，冲击“算王境”了。</p>
+<p><strong>【任务 2.1：非同寻常之物】</strong></p>
+<p>这一次，你将目标锁定在探查万物的 ls 命令上。你在识海深处搜寻，竟发掘出一枚名为 <span class="sl-badge default small astro-7hkzaclv">myls.c</span> 的上古文件。这似乎是林睨柯司坐化前留下的残篇，你决定补全程序中的辅助函数，以此完美替代残缺的 ls 命令。</p>
+<p>下面展示残缺（<span class="sl-badge default small astro-7hkzaclv">parse_permissions()</span>函数未定义）的代码：</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">stdio.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">dirent.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">sys/stat.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">string.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">stdlib.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">sys/types.h</span><span style="--0:#D9F5DD;--1:#111111">></span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#919F9F;--1:#5D6376">// 可能不是必需的，但符合POSIX标准</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">time.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">/*</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#919F9F;--1:#5F636F">    </span></span><span style="--0:#919F9F;--1:#5F636F">输出文件信息</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">void</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">parse_permissions</span><span style="--0:#D6DEEB;--1:#403F53">(</span><span style="--0:#C792EA;--1:#8844AE">mode_t</span><span style="--1:#403F53"><span style="--0:#D6DEEB"> </span><span style="--0:#D7DBE0">mode</span><span style="--0:#D6DEEB">, </span></span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--1:#403F53"><span style="--0:#D7DBE0">perms</span><span style="--0:#D6DEEB">);</span></span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">void</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">print_file_info</span><span style="--0:#D6DEEB;--1:#403F53">(</span><span style="--0:#C792EA;--1:#8844AE">const</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--1:#403F53"><span style="--0:#D7DBE0">name</span><span style="--0:#D6DEEB">, </span></span><span style="--0:#C792EA;--1:#8844AE">struct</span><span style="--0:#D6DEEB;--1:#403F53"> stat </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--1:#403F53"><span style="--0:#D7DBE0">statbuf</span><span style="--0:#D6DEEB">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">buf</span><span style="--0:#D6DEEB;--1:#403F53">[</span><span style="--0:#F78C6C;--1:#AA0982">10</span><span style="--0:#D6DEEB;--1:#403F53">];</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--1:#3B61B0"><span style="--0:#82AAFF">parse_permissions( </span><span style="--0:#C5E478">statbuf</span><span style="--0:#82AAFF">-></span><span style="--0:#C5E478">st_mode</span><span style="--0:#82AAFF">, buf)</span></span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">printf(</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">%s</span><span style="--0:#F78C6C;--1:#AA0982">\t</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">, name)</span><span style="--0:#D6DEEB;--1:#403F53">;</span><span style="--0:#919F9F;--1:#5D6376">  //文件名</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">printf(</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">%lld</span><span style="--0:#F78C6C;--1:#AA0982">\t</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">, (</span><span style="--0:#C792EA;--1:#8844AE">long</span><span style="--0:#82AAFF;--1:#3B61B0"> </span><span style="--0:#C792EA;--1:#8844AE">long</span><span style="--1:#3B61B0"><span style="--0:#82AAFF">)</span><span style="--0:#C5E478">statbuf</span><span style="--0:#82AAFF">-></span><span style="--0:#C5E478">st_size</span><span style="--0:#82AAFF">)</span></span><span style="--0:#D6DEEB;--1:#403F53">;</span><span style="--0:#919F9F;--1:#5D6376"> // 文件大小</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">printf(</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">%s</span><span style="--0:#F78C6C;--1:#AA0982">\t</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">, buf)</span><span style="--0:#D6DEEB;--1:#403F53">;</span><span style="--0:#919F9F;--1:#5D6376"> // 文件权限</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#919F9F;--1:#5D6376">// 最后修改时间</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">timebuf</span><span style="--0:#D6DEEB;--1:#403F53">[</span><span style="--0:#F78C6C;--1:#AA0982">80</span><span style="--0:#D6DEEB;--1:#403F53">];</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">strftime(timebuf, </span><span style="--0:#7FDBCA;--1:#096E72">sizeof</span><span style="--0:#82AAFF;--1:#3B61B0">(timebuf), </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--1:#984E4D"><span style="--0:#FFFFFF">%</span><span style="--0:#ECC48D">Y-</span><span style="--0:#FFFFFF">%</span><span style="--0:#ECC48D">m-</span></span><span style="--0:#82AAFF;--1:#3B61B0">%d</span><span style="--1:#984E4D"><span style="--0:#ECC48D"> </span><span style="--0:#FFFFFF">%</span><span style="--0:#ECC48D">H:</span><span style="--0:#FFFFFF">%</span><span style="--0:#ECC48D">M</span></span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">, localtime(</span><span style="--0:#7FDBCA;--1:#096E72">&#x26;</span><span style="--1:#3B61B0"><span style="--0:#C5E478">statbuf</span><span style="--0:#82AAFF">-></span><span style="--0:#C5E478">st_mtime</span><span style="--0:#82AAFF">))</span></span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">printf(</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">%s</span><span style="--0:#F78C6C;--1:#AA0982">\n</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">, timebuf)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">/*</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#919F9F;--1:#5F636F">    </span></span><span style="--0:#919F9F;--1:#5F636F">文件路径信息的处理</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">void</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">list_directory</span><span style="--0:#D6DEEB;--1:#403F53">(</span><span style="--0:#C792EA;--1:#8844AE">const</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--1:#403F53"><span style="--0:#D7DBE0">path</span><span style="--0:#D6DEEB">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">DIR </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--0:#D6DEEB;--1:#403F53">dir;</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">struct</span><span style="--0:#D6DEEB;--1:#403F53"> dirent </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--0:#D6DEEB;--1:#403F53">entry;</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">struct</span><span style="--0:#D6DEEB;--1:#403F53"> stat statbuf;</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">if</span><span style="--0:#D6DEEB;--1:#403F53"> (</span><span style="--0:#C792EA;--1:#8844AE">!</span><span style="--0:#D6DEEB;--1:#403F53">(dir </span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">opendir(path)</span><span style="--0:#D6DEEB;--1:#403F53">)) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#82AAFF;--1:#3B61B0">perror(</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">opendir</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#82AAFF;--1:#3B61B0">exit(EXIT_FAILURE)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">while</span><span style="--0:#D6DEEB;--1:#403F53"> ((entry </span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">readdir(dir)</span><span style="--0:#D6DEEB;--1:#403F53">) </span><span style="--0:#C792EA;--1:#8844AE">!=</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">NULL</span><span style="--0:#D6DEEB;--1:#403F53">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">full_path</span><span style="--0:#D6DEEB;--1:#403F53">[</span><span style="--0:#F78C6C;--1:#AA0982">1024</span><span style="--0:#D6DEEB;--1:#403F53">];</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#82AAFF;--1:#3B61B0">snprintf(full_path, </span><span style="--0:#7FDBCA;--1:#096E72">sizeof</span><span style="--0:#82AAFF;--1:#3B61B0">(full_path), </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">%s</span><span style="--0:#ECC48D;--1:#984E4D">/</span><span style="--0:#82AAFF;--1:#3B61B0">%s</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--1:#3B61B0"><span style="--0:#82AAFF">, path, </span><span style="--0:#C5E478">entry</span><span style="--0:#82AAFF">-></span><span style="--0:#C5E478">d_name</span><span style="--0:#82AAFF">)</span></span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#C792EA;--1:#8844AE">if</span><span style="--0:#D6DEEB;--1:#403F53"> (</span><span style="--0:#82AAFF;--1:#3B61B0">stat(full_path, </span><span style="--0:#7FDBCA;--1:#096E72">&#x26;</span><span style="--0:#82AAFF;--1:#3B61B0">statbuf)</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">==</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">-</span><span style="--0:#F78C6C;--1:#AA0982">1</span><span style="--0:#D6DEEB;--1:#403F53">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#82AAFF;--1:#3B61B0">perror(</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">stat</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#C792EA;--1:#8844AE">continue</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">        </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--1:#3B61B0"><span style="--0:#82AAFF">print_file_info(</span><span style="--0:#C5E478">entry</span><span style="--0:#82AAFF">-></span><span style="--0:#C5E478">d_name</span><span style="--0:#82AAFF">, </span></span><span style="--0:#7FDBCA;--1:#096E72">&#x26;</span><span style="--0:#82AAFF;--1:#3B61B0">statbuf)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">closedir(dir)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">/*</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#919F9F;--1:#5F636F">    </span></span><span style="--0:#919F9F;--1:#5F636F">程序的主函数部分</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5F636F">*/</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">int</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">main</span><span style="--0:#D6DEEB;--1:#403F53">(</span><span style="--0:#C792EA;--1:#8844AE">int</span><span style="--1:#403F53"><span style="--0:#D6DEEB"> </span><span style="--0:#D7DBE0">argc</span><span style="--0:#D6DEEB">, </span></span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--0:#D7DBE0;--1:#403F53">argv</span><span style="--0:#C792EA;--1:#8844AE">[]</span><span style="--0:#D6DEEB;--1:#403F53">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">if</span><span style="--0:#D6DEEB;--1:#403F53"> (argc </span><span style="--0:#C792EA;--1:#8844AE">&#x3C;</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">2</span><span style="--0:#D6DEEB;--1:#403F53">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#82AAFF;--1:#3B61B0">list_directory(</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">.</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">)</span><span style="--0:#D6DEEB;--1:#403F53">;</span><span style="--0:#919F9F;--1:#5D6376"> // 默认列出当前目录</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">} </span><span style="--0:#C792EA;--1:#8844AE">else</span><span style="--0:#D6DEEB;--1:#403F53"> {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#C792EA;--1:#8844AE">for</span><span style="--0:#D6DEEB;--1:#403F53"> (</span><span style="--0:#C792EA;--1:#8844AE">int</span><span style="--0:#D6DEEB;--1:#403F53"> i </span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">1</span><span style="--0:#D6DEEB;--1:#403F53">; i </span><span style="--0:#C792EA;--1:#8844AE">&#x3C;</span><span style="--0:#D6DEEB;--1:#403F53"> argc; i</span><span style="--0:#C792EA;--1:#8844AE">++</span><span style="--0:#D6DEEB;--1:#403F53">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--1:#3B61B0"><span style="--0:#82AAFF">list_directory(</span><span style="--0:#C5E478">argv</span><span style="--0:#82AAFF">[i])</span></span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">        </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">return</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">0</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="#include <stdio.h>#include <dirent.h>#include <sys/stat.h>#include <string.h>#include <stdlib.h>#include <sys/types.h> // 可能不是必需的，但符合POSIX标准#include <time.h>/*    输出文件信息*/void parse_permissions(mode_t mode, char *perms);void print_file_info(const char *name, struct stat *statbuf) {    char buf[10];    parse_permissions( statbuf->st_mode, buf);    printf(&#x22;%s\t&#x22;, name);  //文件名    printf(&#x22;%lld\t&#x22;, (long long)statbuf->st_size); // 文件大小    printf(&#x22;%s\t&#x22;, buf); // 文件权限    // 最后修改时间    char timebuf[80];    strftime(timebuf, sizeof(timebuf), &#x22;%Y-%m-%d %H:%M&#x22;, localtime(&#x26;statbuf->st_mtime));    printf(&#x22;%s\n&#x22;, timebuf);}/*    文件路径信息的处理*/void list_directory(const char *path) {    DIR *dir;    struct dirent *entry;    struct stat statbuf;    if (!(dir = opendir(path))) {        perror(&#x22;opendir&#x22;);        exit(EXIT_FAILURE);    }    while ((entry = readdir(dir)) != NULL) {        char full_path[1024];        snprintf(full_path, sizeof(full_path), &#x22;%s/%s&#x22;, path, entry->d_name);        if (stat(full_path, &#x26;statbuf) == -1) {            perror(&#x22;stat&#x22;);            continue;        }        print_file_info(entry->d_name, &#x26;statbuf);    }    closedir(dir);}/*    程序的主函数部分*/int main(int argc, char *argv[]) {    if (argc < 2) {        list_directory(&#x22;.&#x22;); // 默认列出当前目录    } else {        for (int i = 1; i < argc; i++) {            list_directory(argv[i]);        }    }    return 0;}"><div></div></button></div></figure></div>
+<p>请结合你对 Linux 文件系统的了解，回答：</p>
+<ol role="list" class="sl-steps">
+<li>以上哪些头文件是你见过的，哪些是你没见过或者很少见到的？</li>
+<li><span class="sl-badge default small astro-7hkzaclv">&#x3C;dirent.h></span> 和 <span class="sl-badge default small astro-7hkzaclv">&#x3C;sys/stat.h></span> 分别提供了哪些关键的结构体或函数？它们分别有什么作用?（简要回答即可，不用详细列举所有作用）</li>
+</ol>
+<p>请回答以上问题并提交至<strong>markdown文档</strong>中。</p>
+<p><strong>【任务 2.2：看看权限】</strong></p>
+<p>你想要让补全的<span class="sl-badge default small astro-7hkzaclv">myls</span>具有能展示文件权限的功能。</p>
+<p>文件的权限有三种，分别是<strong>r —— read(读)</strong>，<strong>w —— write(写)</strong>，<strong>x —— execute(执行)</strong></p>
+<p>原生 <span class="sl-badge default small astro-7hkzaclv">ls -l</span> 命令能打印出文件的权限，如 <span class="sl-badge default small astro-7hkzaclv">rwxr-xr-x</span>。但在底层，文件权限被存储在一个名为 <span class="sl-badge default small astro-7hkzaclv">st_mode </span>的整数中。(请思考：整数如何表示文件的权限)</p>
+<p>其中最低的 9 位存储了权限信息：</p>
+<p>从高到低依次为：<strong>用户(Owner)</strong> 的 r, w, x；<strong>组(Group)</strong> 的 r, w, x；<strong>其他(Other)</strong> 的 r, w, x。</p>
+<p>为了让重写的 <span class="sl-badge default small astro-7hkzaclv">myls</span> 具备显示权限的功能，请用最少的代码和位运算，补全下方 C 语言函数，将<strong>整数</strong>形式的权限位转换为 9个字符的权限<strong>字符串</strong>。</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5D6376">// mode即传入的存储权限信息的整数， 如0754（八进制表示）</span></div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5D6376">// 提示：传入的 mode 变量不仅包含权限信息，高位可能还包含文件类型。在进行位运算时，请注意屏蔽（Mask）掉不需要的高位数据。</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">void</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">parse_permissions</span><span style="--0:#D6DEEB;--1:#403F53">(</span><span style="--0:#C792EA;--1:#8844AE">mode_t</span><span style="--1:#403F53"><span style="--0:#D6DEEB"> </span><span style="--0:#D7DBE0">mode</span><span style="--0:#D6DEEB">, </span></span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--1:#403F53"><span style="--0:#D7DBE0">perms</span><span style="--0:#D6DEEB">) {</span></span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#919F9F;--1:#5D6376">// 权限字符对照表</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> rwx</span><span style="--0:#C792EA;--1:#8844AE">[]</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53"> {</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">r</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53">, </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">w</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53">, </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#ECC48D;--1:#984E4D">x</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53">};</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#919F9F;--1:#5D6376">// 请补全代码写在 TO DO 与 END OF TO DO 之间：</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#919F9F;--1:#5D6376">// TO DO</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#919F9F;--1:#5D6376">// END OF TO DO</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C5E478;--1:#3B61B0">perms</span><span style="--0:#D6DEEB;--1:#403F53">[</span><span style="--0:#F78C6C;--1:#AA0982">9</span><span style="--0:#D6DEEB;--1:#403F53">] </span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#F78C6C;--1:#AA0982">\0</span><span style="--0:#D9F5DD;--1:#111111">'</span><span style="--0:#D6DEEB;--1:#403F53">;</span><span style="--0:#919F9F;--1:#5D6376"> // 字符串结尾</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="// mode即传入的存储权限信息的整数， 如0754（八进制表示）// 提示：传入的 mode 变量不仅包含权限信息，高位可能还包含文件类型。在进行位运算时，请注意屏蔽（Mask）掉不需要的高位数据。void parse_permissions(mode_t mode, char *perms) {    // 权限字符对照表    char rwx[] = {&#x27;r&#x27;, &#x27;w&#x27;, &#x27;x&#x27;};    // 请补全代码写在 TO DO 与 END OF TO DO 之间：    // TO DO    // END OF TO DO    perms[9] = &#x27;\0&#x27;; // 字符串结尾}"><div></div></button></div></figure></div>
+<p>请将思考结果和正确的代码提交至<strong>markdown文档</strong>中。</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="第三境算尊-深入理解-inode-与文件树">第三境：算尊—— 深入理解 Inode 与文件树</h2><a class="sl-anchor-link" href="#第三境算尊-深入理解-inode-与文件树"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “第三境：算尊—— 深入理解 Inode 与文件树”</span></a></div>
+<p>借由 <span class="sl-badge default small astro-7hkzaclv">myls</span> 洞察万物之能，你的修为一日千里，已隐隐触及“算尊境”的门槛。但修行之路切忌迷失本心，这一次，你决定以 C 语言重铸 pwd命令，彻底掌控自身在天地间的坐标。</p>
+<p><strong>【任务 3.1：万物皆 Inode】</strong></p>
+<p>在 Linux 文件系统中，文件名只是表象，真正标识文件灵魂的是 <strong>Inode（索引节点）</strong>。</p>
+<ol role="list" class="sl-steps">
+<li>请简述 Inode 中存储了文件的哪些信息？</li>
+<li>Inode中<strong>不包含</strong>文件的什么信息？</li>
+<li>每一个目录下必定存在两个隐藏的特殊目录：<span class="sl-badge default small astro-7hkzaclv">"."</span> 和 <span class="sl-badge default small astro-7hkzaclv">".."</span>它们分别代表什么？它们的 Inode 编号在系统根目录<span class="sl-badge default small astro-7hkzaclv">"/"</span>下有什么特殊规律？</li>
+</ol>
+<p>请回答以上问题并提交至<strong>markdown文档</strong>中。</p>
+<p><strong>【任务 3.2：寻我来时路】</strong></p>
+<p>既然天地间现成的 <span class="sl-badge default small astro-7hkzaclv">getcwd()</span> 函数已被封印，你只能根据参悟<span class="sl-badge default small astro-7hkzaclv"> myls</span> 时的造化，以及近期的闭关成果，纯手工以 C 语言完成对 <strong>pwd命令</strong> 的推演重构，并将这份心血凝聚为 <span class="sl-badge default small astro-7hkzaclv">mypwd.c</span> 秘卷。</p>
+<blockquote>
+<p>要求与提示：</p>
+<p>你无法使用<span class="sl-badge default small astro-7hkzaclv">getcwd()</span> 函数</p>
+<p>你目前只能使用 <span class="sl-badge default small astro-7hkzaclv">stat()</span> 获取文件的Inode 编号，使用 <span class="sl-badge default small astro-7hkzaclv">chdir()</span> 切换工作目录，以及使用 <span class="sl-badge default small astro-7hkzaclv">opendir()</span>/<span class="sl-badge default small astro-7hkzaclv">readdir()</span> 读取目录内容。</p>
+<p>你该如何利用 <span class="sl-badge default small astro-7hkzaclv">&quot;.&quot;</span> 和 <span class="sl-badge default small astro-7hkzaclv">&quot;..&quot;</span> 一步步逆推，最终拼接出完整的当前绝对路径？</p>
+<p>整个工作路径均在同一个文件系统的挂载点下，无需考虑跨设备的情况。</p>
+</blockquote>
+<p>其中，获取指定文件Inode编号的函数和所需的头文件已给出，具体如下：</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">stdio.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">stdlib.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">string.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">unistd.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">sys/stat.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">dirent.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">ino_t</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">get_inode</span><span style="--0:#D6DEEB;--1:#403F53">(</span><span style="--0:#C792EA;--1:#8844AE">const</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--1:#403F53"><span style="--0:#D7DBE0">path</span><span style="--0:#D6DEEB">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">struct</span><span style="--0:#D6DEEB;--1:#403F53"> stat statbuf;</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">if</span><span style="--0:#D6DEEB;--1:#403F53"> (</span><span style="--0:#82AAFF;--1:#3B61B0">stat(path, </span><span style="--0:#7FDBCA;--1:#096E72">&#x26;</span><span style="--0:#82AAFF;--1:#3B61B0">statbuf)</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">==</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">-</span><span style="--0:#F78C6C;--1:#AA0982">1</span><span style="--0:#D6DEEB;--1:#403F53">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#82AAFF;--1:#3B61B0">perror(</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">stat failed</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#82AAFF;--1:#3B61B0">exit(EXIT_FAILURE)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">return</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">statbuf</span><span style="--0:#D6DEEB;--1:#403F53">.</span><span style="--0:#C5E478;--1:#3B61B0">st_ino</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="#include <stdio.h>#include <stdlib.h>#include <string.h>#include <unistd.h>#include <sys/stat.h>#include <dirent.h>ino_t get_inode(const char *path) {    struct stat statbuf;    if (stat(path, &#x26;statbuf) == -1) {        perror(&#x22;stat failed&#x22;);        exit(EXIT_FAILURE);    }    return statbuf.st_ino;}"><div></div></button></div></figure></div>
+<p>请将正确的代码提交至<strong>markdown文档</strong>中。</p>
+<blockquote>
+<p>注意：该任务有一定难度，在初步尝试无果后，允许直接使用AI得出答案。但是，一定要看懂AI给你的答案，要有你自己的思考，还要记得把解决题目的思路在文档中展示出来。如果你使用了AI协助你完成这道题目，请简述你在<strong>哪个环节</strong>运用到了AI，将你主要的<strong>prompt</strong>的截图提交到<strong>markdown文档</strong>中。</p>
+</blockquote>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="最终境算帝-递归与文件筛选">最终境：算帝—— 递归与文件筛选</h2><a class="sl-anchor-link" href="#最终境算帝-递归与文件筛选"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “最终境：算帝—— 递归与文件筛选”</span></a></div>
+<p>历经千百次报错与段错误的洗礼，你已臻至化境，距离传说中的最高境界——“算帝境”仅半步之遥。冥冥中，大道梵音在你耳畔回响：突破算帝、横渡虚空回家的道标，就封印在禁地 <span class="sl-badge default small astro-7hkzaclv">/var/backups/turing/</span> 之下，名为 <span class="sl-badge default small astro-7hkzaclv">The_way_home.tar.gz</span> 的圣物之中。</p>
+<p>你毫不犹豫地祭出刚炼成的 ls 法宝，刹那间，终端上万千文件如星渊般倾泻而出，晃瞎了你的双眼。你道心险些失守：糟了！这里堆积了太多岁月的残渣（临时文件），那件圣物<span class="sl-badge default small astro-7hkzaclv">The_way_home.tar.gz</span>不知被深埋在哪一重空间（子目录）裂缝里了！</p>
+<p><strong>【任务 4.1：敢问，路在何方？】</strong></p>
+<p>为了在限定时间内找到文件，你打算写一个探测函数，让它具备在<strong>当前目录</strong>及其<strong>所有子目录</strong>下，寻找指定文件名的功能。</p>
+<p>请仔细阅读以下给出的简化版探测函数框架，利用递归思想，补全缺失的核心逻辑：</p>
+<div class="expressive-code"><figure class="frame not-content"><figcaption class="header"></figcaption><pre data-language="c"><code><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">stdio.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">string.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">dirent.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">sys/stat.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">#include</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#D9F5DD;--1:#111111">&#x3C;</span><span style="--0:#ECC48D;--1:#984E4D">unistd.h</span><span style="--0:#D9F5DD;--1:#111111">></span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span style="--0:#919F9F;--1:#5D6376">// 递归查找指定文件，若找到则打印其相对路径</span></div></div><div class="ec-line"><div class="code"><span style="--0:#C792EA;--1:#8844AE">void</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">find_file</span><span style="--0:#D6DEEB;--1:#403F53">(</span><span style="--0:#C792EA;--1:#8844AE">const</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--1:#403F53"><span style="--0:#D7DBE0">current_path</span><span style="--0:#D6DEEB">, </span></span><span style="--0:#C792EA;--1:#8844AE">const</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--1:#403F53"><span style="--0:#D7DBE0">target_name</span><span style="--0:#D6DEEB">) {</span></span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">DIR </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--0:#D6DEEB;--1:#403F53">dir;</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">struct</span><span style="--0:#D6DEEB;--1:#403F53"> dirent </span><span style="--0:#7FDBCA;--1:#096E72">*</span><span style="--0:#D6DEEB;--1:#403F53">entry;</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">struct</span><span style="--0:#D6DEEB;--1:#403F53"> stat statbuf;</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">if</span><span style="--0:#D6DEEB;--1:#403F53"> (</span><span style="--0:#C792EA;--1:#8844AE">!</span><span style="--0:#D6DEEB;--1:#403F53">(dir </span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">opendir(current_path)</span><span style="--0:#D6DEEB;--1:#403F53">)) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#C792EA;--1:#8844AE">return</span><span style="--0:#D6DEEB;--1:#403F53">;</span><span style="--0:#919F9F;--1:#5D6376"> // 无法打开目录则跳过</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#C792EA;--1:#8844AE">while</span><span style="--0:#D6DEEB;--1:#403F53"> ((entry </span><span style="--0:#C792EA;--1:#8844AE">=</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">readdir(dir)</span><span style="--0:#D6DEEB;--1:#403F53">) </span><span style="--0:#C792EA;--1:#8844AE">!=</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#82AAFF;--1:#3B61B0">NULL</span><span style="--0:#D6DEEB;--1:#403F53">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#919F9F;--1:#5D6376">// 忽略当前目录 . 和父目录 .. 防止无限死循环</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#C792EA;--1:#8844AE">if</span><span style="--0:#D6DEEB;--1:#403F53"> (</span><span style="--1:#3B61B0"><span style="--0:#82AAFF">strcmp(</span><span style="--0:#C5E478">entry</span><span style="--0:#82AAFF">-></span><span style="--0:#C5E478">d_name</span><span style="--0:#82AAFF">, </span></span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">.</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">)</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">==</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">0</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">||</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--1:#3B61B0"><span style="--0:#82AAFF">strcmp(</span><span style="--0:#C5E478">entry</span><span style="--0:#82AAFF">-></span><span style="--0:#C5E478">d_name</span><span style="--0:#82AAFF">, </span></span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#ECC48D;--1:#984E4D">..</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">)</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">==</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#F78C6C;--1:#AA0982">0</span><span style="--0:#D6DEEB;--1:#403F53">) {</span></div></div><div class="ec-line"><div class="code"><span class="indent">            </span><span style="--0:#C792EA;--1:#8844AE">continue</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">        </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#C792EA;--1:#8844AE">char</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C5E478;--1:#3B61B0">full_path</span><span style="--0:#D6DEEB;--1:#403F53">[</span><span style="--0:#F78C6C;--1:#AA0982">1024</span><span style="--0:#D6DEEB;--1:#403F53">];</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#82AAFF;--1:#3B61B0">snprintf(full_path, </span><span style="--0:#7FDBCA;--1:#096E72">sizeof</span><span style="--0:#82AAFF;--1:#3B61B0">(full_path), </span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--0:#82AAFF;--1:#3B61B0">%s</span><span style="--0:#ECC48D;--1:#984E4D">/</span><span style="--0:#82AAFF;--1:#3B61B0">%s</span><span style="--0:#D9F5DD;--1:#111111">"</span><span style="--1:#3B61B0"><span style="--0:#82AAFF">, current_path, </span><span style="--0:#C5E478">entry</span><span style="--0:#82AAFF">-></span><span style="--0:#C5E478">d_name</span><span style="--0:#82AAFF">)</span></span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#C792EA;--1:#8844AE">if</span><span style="--0:#D6DEEB;--1:#403F53"> (</span><span style="--0:#82AAFF;--1:#3B61B0">stat(full_path, </span><span style="--0:#7FDBCA;--1:#096E72">&#x26;</span><span style="--0:#82AAFF;--1:#3B61B0">statbuf)</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#C792EA;--1:#8844AE">==</span><span style="--0:#D6DEEB;--1:#403F53"> </span><span style="--0:#7FDBCA;--1:#096E72">-</span><span style="--0:#F78C6C;--1:#AA0982">1</span><span style="--0:#D6DEEB;--1:#403F53">) </span><span style="--0:#C792EA;--1:#8844AE">continue</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#919F9F;--1:#5D6376">// 请补全代码写在 TO DO 与 END OF TO DO 之间：</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#919F9F;--1:#5D6376">// 要求：</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#919F9F;--1:#5D6376">// 1. 检查当前 entry 的文件名是否与 target_name 匹配，若匹配则打印 full_path。</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#919F9F;--1:#5D6376">// 2. 如果当前 entry 是一个目录，则需要对其进行深度优先的递归查找。</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#919F9F;--1:#5D6376">// （提示：若(statbuf.st_mode &#x26; S_IFMT) == S_IFDIR则statbuf为目录文件）</span></div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#919F9F;--1:#5D6376">// TO DO</span></div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code">
+</div></div><div class="ec-line"><div class="code"><span class="indent">        </span><span style="--0:#919F9F;--1:#5D6376">// END OF TO DO</span></div></div><div class="ec-line"><div class="code"><span class="indent"><span style="--0:#D6DEEB;--1:#403F53">    </span></span><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div><div class="ec-line"><div class="code"><span class="indent">    </span><span style="--0:#82AAFF;--1:#3B61B0">closedir(dir)</span><span style="--0:#D6DEEB;--1:#403F53">;</span></div></div><div class="ec-line"><div class="code"><span style="--0:#D6DEEB;--1:#403F53">}</span></div></div></code></pre><div class="copy"><div aria-live="polite"></div><button title="Copy to clipboard" data-copied="Copied!" data-code="#include <stdio.h>#include <string.h>#include <dirent.h>#include <sys/stat.h>#include <unistd.h>// 递归查找指定文件，若找到则打印其相对路径void find_file(const char *current_path, const char *target_name) {    DIR *dir;    struct dirent *entry;    struct stat statbuf;    if (!(dir = opendir(current_path))) {        return; // 无法打开目录则跳过    }    while ((entry = readdir(dir)) != NULL) {        // 忽略当前目录 . 和父目录 .. 防止无限死循环        if (strcmp(entry->d_name, &#x22;.&#x22;) == 0 || strcmp(entry->d_name, &#x22;..&#x22;) == 0) {            continue;        }        char full_path[1024];        snprintf(full_path, sizeof(full_path), &#x22;%s/%s&#x22;, current_path, entry->d_name);        if (stat(full_path, &#x26;statbuf) == -1) continue;        // 请补全代码写在 TO DO 与 END OF TO DO 之间：        // 要求：        // 1. 检查当前 entry 的文件名是否与 target_name 匹配，若匹配则打印 full_path。        // 2. 如果当前 entry 是一个目录，则需要对其进行深度优先的递归查找。        // （提示：若(statbuf.st_mode &#x26; S_IFMT) == S_IFDIR则statbuf为目录文件）        // TO DO        // END OF TO DO    }    closedir(dir);}"><div></div></button></div></figure></div>
+<p>请将正确的代码提交至<strong>markdown文档</strong>中。</p>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="后记">后记</h2><a class="sl-anchor-link" href="#后记"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “后记”</span></a></div>
+<blockquote>
+<p>【玄黄历九九八一年，九月三日，夜】</p>
+<p>指尖按落，终端清响，如敲金戛玉，荡开万道黑底绿字的玄奥符文。</p>
+<p>随着那一段递归寻径的代码在识海中疯狂运转，沉寂万载的 <span class="sl-badge default small astro-7hkzaclv">/var/backups/turing/</span> 终于绽放出冲天金芒！</p>
+<span class="sl-badge default small astro-7hkzaclv">Target found at: /var/backups/turing/deep_void/The_way_home.tar.gz</span>
+<p>刹那间，天地异变，雷劫滚滚！你的身上隐隐有九条“内核线程”化作金龙盘旋而起，昔日被嘲讽“算之力三段”的废柴，今日以 C 语言为笔、以系统调用为剑，一举踏入那传说中的<strong>算帝之境</strong>！</p>
+<p>苍穹之上，天道投影缓缓吐出一句玄奥无比的解压法诀：</p>
+<span class="sl-badge default small astro-7hkzaclv">tar -zxvf The_way_home.tar.gz</span>
+<p>你气沉丹田，运起全身上下的 Linux 算力，大吼一声：“给本帝解包！”</p>
+<p>虚空撕裂，光芒四射。那神秘的文件之中，并未藏着什么至尊神功，只有一行苍劲有力的大字映入眼帘：</p>
+<p>“同学，醒醒！图书馆要关门了，你这笔记本屏幕亮了一下午，口水都滴到桌子上了！”</p>
+<p>“吸——”</p>
+<p>你猛地倒吸一口凉气，从图书室的课桌上猝然惊醒。</p>
+<p>哪有什么萧家算盘，哪有什么林家残骸。身旁只有管理员阿姨看傻子一样的眼神，以及笔记本屏幕上那个刚刚编译成功、正优雅运行着的 <span class="sl-badge default small astro-7hkzaclv">find_file</span> 程序。</p>
+<p>你擦了擦嘴角不小心流出的涎水，合上电脑，步入清冷而广袤的校园夜色之中。</p>
+<p>异世算帝也罢，一介书生也罢。世间黑箱万千，吾自以灵心为钥，指打乾坤，何惧漫漫长夜？</p>
+<p><em><strong>少年负气凌云志，踏遍黑夜莫回头——</strong></em></p>
+</blockquote>
+<hr>
+<div class="sl-heading-wrapper level-h2"><h2 id="本题提交方式"><strong>本题提交方式</strong></h2><a class="sl-anchor-link" href="#本题提交方式"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “本题提交方式”</span></a></div>
+<blockquote>
+<p><a href="https://www.glimmer.org.cn/submit/"> 提交点这里 </a></p>
+</blockquote>
+<div class="sl-heading-wrapper level-h2"><h2 id="出题人联系方式">出题人联系方式</h2><a class="sl-anchor-link" href="#出题人联系方式"><span aria-hidden="true" class="sl-anchor-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="m12.11 15.39-3.88 3.88a2.52 2.52 0 0 1-3.5 0 2.47 2.47 0 0 1 0-3.5l3.88-3.88a1 1 0 1 0-1.42-1.42l-3.88 3.89a4.48 4.48 0 0 0 6.33 6.33l3.89-3.88a1 1 0 0 0-1.42-1.42m8.58-12.08a4.49 4.49 0 0 0-6.33 0l-3.89 3.88a1 1 0 1 0 1.42 1.42l3.88-3.88a2.52 2.52 0 0 1 3.5 0 2.47 2.47 0 0 1 0 3.5l-3.88 3.88a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.88-3.89a4.49 4.49 0 0 0 0-6.33M8.83 15.17a1 1 0 0 0 .71.29 1 1 0 0 0 .71-.29l4.92-4.92a1 1 0 1 0-1.42-1.42l-4.92 4.92a1 1 0 0 0 0 1.42"></path></svg></span><span class="sr-only" data-pagefind-ignore>Section titled “出题人联系方式”</span></a></div>
+<blockquote>
+<p class="nickname-avatar-panel">出题人：<img src="https://q2.qlogo.cn/headimg_dl?dst_uin=2674884616&amp;spec=100" alt="出题人头像" loading="lazy" decoding="async" width="45" height="45">  Niko✔</p>
+<p>QQ：2674884616</p>
+<p>邮箱：<a href="mailto:2674884616@qq.com">2674884616@qq.com</a></p>
+</blockquote></div><footer class="sl-flex astro-xhxjzfa7"><div class="meta sl-flex astro-xhxjzfa7"></div><div class="pagination-links print:hidden astro-jgq3vlii" dir="ltr"><a href="/cs/medium-2/" rel="prev" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17 11H9.41l3.3-3.29a1.004 1.004 0 1 0-1.42-1.42l-5 5a1 1 0 0 0-.21.33 1 1 0 0 0 0 .76 1 1 0 0 0 .21.33l5 5a1.002 1.002 0 0 0 1.639-.325 1 1 0 0 0-.219-1.095L9.41 13H17a1 1 0 0 0 0-2Z"/></svg><span class="astro-jgq3vlii">上一页<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">MEDIUM-2：计算机中的整数与浮点数</span></span></a><a href="/cs/medium-4/" rel="next" class="astro-jgq3vlii"><svg aria-hidden="true" class="astro-jgq3vlii astro-n5k4ipy7" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="--sl-icon-size: 1.5rem;"><path d="M17.92 11.62a1.001 1.001 0 0 0-.21-.33l-5-5a1.003 1.003 0 1 0-1.42 1.42l3.3 3.29H7a1 1 0 0 0 0 2h7.59l-3.3 3.29a1.002 1.002 0 0 0 .325 1.639 1 1 0 0 0 1.095-.219l5-5a1 1 0 0 0 .21-.33 1 1 0 0 0 0-.76Z"/></svg><span class="astro-jgq3vlii">下一页<br class="astro-jgq3vlii"><span class="link-title astro-jgq3vlii">MEDIUM-4：计算机系统内存与执行机制</span></span></a></div></footer><div class="custom-footer astro-jo6i4kqk"><!-- 网站统计信息 --><div class="footer-row astro-jo6i4kqk"><span class="astro-jo6i4kqk">本页阅读次数 <span id="vercount_value_page_pv" class="astro-jo6i4kqk">Loading</span> 次</span><span class="separator astro-jo6i4kqk"> | </span><span class="astro-jo6i4kqk">本站访问次数 <span id="vercount_value_site_pv" class="astro-jo6i4kqk">Loading</span> 次</span><span class="separator astro-jo6i4kqk"> | </span><span class="astro-jo6i4kqk">本站访问人数 <span id="vercount_value_site_uv" class="astro-jo6i4kqk">Loading</span> 人</span></div><script defer src="https://events.vercount.one/js"></script><!-- 站点基础信息 --><div class="footer-row astro-jo6i4kqk"><span class="astro-jo6i4kqk">本站已支持IPv6访问</span><span class="separator astro-jo6i4kqk"> || </span><span class="astro-jo6i4kqk">Copyright &copy; 2026 </span><a href="https://www.glimmer.org.cn/" class="astro-jo6i4kqk">glimmer</a></div><!-- 备案信息 --><div class="footer-row astro-jo6i4kqk"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="astro-jo6i4kqk">蜀ICP备2026040807号-1</a><a href="https://beian.mps.gov.cn/#/query/webSearch?code=51010802033346" rel="noreferrer" target="_blank" class="police-link astro-jo6i4kqk"><img src="/_astro/police.5eBpD1mQ_Z1LFlT6.webp" alt="公安备案图标" loading="lazy" decoding="async" width="16" height="16" class="astro-jo6i4kqk">川公网安备51010802033346号</a></div></div></div></div></main></div></div></div></div></body></html>

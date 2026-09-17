@@ -1071,11 +1071,11 @@
 <p><strong>接下来请根据结构体定义，补全下面函数，将下面的函数和上方定义放在一个文件中，上传代码文件。并在md文件中写出你的思考过程。</strong></p>
 
 <ol role="list" class="sl-steps">
-<li><span class="sl-badge default small astro-7hkzaclv">void init_tree(SeqBiTree **tree*)</span> 实现初始化二叉树函数，让二叉树的大小为<span class="sl-badge default small astro-7hkzaclv">MAX_TREE_SIZE</span>，并将其全部节点设置为空，大小为<span class="sl-badge default small astro-7hkzaclv">0</span>。</li>
-<li><span class="sl-badge default small astro-7hkzaclv">bool set_root(SeqBiTree **tree*, int *value*)</span> 创建根节点，在节点数组1处设置根节点，函数需要传入根节点的<span class="sl-badge default small astro-7hkzaclv">data</span>。</li>
-<li><span class="sl-badge default small astro-7hkzaclv">bool set_left_child(SeqBiTree **tree*, int *parent_node*, int *value*)</span> 创建左孩子，<span class="sl-badge default small astro-7hkzaclv">parent_node</span>为对应父节点下标。</li>
-<li><span class="sl-badge default small astro-7hkzaclv">bool set_right_child(SeqBiTree **tree*, int *parent_node*, int *value*)</span> 创建右孩子。</li>
-<li><span class="sl-badge default small astro-7hkzaclv">void level_order(SeqBiTree **tree*)</span>  实现层序遍历，按数组下标顺序打印整棵树，节点为空则打印<span class="sl-badge default small astro-7hkzaclv">-1</span>，每打印完一层之后换行。</li>
+<li><span class="sl-badge default small astro-7hkzaclv">void init_tree(SeqBiTree *tree)</span> 实现初始化二叉树函数，让二叉树的大小为<span class="sl-badge default small astro-7hkzaclv">MAX_TREE_SIZE</span>，并将其全部节点设置为空，大小为<span class="sl-badge default small astro-7hkzaclv">0</span>。</li>
+<li><span class="sl-badge default small astro-7hkzaclv">bool set_root(SeqBiTree *tree, int value)</span> 创建根节点，在节点数组1处设置根节点，函数需要传入根节点的<span class="sl-badge default small astro-7hkzaclv">data</span>。</li>
+<li><span class="sl-badge default small astro-7hkzaclv">bool set_left_child(SeqBiTree *tree, int parent_node, int value)</span> 创建左孩子，<span class="sl-badge default small astro-7hkzaclv">parent_node</span>为对应父节点下标。</li>
+<li><span class="sl-badge default small astro-7hkzaclv">bool set_right_child(SeqBiTree *tree, int parent_node, int value)</span> 创建右孩子。</li>
+<li><span class="sl-badge default small astro-7hkzaclv">void level_order(SeqBiTree *tree)</span>  实现层序遍历，按数组下标顺序打印整棵树，节点为空则打印<span class="sl-badge default small astro-7hkzaclv">-1</span>，每打印完一层之后换行。</li>
 <li>实现以上函数之后，自己在主函数中定义一颗三层的二叉树，并进行层序遍历，看结果是否符合预期。</li>
 </ol>
 <p>在第六步的过程中，你会发现，如果你设置很多空节点，那么会有很多的空间被浪费掉。即使顺序二叉树可以根据结点数组实现时间复杂度<span class="sl-badge default small astro-7hkzaclv">o(1)</span>的快速查找，但其对于空节点很多的二叉树会浪费大量的空间，是用空间复杂度去换时间复杂度，这在工程中是不允许的。</p>
